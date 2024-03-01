@@ -1,0 +1,28 @@
+{
+    "predictor":[
+      {
+        "model": "Enformer",
+        "version": "2.2",
+        "build date": "return automatically",
+        "features": ["Dnase" , "CAGE", "H3k4me3"],
+        "cell_type": "multiple",
+        "prediction task": "track"
+      }
+    ],
+    "compleated":[
+      {
+        "scale prediction": "log",
+        "cell type": "HEPG2",
+        "aggregation": "mean of replicates"
+      }
+    ],
+    "predictions": [
+      {
+        "seq1": 12.2,
+        "seq2": 1.1,
+        "random_seq": 100.1,
+        "enhancer": 4,
+        "control": 0
+    }
+  ]
+}

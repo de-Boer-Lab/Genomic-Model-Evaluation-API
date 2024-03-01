@@ -1,0 +1,26 @@
+{
+    "task": "predict track",
+    "type": "expression",
+    "cell_type": "HEPG2",
+    "scale": "log",
+    "upstream_seq": "ATGCTT",
+    "downstream_seq": "GATCA",
+    "sequences":[
+      {
+        "seq1": "ATGC...",
+        "seq2": "ATGC...",
+        "random_seq": "ATGC...",
+        "enhancer": "ATGC...",
+        "control": "ATGC..."
+      }
+    ],
+    "prediction_ranges":[
+      {
+        "seq1": [100],
+        "seq2": [2, 50],
+        "random_seq": [],
+        "enhancer": [100,110],
+        "control": []
+      }
+    ]
+  }
