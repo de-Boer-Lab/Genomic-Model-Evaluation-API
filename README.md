@@ -1,4 +1,15 @@
 # Genomic Model Evaluation API 
 
+## API Reference
 
-The repo contains the code and examples required to run the API. 
+Add brief overview here
+
+## Error messages
+
+Add error message that will be returned by the predictor here
+
+## Evaluator request metadata
+
+## Prediction return metadata
+
+## Retrive information about predictor classes

@@ -1,0 +1,15 @@
+{
+    "predictor":[
+      {
+        "model": "Enformer",
+        "version": "2.2",
+        "build_date": "Aug 20, 2024",
+        "features": ["Dnase" , "CAGE", "H3k4me3"],
+        "cell_type": "multiple",
+        "author": "David R. Kelley",
+        "input_size": 393,639,
+        "output_size": 114,688,
+
+      }
+    ]
+}
