@@ -12,7 +12,7 @@ For our efforts to succeed we require community support and feedback from data a
 
 If you would like to be involved we encourage you to use this communication protocol with your own models and datasets and submit to the Github repo list (add link). If you have critiques or feedback please reach out to ishika.luthra@ubc.ca
 
-![](Genomic-Model-Evaluation-API/src/API_V2.png)
+![](./src/API_V2.png)
 
 Example of containers for evalutors, predictors and scripts for communication can be found in the `examples` folder.
 
