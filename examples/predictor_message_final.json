@@ -1,0 +1,15 @@
+{
+  "prediction_task": "track"
+  "scale_prediction": "log",
+  "cell_type": "HEPG2",
+  "aggregation": "mean of replicates",
+  "predictions": [
+      {
+        "seq1": [12.2, 5, 6, ..]
+        "seq2": [1.1, 12, 0.00, ..]
+        "random_seq": [100.1, 50, 0.5, ..]
+        "enhancer": [4, 3.0, 0.001, ..]
+        "control": [0, 0, 0, ..]
+    }
+  ]
+}
