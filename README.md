@@ -57,14 +57,14 @@ Error messages that can be returned by the predictors:
 
 ### Retrive information about predictor classes
 
-Any evaluator can retrieve information from a predictor by asking for "help" in the "prediction_task" key. This will return a `.json` file that is written by predictor builders. The keys attached below are mandatory for the communication 
+Any evaluator can retrieve information from a predictor by asking for "help" in the "task" key. This will return a `.json` file that is written by predictor builders. The keys attached below are mandatory for the communication 
 
 Message sent by evalutor:
 
 
 | Key     | Value    | Description|
 |---------|----------|------------|
-| `task` | `help`                | Retrieve basis information about the predictor (written by model developers|å
+| `task` | `help`                | Retrieve basis information about the predictor (written by model developers|
 
 
 Message returned by predictor: 
@@ -74,7 +74,7 @@ Message returned by predictor:
 |------------|---------------|--------------------|
 | `model`     | `string` | Model name |
 | `version`      | `string`  | Information about version of model|
-| `build_date`     | `string` | Date the predictor container was built - to track potentaial rebuilds|
+| `build_date`     | `string` | Date the predictor container was built - to track potential rebuilds|
 | `features`     | `array` | List of features that the model predicts and for which cell types. |
 | `species`     | `string` |Name of species that the model predicts for - can be more than 1 |
 | `author`     | `string` |Paper author/authors or name of container builder |
