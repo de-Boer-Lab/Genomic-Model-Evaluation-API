@@ -57,7 +57,7 @@ Error messages that can be returned by the predictors:
 
 ### Retrive information about predictor classes
 
-Any evaluator can retrieve information from a predictor by asking for "help" in the "task" key. This will return a `.json` file that is written by predictor builders. The keys attached below are mandatory for the communication 
+Any evaluator can retrieve information from a predictor by asking for `help` in the `task` key. This will return a `.json` file that is written by predictor builders. The keys attached below are mandatory for the communication 
 
 Message sent by evalutor:
 
