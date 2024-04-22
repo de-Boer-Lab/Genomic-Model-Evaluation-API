@@ -1,7 +1,12 @@
 {
-    "prediction_task": "predict track",
-    "type": "expression",
-    "cell_type": "HEPG2",
+    "task": "predict track",
+    predict, help, interpret
+    #something needs to go here that breaks up the task
+    readout:
+    track, point, interaction_matrix
+    "prediction_type": ["expression",opne chrom..,
+    accessbility, expression,
+    "cell_types": ["HEPG2", "HEPG2"], ..,
     "tracks": "all",
     "scale": "log",
     "upstream_seq": "ATGCTT",

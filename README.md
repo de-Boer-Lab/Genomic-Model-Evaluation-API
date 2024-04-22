@@ -20,54 +20,40 @@ Example of containers for evalutors, predictors and scripts for communication ca
 
 Error messages that can be returned by the predictors:
 
-`OK` communication was successful
 
-`bad prediction request` Request was unacceptable. Could be due to evalutor message format (.json is not formatted correctly, or a mandatory paramter is missing)
-
-`prediction request failed` The parameters were valid but request for prediction was not successful. 
-
-`number of sequences do not match number of prediction ranges` Each sequence must be given a range on which to predict, can also be left empty
-
-`duplicate sequence names` Each sequence id requires a unique identifier 
-
-`prediction_task not found` prediction task key is incorrect
-
-`server error` Something went wrong on on the backend (could be due to socket error or wifi error)
-
-### Evaluator request metadata
-
-`"prediction_task": task that is being asked of the predictor`
-
-`"type": what do you want predicted`
-
-`"cell_type": what is the evalutor cell types/cell types`
-
-`"tracks": what tracks would you like returned`
-
-`"scale": what scale would you like the predictors returned in`
-
-`"upstream_seq": flanking sequences to add to each evaluator sequence upstream`
-
-`"downstream_seq": flanking sequences to add to each evaluator sequence downstream`
-
-`"sequences": array of unique sequence ids (can be anything) with the correspond sequences` 
-
-`"prediction_ranges": for models that predict across a track what range would you like the prediction across. This can also be left blank`
-
-### Prediction return metadata
+| Error Message Categories    | Description                     | Type                      |
+|-----------------------------|---------------------------------|---------------------------|
+| `bad prediction request`     | Request was unacceptable |•.json file is formatted incorrectly <br> •mandatory key is missing in .json <br> •`task` requested does not exist|
+| `prediction request failed`      | Evaluator message was valid but prediction was not successful  |•duplicate sequence ids in `sequences` <br> •`prediction_ranges` are required to be integers <br> •length of `prediction_types` should be the same as length of `cell_types` <br> •sequence ids in `prediction_ranges` do not match those in `sequences` <br> •length of each value in `prediction_ranges` should not be greater than 2 <br>|
+| `server error`     | Backend issue |•socket communication failed <br> •wifi error <br> •memory error due to large batch size <br>|
 
 
-`"prediction_task": what task was compleated by the model`
+### Evaluator request message
 
-`"scale_prediction": how does the predictor scale the predictions`
 
-`"cell_type": what cell type was used from the predictor`
+| Key        | Value         | Description           |
+|------------|---------------|--------------------|
+| `task`     | `string` | What task you are asking the predictor to compleate: ["predict", "interpret", "help"] |
+| `readout`     | `string` | What is the readout from the predictor: ["track", "point", "interaction_matrix"] |
+| `prediction_types`     | `array of strings` | What you want predicted for each cell type. Array needs to be the same length as `cell_types`: ["expression", "accessibility", "expression", ...] |
+| `cell_types`     | `array of strings` | What cell type do you want for each `prediction_types`. Array needs to be the same length as `prediction_types`: ["HEPG2", "K562", "K562",... ] |
+| `scale`      | `string`  | How would you like the predictors scaled upon return (if at all)|
+| `upstream_seq`     | `string` | Flanking sequences to add to each evaluator sequence upstream|
+| `downstream_seq`     | `string` | Flanking sequences to add to each evaluator sequence downstream|
+| `sequences`     | `array of strings` | A collection of key-value pairs. Array of sequences with unique sequence ids (can be anything). The sequence ids are matched to the predictor returned sequence ids automatically by predictor |
+| `prediction_ranges`     | `array of 2 integers` | A collection of key-value pairs. Array of 2 integers that mark the start and end location of the range of prediction you are interested in. The keys should be identical to the sequence ids. This can also be left blank.
 
-`"tracks": what were the tracks used from the predictor`
+### Predictor return message
 
-`"aggregation": how were replicate tracks aggregated`
-  
-`"predictions": array of predictions can be a single value or list of values for track predictions. The sequence ids are matched to the evaluator sequence ids`
+
+| Key        | Value         | Description           |
+|------------|---------------|--------------------|
+| `task`     | `string` | What task was completed by the model |
+| `scale_prediction`      | `string`  | How did the predictor scale the predictions (if at all)|
+| `cell_types`     | `array of strings` | Cell types used by the predictor for each of the `prediction_types`. Returned from closest match from cell type/cell line ontology container|
+| `aggregation`     | `string` | How replicate tracks were aggregated for each of the `prediction_types`|
+| `predictions`     | `Float/Integer` |A collection of key-value pairs. Array of predictions can be a single value or list of values for track predictions. The sequence ids are matched to the evaluator sequence ids automatically by predictor |
+
 
 ### Retrive information about predictor classes
 
@@ -75,25 +61,23 @@ Any evaluator can retrieve information from a predictor by asking for "help" in 
 
 Message sent by evalutor:
 
-`"prediction_task": "help"`
+
+| Key     | Value    | Description|
+|---------|----------|------------|
+| `task` | `help`                | Retrieve basis information about the predictor (written by model developers|å
+
 
 Message returned by predictor: 
 
-`"model": insert model name here`
 
-`"version": model version to track model updates by authors`
-
-`"build_date": date the predictor container was built`
-
-`"features": array of model cell types and corresponding tracks`
-
-`"species" training species`
-
-`"author": author/authors names`
-
-`"input_size": input window lenght of model`
-
-`"output_size": size of model prediction`
-
-`"resolution": prediction resolution`
-
+| Key        | Value         | Description           |
+|------------|---------------|--------------------|
+| `model`     | `string` | Model name |
+| `version`      | `string`  | Information about version of model|
+| `build_date`     | `string` | Date the predictor container was built - to track potentaial rebuilds|
+| `features`     | `array` | List of features that the model predicts and for which cell types. |
+| `species`     | `string` |Name of species that the model predicts for - can be more than 1 |
+| `author`     | `string` |Paper author/authors or name of container builder |
+| `input_size`     | `Integer` | Number of base pairs of sequence that the model requires as input |
+| `output_size`     | `Integer` |Number of base pairs that the models predicts across. Can also be 0 for single prediction models. |
+| `resolution`     | `Integer` |For models that predict across genomic tracks what is the base pair resolution |
