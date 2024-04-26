@@ -20,10 +20,14 @@
         "control": "ATGC..."
       }
     ],
+{
     "prediction_ranges":[
       {
         "seq1": [100],
-        "seq2": [2, 50],
+        "seq2": [
+          [2, 50],
+          [2, 50]
+        ],
         "random_seq": [],
         "enhancer": [100,110],
         "control": []
