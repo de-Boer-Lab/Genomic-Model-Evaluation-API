@@ -399,7 +399,9 @@ communication can be found in the <code>examples</code> folder.</p>
 <div id="error-messages" class="section level3">
 <h3>Error messages</h3>
 <p>Error messages that can be returned by the predictors:</p>
-<p>We encourage predictor</p>
+<p>We encourage predictor builders to return error messages in the
+format show below. Helper functions to build off can be found in the
+<code>src</code> folder.</p>
 <table>
 <colgroup>
 <col width="18%" />
@@ -603,7 +605,7 @@ predictor</td>
 <td>“predictions”:[<br> {<br>   “seq1”: [12.2, 5, 6, ..],<br>   “seq2”:
 [1.1, 12, 0.00, ..],<br>  “random_seq”: [100.1, 50, 0.5,
 ..],<br>  “enhancer”: [4, 3.0, 0.001, ..],<br>  “control”: [0, 0, 0, ..]
-<br> }<br></td>
+<br> }<br>]<br></td>
 </tr>
 </tbody>
 </table>
@@ -658,7 +660,7 @@ developers)</td>
 <td><code>model</code></td>
 <td><code>string</code></td>
 <td>Model name</td>
-<td>“model”:Enformer”</td>
+<td>“model”: “Enformer”</td>
 </tr>
 <tr class="even">
 <td><code>version</code></td>
@@ -680,7 +682,7 @@ rebuilds</td>
 types.</td>
 <td>“features”: [<br> {<br>   “HEPG2”: [“DNase”, “H3K4me3”,…],<br>
   “iPSC”: [“H3K4me3”, “DNase”,…],<br>  “Adult liver”: [“CAGE”,
-“DNase”,…]]</td>
+“DNase”,…] <br>  } <br>]</td>
 </tr>
 <tr class="odd">
 <td><code>species</code></td>

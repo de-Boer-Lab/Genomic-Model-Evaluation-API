@@ -24,7 +24,7 @@ Example of containers for evalutors, predictors and scripts for communication ca
 
 Error messages that can be returned by the predictors:
 
-We encourage predictor
+We encourage predictor builders to return error messages in the format show below. Helper functions to build off can be found in the `src` folder. 
 
 | Error Message Categories    | Description                                               | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-------------|-------------|----------------------------------------------|
@@ -55,7 +55,7 @@ We encourage predictor
 | `scale_prediction` | `string`           | How did the predictor scale the predictions (if at all)                                                                                                                                                    | "scale": "log"          |
 | `cell_types`       | `array of strings` | Cell types used by the predictor for each of the `prediction_types` or one 1 cell type for all. Returned from closest match from cell type/cell line ontology container.                                   | "cell_types": ["HEPG2"] |
 | `aggregation`      | `string`           | How replicate tracks were aggregated for each of the `prediction_types`                                                                                                                                    | "aggregation": "mean"   |
-| `predictions`      | `Array of floats/integers`    | A collection of key-value pairs. Array of predictions can be a single value or list of values for track predictions. The sequence ids are matched to the evaluator sequence ids automatically by predictor |"predictions":[<br> {<br>   "seq1": [12.2, 5, 6, ..],<br>   "seq2": [1.1, 12, 0.00, ..],<br>  "random_seq": [100.1, 50, 0.5, ..],<br>  "enhancer": [4, 3.0, 0.001, ..],<br>  "control": [0, 0, 0, ..] <br> }<br>                         |
+| `predictions`      | `Array of floats/integers`    | A collection of key-value pairs. Array of predictions can be a single value or list of values for track predictions. The sequence ids are matched to the evaluator sequence ids automatically by predictor |"predictions":[<br> {<br>   "seq1": [12.2, 5, 6, ..],<br>   "seq2": [1.1, 12, 0.00, ..],<br>  "random_seq": [100.1, 50, 0.5, ..],<br>  "enhancer": [4, 3.0, 0.001, ..],<br>  "control": [0, 0, 0, ..] <br> }<br>]<br>                         |
 
 ### Retrive information about predictor classes
 
@@ -71,10 +71,10 @@ Message returned by predictor:
 
 | Key                     | Value     | Description       | Example |
 |---------------|---------------|-------------------------------------------|----------|
-| `model`                 | `string`  | Model name                                                                                                         | "model":Enformer" |
+| `model`                 | `string`  | Model name                                                                                                         | "model": "Enformer" |
 | `version`               | `string`  | Information about version of model                                                                                 | "version": "2.2"|
 | `build_date`            | `string`  | Date the predictor container was built - to track potential rebuilds                                               | "build_date": "Aug 20, 2024"|
-| `features`              | `array of strings`   | List of features that the model predicts and for which cell types.                                                 | "features": [<br> {<br>   "HEPG2": ["DNase", "H3K4me3",...],<br>   "iPSC": ["H3K4me3", "DNase",...],<br>  "Adult liver": ["CAGE", "DNase",...]] |
+| `features`              | `array of strings`   | List of features that the model predicts and for which cell types.                                                 | "features": [<br> {<br>   "HEPG2": ["DNase", "H3K4me3",...],<br>   "iPSC": ["H3K4me3", "DNase",...],<br>  "Adult liver": ["CAGE", "DNase",...] <br>  } <br>] |
 | `species`               | `array of strings`  | Name of species that the model predicts for - can be more than 1                                                   | "species": ["mouse", "human"]|
 | `author`                | `string`  | Paper author/authors or name of container builder                                                                  |  "author": "David R. Kelley" |
 | `input_size`            | `Integer` | Number of base pairs of sequence that the model requires as input                                                  | "input_size": 393,639 |
