@@ -74,7 +74,7 @@ Message returned by predictor:
 | `model`                 | `string`  | Model name                                                                                                         | "model":Enformer" |
 | `version`               | `string`  | Information about version of model                                                                                 | "version": "2.2"|
 | `build_date`            | `string`  | Date the predictor container was built - to track potential rebuilds                                               | "build_date": "Aug 20, 2024"|
-| `features`              | `multi dimensional array`   | List of features that the model predicts and for which cell types.                                                 | "features": [<br> {<br>   "HEPG2": ["DNase", "H3K4me3",...],<br>   "iPSC": ["H3K4me3", "DNase",...],<br>  "Adult liver": ["CAGE", "DNase",...]] |
+| `features`              | `array of strings`   | List of features that the model predicts and for which cell types.                                                 | "features": [<br> {<br>   "HEPG2": ["DNase", "H3K4me3",...],<br>   "iPSC": ["H3K4me3", "DNase",...],<br>  "Adult liver": ["CAGE", "DNase",...]] |
 | `species`               | `array of strings`  | Name of species that the model predicts for - can be more than 1                                                   | "species": ["mouse", "human"]|
 | `author`                | `string`  | Paper author/authors or name of container builder                                                                  |  "author": "David R. Kelley" |
 | `input_size`            | `Integer` | Number of base pairs of sequence that the model requires as input                                                  | "input_size": 393,639 |
