@@ -358,6 +358,7 @@ pre code {
 </div>
 
 
+<hr />
 <div id="genomic-model-evaluation-api" class="section level1">
 <h1>Genomic Model Evaluation API</h1>
 <div id="api-reference" class="section level3">
@@ -401,9 +402,9 @@ communication can be found in the <code>examples</code> folder.</p>
 <p>We encourage predictor</p>
 <table>
 <colgroup>
-<col width="4%" />
-<col width="8%" />
-<col width="86%" />
+<col width="18%" />
+<col width="18%" />
+<col width="63%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -445,12 +446,12 @@ to large batch size <br> •memory error due to large .json file</td>
 </div>
 <div id="evaluator-request-message" class="section level3">
 <h3>Evaluator request message</h3>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col width="3%" />
-<col width="4%" />
-<col width="61%" />
-<col width="29%" />
+<col width="19%" />
+<col width="19%" />
+<col width="42%" />
+<col width="19%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -542,7 +543,7 @@ The keys should be identical to the sequence ids. This can also be left
 blank.</td>
 <td>“prediction_ranges”:[<br>  {<br>   “seq1”: [0,1000] ,<br>   “seq2”:
 [100,110],<br>  “random_seq”:[ <br>    [0,10],<br>    [15,100] <br>
-  ],<br>  “enhancer”: [210,500],<br>  “control”: [] <br> }<br>]</td>
+  ],<br>  “enhancer”:    [210,500],<br>  “control”: [] <br> }<br>]</td>
 </tr>
 </tbody>
 </table>
@@ -551,10 +552,10 @@ blank.</td>
 <h3>Predictor return message</h3>
 <table>
 <colgroup>
-<col width="7%" />
-<col width="7%" />
-<col width="78%" />
-<col width="5%" />
+<col width="20%" />
+<col width="20%" />
+<col width="39%" />
+<col width="20%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -594,12 +595,15 @@ closest match from cell type/cell line ontology container.</td>
 </tr>
 <tr class="odd">
 <td><code>predictions</code></td>
-<td><code>Float/Integer</code></td>
+<td><code>Array of floats/integers</code></td>
 <td>A collection of key-value pairs. Array of predictions can be a
 single value or list of values for track predictions. The sequence ids
 are matched to the evaluator sequence ids automatically by
 predictor</td>
-<td></td>
+<td>“predictions”:[<br> {<br>   “seq1”: [12.2, 5, 6, ..],<br>   “seq2”:
+[1.1, 12, 0.00, ..],<br>  “random_seq”: [100.1, 50, 0.5,
+..],<br>  “enhancer”: [4, 3.0, 0.001, ..],<br>  “control”: [0, 0, 0, ..]
+<br> }<br></td>
 </tr>
 </tbody>
 </table>
@@ -613,9 +617,9 @@ attached below are mandatory for the communication</p>
 <p>Message sent by evalutor:</p>
 <table>
 <colgroup>
-<col width="8%" />
-<col width="8%" />
-<col width="82%" />
+<col width="19%" />
+<col width="19%" />
+<col width="61%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -627,24 +631,26 @@ attached below are mandatory for the communication</p>
 <tbody>
 <tr class="odd">
 <td><code>task</code></td>
-<td><code>help</code></td>
+<td><code>string</code></td>
 <td>Retrieve basis information about the predictor (written by model
-developers</td>
+developers)</td>
 </tr>
 </tbody>
 </table>
 <p>Message returned by predictor:</p>
 <table>
 <colgroup>
-<col width="16%" />
-<col width="7%" />
-<col width="76%" />
+<col width="18%" />
+<col width="18%" />
+<col width="51%" />
+<col width="12%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th>Key</th>
 <th>Value</th>
 <th>Description</th>
+<th>Example</th>
 </tr>
 </thead>
 <tbody>
@@ -652,58 +658,70 @@ developers</td>
 <td><code>model</code></td>
 <td><code>string</code></td>
 <td>Model name</td>
+<td>“model”:Enformer”</td>
 </tr>
 <tr class="even">
 <td><code>version</code></td>
 <td><code>string</code></td>
 <td>Information about version of model</td>
+<td>“version”: “2.2”</td>
 </tr>
 <tr class="odd">
 <td><code>build_date</code></td>
 <td><code>string</code></td>
 <td>Date the predictor container was built - to track potential
 rebuilds</td>
+<td>“build_date”: “Aug 20, 2024”</td>
 </tr>
 <tr class="even">
 <td><code>features</code></td>
-<td><code>array</code></td>
+<td><code>multi dimensional array</code></td>
 <td>List of features that the model predicts and for which cell
 types.</td>
+<td>“features”: [<br> {<br>   “HEPG2”: [“DNase”, “H3K4me3”,…],<br>
+  “iPSC”: [“H3K4me3”, “DNase”,…],<br>  “Adult liver”: [“CAGE”,
+“DNase”,…]]</td>
 </tr>
 <tr class="odd">
 <td><code>species</code></td>
-<td><code>string</code></td>
+<td><code>array of strings</code></td>
 <td>Name of species that the model predicts for - can be more than
 1</td>
+<td>“species”: [“mouse”, “human”]</td>
 </tr>
 <tr class="even">
 <td><code>author</code></td>
 <td><code>string</code></td>
 <td>Paper author/authors or name of container builder</td>
+<td>“author”: “David R. Kelley”</td>
 </tr>
 <tr class="odd">
 <td><code>input_size</code></td>
 <td><code>Integer</code></td>
 <td>Number of base pairs of sequence that the model requires as
 input</td>
+<td>“input_size”: 393,639</td>
 </tr>
 <tr class="even">
 <td><code>output_size</code></td>
 <td><code>Integer</code></td>
 <td>Number of base pairs that the models predicts across. Can also be 0
 for single prediction models.</td>
+<td>“output_size”: 114,688</td>
 </tr>
 <tr class="odd">
 <td><code>resolution</code></td>
 <td><code>Integer</code></td>
 <td>For models that predict across genomic tracks what is the base pair
 resolution</td>
+<td>“resolution”: 128</td>
 </tr>
 <tr class="even">
 <td><code>max_prediction_length</code></td>
 <td><code>Integer</code></td>
 <td>What is the maximum sequence length you can provide before the model
 will no longer be able to handle the sequence</td>
+<td>“max_prediction_length”: “2MB”</td>
 </tr>
 </tbody>
 </table>
