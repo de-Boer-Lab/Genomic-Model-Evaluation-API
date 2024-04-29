@@ -1,14 +1,10 @@
 {
-    "task": "predict track",
-    predict, help, interpret
-    #something needs to go here that breaks up the task
-    readout:
-    track, point, interaction_matrix
-    "prediction_type": ["expression",opne chrom..,
-    accessbility, expression,
-    "cell_types": ["HEPG2", "HEPG2"], ..,
-    "tracks": "all",
+    "task": "predict",
+    "readout": "track",
+    "prediction_types": ["expression", "accessibility", "binding"],
+    "cell_types": ["HEPG2", "K562", "K562"],
     "scale": "log",
+    "strand": "positive",
     "upstream_seq": "ATGCTT",
     "downstream_seq": "GATCA",
     "sequences":[
@@ -20,10 +16,9 @@
         "control": "ATGC..."
       }
     ],
-{
     "prediction_ranges":[
       {
-        "seq1": [100],
+        "seq1": [0,100],
         "seq2": [
           [2, 50],
           [2, 50]
