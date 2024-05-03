@@ -1,0 +1,20 @@
+{
+    "task": "predict",
+    "readout": "track",
+    "prediction_types": ["expression"],
+    "cell_types": ["HEPG2"],
+    "scale": "log",
+    "strand": "positive",
+    "upstream_seq": "ATGCTT",
+    "downstream_seq": "GATCA",
+    "sequences":[
+      {
+        "prediction_types": "expression",
+        "seq1": "ATGC...",
+        "seq2": "ATGC...",
+        "random_seq": "ATGC...",
+        "enhancer": "ATGC...",
+        "control": "ATGC..."
+      }
+    ]
+  }

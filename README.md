@@ -70,7 +70,7 @@ TO ADD
 | `scale_prediction` | `array of strings` - Optional            | How did the predictor scale the predictions (if at all). Array needs to be the same length as `prediction_types`.                                                                                                                                                    | "scale" : ["log", "log", "linear"]          |
 | `cell_types`       | `array of strings`- Required | Cell types used by the predictor for each of the `prediction_types` or one 1 cell type for all. Predictor developer can choose to use cell type/cell line ontology container which will returned the closest matched cell type that the predictor has.                                   | "cell_types" : ["HEPG2"] |
 | `aggregation`      | `string`- Optional           | How replicate tracks were aggregated for each of the `prediction_types`. Array needs to be the same length as `prediction_types`.                                                                                                                                     | "aggregation" : ["mean", "mean", "mean"]   |
-| `predictions`      | `Array of floats/integers`- Required    | A collection of key-value pairs. Array of predictions can be a single value or list of values for track predictions. The sequence ids are matched to the evaluator sequence ids automatically by predictor |"predictions" : [<br> {<br>   "seq1" :  [12.2, 5, 6, ..],<br>   "seq2" : [1.1, 12, 0.00, ..],<br>  "random_seq" : [100.1, 50, 0.5, ..],<br>  "enhancer" : [4, 3.0, 0.001, ..],<br>  "control" : [0, 0, 0, ..] <br> }<br>]<br>                         |
+| `predictions`      | `Array of floats/integers`- Required    | Objects of key-value pairs. The number of objects should be the same as the length of `prediction_types` and start with a key called `prediction_types` that corresponds to what the object represents. Each array of predictions can be a single value or list of values for track predictions. The sequence ids are matched to the evaluator sequence ids automatically by predictor |"predictions" : [<br> {<br>   "prediction_types" :  "expression",<br>   "seq1" :  [12.2, 5, 6, ..],<br>   "seq2" : [1.1, 12, 0.00, ..],<br>  "random_seq" : [100.1, 50, 0.5, ..],<br>  "enhancer" : [4, 3.0, 0.001, ..],<br>  "control" : [0, 0, 0, ..] <br> }<br>]<br>                         |
 
 ### Retrive information about predictor classes
 
@@ -95,7 +95,7 @@ Message returned by predictor:
 | `input_size`            | `Integer`- Optional | Number of base pairs of sequence that the model requires as input                                                  | "input_size" : 500500 |
 | `output_size`           | `Integer`- Optional | Length of region that the model predicts across. Can also be one for single prediction models.                  | "output_size" : 100000|
 | `resolution`            | `Integer`- Optional | For models that predict across genomic tracks what is the base pair resolution                                     | "resolution" : 10|
-| `max_prediction_length` | `Integer`- Optional | What is the maximum sequence length you can provide before the model will no longer be able to handle the sequence | "max_prediction_length" : "2MB"
+| `max_prediction_length` | `Integer`- Optional | What is the maximum sequence length you can provide before the model will no longer be able to handle the sequence | "max_prediction_length" : 2000000
 
 ### Error messages
 

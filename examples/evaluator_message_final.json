@@ -3,8 +3,10 @@
     "readout": "track",
     "prediction_types": ["expression", "accessibility", "binding"],
     "cell_types": ["HEPG2", "K562", "K562"],
+    "binding_types": ["CTCF"],
     "scale": "log",
     "strand": "positive",
+    "strand": ["positive"],
     "upstream_seq": "ATGCTT",
     "downstream_seq": "GATCA",
     "sequences":[
@@ -21,7 +23,7 @@
         "seq1": [0,100],
         "seq2": [
           [2, 50],
-          [2, 50]
+          [100, 150]
         ],
         "random_seq": [],
         "enhancer": [100,110],

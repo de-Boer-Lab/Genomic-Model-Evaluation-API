@@ -1,0 +1,32 @@
+{
+  "task": "predict",
+  "scale_prediction": ["log", "log", "linear"],
+  "cell_types": ["HEPG2", "K562", "K562"],
+  "aggregation": ["mean", "mean", "mean"],
+  "predictions": [
+      {
+        "prediction_types": "expression",
+        "seq1": [12.2, 5, 6, ..],
+        "seq2": [1.1, 12, 0.00, ..],
+        "random_seq": [100.1, 50, 0.5, ..],
+        "enhancer": [4, 3.0, 0.001, ..],
+        "control": [0, 0, 0, ..]
+      },
+      {
+        "prediction_types": "accessibility",
+        "seq1": [12.2, 5, 6, ..],
+        "seq2": [1.1, 12, 0.00, ..],
+        "random_seq": [100.1, 50, 0.5, ..],
+        "enhancer": [4, 3.0, 0.001, ..],
+        "control": [0, 0, 0, ..]
+      },
+      {
+        "prediction_types": "binding",
+        "seq1": [12.2, 5, 6, ..],
+        "seq2": [1.1, 12, 0.00, ..],
+        "random_seq": [100.1, 50, 0.5, ..],
+        "enhancer": [4, 3.0, 0.001, ..],
+        "control": [0, 0, 0, ..]
+      }
+  ]
+}

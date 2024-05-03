@@ -1,5 +1,5 @@
 {
-  "task": "track",
+  "task": "predict",
   "scale_prediction": "log",
   "cell_types": ["HEPG2"],
   "aggregation": "mean of replicates",
