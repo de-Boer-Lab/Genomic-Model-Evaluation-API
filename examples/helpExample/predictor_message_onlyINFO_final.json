@@ -2,13 +2,8 @@
   "model": "deBoer Lab test",
   "version": "1.0",
   "build_date": "May 3, 2024",
-  "features": [
-    {
-      "HEPG2": ["accessibility", "H3K4me3",...],
-      "iPSC": ["accessibility", "H327ac",...],
-      "Adult_liver": ["CAGE", "accessibility",...]
-    }
-  ],
+  "features": ["accessibility", "accessibility", "binding_H3K4me3", "binding_CTCF", "expression", "expression", "expression"],
+  "cell_types" : ["iPSC", "HepG2", "iPSC", "iPSC", "iPSC", "HepG2", "K562"],
   "species": ["yeast", "human"],
   "author": "Ishika Luthra",
   "input_size": 2000,
