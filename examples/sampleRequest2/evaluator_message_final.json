@@ -1,12 +1,10 @@
 {
     "task": "predict",
     "readout": "track",
-    "prediction_types": ["expression", "accessibility", "binding"],
+    "prediction_types": ["expression", "accessibility", "binding_CTCF"],
     "cell_types": ["HEPG2", "K562", "K562"],
-    "binding_types": ["CTCF"],
     "scale": "log",
     "strand": "positive",
-    "strand": ["positive"],
     "upstream_seq": "ATGCTT",
     "downstream_seq": "GATCA",
     "sequences":[

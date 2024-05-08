@@ -13,7 +13,7 @@
   "author": "Ishika Luthra",
   "input_size": 2000,
   "output_size": 1,
-  "resolution": 1,
+  "bin_size": 1,
   "max_prediction_length": 10000
 
 }
