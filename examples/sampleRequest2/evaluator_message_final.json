@@ -23,9 +23,9 @@
           [2, 50],
           [100, 150]
         ],
-        "random_seq": [],
+        "random_seq": [10,10],
         "enhancer": [100,110],
-        "control": []
+        "control": [2,5]
       }
     ]
   }
