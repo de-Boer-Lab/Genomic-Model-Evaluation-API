@@ -8,8 +8,8 @@ import sys
 evaluator_file = open('/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/examples/sampleRequest1/evaluator_message.json')
 
 try:
-    data = json.load(evaluator_file)
-    print(data)
+    jsonResult = json.load(evaluator_file)
+    print(jsonResult)
 except json.JSONDecodeError as e:
     print("Invalid JSON syntax:", e)
 
