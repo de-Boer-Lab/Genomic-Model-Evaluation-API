@@ -1,7 +1,7 @@
 {
   "task": "predict",
   "prediction_types": ["expression"],
-  "scale_prediction": "log",
+  "scale_prediction": ["log"],
   "bin_size" : 1,
   "cell_types": ["HEPG2"],
   "aggregation": "mean of replicates",
