@@ -426,13 +426,17 @@ checked using the following link: <a href="https://jsonformatter.curiousconcept.
 <code>\examples\containers\</code> folder.</p>
 <div id="communication-protocol-example" class="section level4">
 <h4>Communication protocol example</h4>
-<p><span style="color: #FF69B4;">Hi my name is “Predictor”! My job is to
-wait and listen for a “Evaluator” to ask me to do something.</span></p>
-<p><span style="color: #87CEEB;">Hello I’m an “Evaluator”! I’m sending
-you a .json file, could you please predict the accessbility of these
-sequences?</span></p>
-<p><span style="color: #FF69B4;">Sure thing :) Here you go - i’m sending
-you a .json file back with all the predictions. </span></p>
+<p>P: Hi my name is “Predictor”! My job is to wait and listen for a
+“Evaluator” to ask me to do something.</p>
+<p>E: Hello I’m an “Evaluator”! I’m sending you a .json file, could you
+please predict the accessbility of these sequences?</p>
+<p>P: Sure thing :) One moment please…</p>
+<p>P: Psst! Hey CellMatcher! I was asked for cellX, but I have no clue
+that that is, can I have a little help?</p>
+<p>CM: Sure thing! cellX is similar to your cellY, so you should use
+that for your predictions instead.</p>
+<p>P: Here you go, Evaluator - i’m sending you a .json file back with
+all the predictions for cellY.</p>
 </div>
 </div>
 <div id="an-example-for-how-issue-a-request-from-the-predictor" class="section level3">
@@ -484,8 +488,8 @@ values in <code>cell_types</code>. “binding_fillHere” can be for any
 type of binding assay (ex. CHIP-Seq, H3k27ac) and the text trailing the
 “_” is not case sensitive : [“accessibility”, “binding_fillHere” ,
 expression”, “chromatin_confirmation”]</td>
-<td>“prediction_types”: [“expression”, “binding”, “accessibility”,
-“binding_CTCF”]</td>
+<td>“prediction_types”: [“expression”, “binding_H3K4me3”,
+“accessibility”, “binding_CTCF”]</td>
 </tr>
 <tr class="even">
 <td><code>cell_types</code></td>
@@ -554,9 +558,8 @@ stops per sequence.</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="predictor-return-message" class="section level3">
-<h3>Predictor return message</h3>
+<p>Note: keys in <code>sequences</code> must be unique or will be
+overwritten during the reading in. ### Predictor return message</p>
 <table>
 <colgroup>
 <col width="20%" />
@@ -720,7 +723,7 @@ rebuilds</td>
 <td><code>array of strings</code>- Optional</td>
 <td>Cell types that correspond to predicted features in
 <code>features</code>.</td>
-<td>“cell_types” : [“iPSC”, “Hepg2”, “iPSC”,“iPSC”,“iPSC”, “HepG2”,
+<td>“cell_types” : [“iPSC”, “Hepg2”, “iPSC”, “iPSC”, “iPSC”, “HepG2”,
 “K562”]</td>
 </tr>
 <tr class="even">
@@ -799,12 +802,16 @@ to build off can be found in the <code>src</code> folder.</p>
 <td>•.json file is formatted incorrectly <br> •mandatory key
 <code>x</code> is missing in .json <br> •<code>task</code> requested is
 not recognized. Please choose from the following list
-<code>[&quot;predict&quot;, &quot;interpret&quot;, &quot;help&quot;]</code> <br> •duplicate sequence
-id key in <code>sequences</code>: sequence id key <code>y</code> is
-duplicated <br> •<code>prediction_ranges</code> are required to be
-integers <br> •length of <code>prediction_types</code> should be the
-same as length of <code>cell_types</code> or only 1 value <br> •sequence
-ids in <code>prediction_ranges</code> do not match those in
+<code>[&quot;predict&quot;, &quot;interpret&quot;, &quot;help&quot;]</code> <br>• Value in
+<code>prediction_types</code> is not recognized. Please choose from the
+following list
+<code>[&quot;accessibility&quot;, &quot;binding_fillHere&quot; , expression&quot;, &quot;chromatin_confirmation&quot;]</code>
+<br> •duplicate sequence id key in <code>sequences</code>: sequence id
+key <code>y</code> is duplicated <br> •<code>prediction_ranges</code>
+are required to be integers <br> •length of
+<code>prediction_types</code> should be the same as length of
+<code>cell_types</code> or only 1 value <br> •sequence ids in
+<code>prediction_ranges</code> do not match those in
 <code>sequences</code> <br> •length of each sub-array in
 <code>prediction_ranges</code> should not be greater than 2 <br> •
 sequence id <code>z</code> has an invalid character present <br></td>
@@ -830,12 +837,6 @@ sequence id <code>z</code> has an invalid character present <br></td>
 <h3>Containerizing evaluators and predictors</h3>
 <p>TO DO: add information here about how to create singularity
 containers</p>
-</div>
-<div id="to-create-standarized-plots" class="section level3">
-<h3>To create standarized plots</h3>
-<p>To create plots similar to those included in our examples once you
-have completed your prediction requests use <code>python</code>.</p>
-<p>TO DO</p>
 </div>
 </div>
 

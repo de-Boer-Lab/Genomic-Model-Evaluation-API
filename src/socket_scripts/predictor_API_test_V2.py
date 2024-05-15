@@ -45,11 +45,11 @@ def run_server():
         except json.JSONDecodeError as e:
             print("Invalid JSON syntax:", e)
 
-        evaluator_file = open('/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/examples/sampleRequest1/evaluator_message.json')
+        evaluator_file = open('/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/examples/sampleRequest2/evaluator_message_final.json')
         evaluator_json = json.load(evaluator_file)
         print(evaluator_json)
 
-
+        #group
         check_mandatory_keys(evaluator_json.keys())
         check_task(evaluator_json['task'])
         check_prediction_types(evaluator_json['prediction_types'])
@@ -85,10 +85,17 @@ def run_server():
                 sys.exit(1)
         sequences = evaluator_json['sequences']
         if evaluator_json['readout'] == "point":
-            check_seqs_specifications(sequences)
-            predictions_point = fake_model_point(sequences, json_return)
+            #model bin size specifications
+            json_return['bin_size'] = 1
 
-            json_string = json.dumps(predictions_point,
+            ## fake call cell type container
+            json_return['cell_types'] = ['HepG2']
+            json_return['aggregation'] = "mean of replicates"
+
+            check_seqs_specifications(sequences)
+            json_return = fake_model_point(sequences, json_return)
+
+            json_string = json.dumps(json_return,
                                      ensure_ascii=False, indent=4)
             print(json_string)
             try:
@@ -98,9 +105,17 @@ def run_server():
                 sys.exit(1)
 
         if evaluator_json['readout'] == "track":
+            output_size = 100
+            #model bin size specifications
+            json_return['bin_size'] = 1
+
+            ## fake call cell type container
+            json_return['cell_types'] = ['HepG2']
+            json_return['aggregation'] = "mean of replicates"
+
             check_seqs_specifications(sequences)
-            predictions_track = fake_model_track(sequences, json_return)
-            json_string = json.dumps(predictions_point,
+            json_return = fake_model_track(sequences, json_return)
+            json_string = json.dumps(json_return,
                                      ensure_ascii=False, indent=4)
             try:
                 client_socket.send(json_string.encode("utf-8")[:1024])
@@ -109,9 +124,17 @@ def run_server():
                 sys.exit(1)
 
         if evaluator_json['readout'] == "interaction_matrix":
+                    #model bin size specifications
+            json_return['bin_size'] = 1
+
+            ## fake call cell type container
+            #moved out of the model
+            json_return['cell_types'] = ['HepG2']
+            json_return['aggregation'] = "mean of replicates"
+
             check_seqs_specifications(sequences)
-            predictions_interaction_matrix = fake_model_interaction_matrix(sequences, json_return)
-            json_string = json.dumps(predictions_point,
+            json_return = fake_model_interaction_matrix(sequences, json_return)
+            json_string = json.dumps(json_return,
                                      ensure_ascii=False, indent=4)
             try:
                 client_socket.send(json_string.encode("utf-8")[:1024])

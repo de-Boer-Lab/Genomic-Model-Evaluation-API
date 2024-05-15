@@ -32,11 +32,17 @@ Examples of containerized evaluators and predictors can be found in `\examples\c
 
 #### Communication protocol example
 
-<span style="color: #FF69B4;">Hi my name is "Predictor"! My job is to wait and listen for a "Evaluator" to ask me to do something.</span>
+P: Hi my name is "Predictor"! My job is to wait and listen for a "Evaluator" to ask me to do something.
 
-<span style="color: #87CEEB;">Hello I'm an "Evaluator"! I'm sending you a .json file, could you please predict the accessbility of these sequences?</span>
+E: Hello I'm an "Evaluator"! I'm sending you a .json file, could you please predict the accessbility of these sequences?
 
-<span style="color: #FF69B4;">Sure thing :) Here you go - i'm sending you a .json file back with all the predictions. </span>
+P: Sure thing :) One moment please...
+
+P: Psst! Hey CellMatcher! I was asked for cellX, but I have no clue that that is, can I have a little help?
+
+CM: Sure thing! cellX is similar to your cellY, so you should use that for your predictions instead. 
+
+P: Here you go, Evaluator - i'm sending you a .json file back with all the predictions for cellY.
                       
 ### An example for how issue a request from the predictor
 
@@ -61,6 +67,7 @@ TO ADD
 | `sequences`         | `array of strings` - Required       | A collection of key-value pairs. Array of sequences with unique sequence id keys - any characters [A-Z][a-z][0-9][-.\_\~#\@%^&\*()]. The sequence id keys are matched to the predictor sequence id keys automatically by predictor. **allowing all of these characters is not necessary but we have left it here for discussion                                                                                                                             | "sequences" : [<br> {<br>   "seq1" : "ATGC...",<br>   "seq2" : "ATGC...",<br>  "random_seq" : "ATGC...",<br>  "enhancer" : "ATGC...",<br>  "control" : "ATGC..." <br> }<br>]                                   |
 | `prediction_ranges` | `multi-dimensional array`- Optional | A collection of key-value pairs, where the keys should be identical to sequence id keys and values are multi/single-dimensional array based on what regions you want included in the predictions for each sequence. Sub-arrays of 2 integers mark the start and end location of the range of prediction you are interested in and you can have multiple starts and stops per sequence.| "prediction_ranges" : [<br>  {<br>   "seq1" : [0,1000] ,<br>   "seq2" : [100,110],<br>  "random_seq" : [ <br>    [0,10],<br>    [15,100] <br>   ],<br>  "enhancer" :    [210,500],<br>  "control" : [] <br> }<br>] |
 
+Note: keys in `sequences` must be unique or will be overwritten during the reading in. 
 ### Predictor return message
 
 | Key                | Value type - Required/Optional             | Description                                                                                                                                                                                                | Example Values                |
@@ -109,14 +116,8 @@ We encourage predictor builders to return error messages in the format show belo
 |-------------|-------------|----------------------------------------------|---------------------|
 | `bad_prediction_request`    | `array of strings` |Request was unacceptable - model did not run          | •.json file is formatted incorrectly <br> •mandatory key `x` is missing in .json <br> •`task` requested is not recognized. Please choose from the following list `["predict", "interpret", "help"]` <br>• Value in `prediction_types` is not recognized. Please choose from the following list `["accessibility", "binding_fillHere" , expression", "chromatin_confirmation"]` <br> •duplicate sequence id key in `sequences`: sequence id key `y` is duplicated <br> •`prediction_ranges` are required to be integers <br> •length of `prediction_types` should be the same as length of `cell_types` or only 1 value <br> •sequence ids in `prediction_ranges` do not match those in `sequences` <br> •length of each sub-array in `prediction_ranges` should not be greater than 2 <br> • sequence id `z` has an invalid character present <br> |
 | `prediction_request_failed` | `array of strings` |Evaluator message was valid -  model prediction was incomplete | • "seq_z" in `sequences` has an invalid character present <br> • model cannot handle sequence lengths this large <br>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `server_error`              | `array of strings` | Backend issue                                             | •socket communication failed <br> •wifi error <br> •memory error (eg. due to large batch size, due to large .json file)                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-
+| `server_error`              | `array of strings` | Backend issue                                             | •socket communication failed <br> •wifi error <br> •memory error (eg. due to large batch size, due to large .json file)                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 ### Containerizing evaluators and predictors
 
 TO DO: add information here about how to create singularity containers
 
-### To create standarized plots
-
-To create plots similar to those included in our examples once you have completed your prediction requests use `python`.
-
-TO DO

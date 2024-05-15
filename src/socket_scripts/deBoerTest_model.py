@@ -19,12 +19,6 @@ def check_seqs_specifications(sequences):
 
 def fake_model_point(sequences, json_dict):
     predictions = {}
-    #model bin size specifications
-    json_dict['bin_size'] = 1
-
-    ## fake call cell type container
-    json_dict['cell_types'] = ['HepG2']
-    json_dict['aggregation'] = "mean of replicates"
 
     for sequence in sequences[0]:
         value = sequences[0][sequence]
@@ -36,13 +30,6 @@ def fake_model_point(sequences, json_dict):
 
 def fake_model_track(sequences, json_dict):
     predictions = {}
-    output_size = 100
-    #model bin size specifications
-    json_dict['bin_size'] = 1
-
-    ## fake call cell type container
-    json_dict['cell_types'] = ['HepG2']
-    json_dict['aggregation'] = "mean of replicates"
 
     for sequence in sequences[0]:
         value = sequences[0][sequence]
@@ -55,12 +42,6 @@ def fake_model_track(sequences, json_dict):
 
 def fake_model_interaction_matrix(sequences, json_dict):
     predictions = {}
-    #model bin size specifications
-    json_dict['bin_size'] = 1
-
-    ## fake call cell type container
-    json_dict['cell_types'] = ['HepG2']
-    json_dict['aggregation'] = "mean of replicates"
 
     for sequence in sequences[0]:
         value = sequences[0][sequence]

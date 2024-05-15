@@ -17,16 +17,17 @@ except json.JSONDecodeError as e:
 def run_client():
     parser = argparse.ArgumentParser(description='Socket Error Examples')
     parser.add_argument('--host', action="store", dest="host",
-                                                        required=False)
+                                                        required=True, help='local computer server ip')
     parser.add_argument('--port', action="store", dest="port", type=int,
-                                                        required=False)
-    parser.add_argument('--file', action="store", dest="file",
-                                                        required=False)
+                                                        required=True, help='port you want to connect to')
+    parser.add_argument('--evaluator_file', action="store", dest="evaluator_file",
+                                                        required=True, help='path to evaluator .json file')
+
 
     given_args = parser.parse_args()
     host = given_args.host
     port = given_args.port
-    evaluator_file = given_args.file
+    evaluator_file = given_args.evaluator_file
 
     #try creating a socket
     try:
@@ -65,6 +66,7 @@ def run_client():
         # receive message from the server
         try:
             response = client.recv(1024)
+            #save predictions
         except socket.error as e:
             print ("Error receiving predictions: %s" % e)
             sys.exit(1)
@@ -79,3 +81,10 @@ def run_client():
     print("Connection to server closed")
 
 run_client()
+
+
+## add code to be able to load predictions
+
+
+
+### add some basic performance metric calculations
