@@ -7,8 +7,8 @@ import sys
 import os
 from error_messages import *
 from deBoerTest_model import *
-# print(os.getcwd())
-# os.chdir('/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/src/socket_scripts/')
+print(os.getcwd())
+os.chdir('/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/src/socket_scripts/')
 
 
 def run_server():
@@ -38,35 +38,43 @@ def run_server():
 
         #check the evaluator_json
         #run error checking functions for bad prediction request
-
+        evaluator_file = open('/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/examples/sampleRequest1/evaluator_message.json')
+        #this will catch json formatting errors
         try:
-            data = json.loads(json_data)
-            print(data)
+            evaluator_json = json.load(evaluator_file)
+            print(evaluator_json)
         except json.JSONDecodeError as e:
             print("Invalid JSON syntax:", e)
 
-        evaluator_file = open('/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/examples/sampleRequest2/evaluator_message_final.json')
-        evaluator_json = json.load(evaluator_file)
-        print(evaluator_json)
+        #group these functions
+        json_return_error = {'bad_prediction_request': {}}
+        print(any(json_return_error.values()))
+        json_return_error = check_mandatory_keys(evaluator_json.keys(), json_return_error)
+        json_return_error = check_task(evaluator_json['task'], json_return_error)
+        json_return_error = check_prediction_types(evaluator_json['prediction_types'], json_return_error)
+        json_return_error = check_cell_types_length(evaluator_json['prediction_types'], evaluator_json['cell_types'], json_return_error)
+        json_return_error = check_scale_length(evaluator_json['prediction_types'], evaluator_json['scale'], json_return_error)
+        json_return_error = check_prediction_ranges(evaluator_json['prediction_ranges'], json_return_error)
+        json_return_error = check_seq_ids(evaluator_json['prediction_ranges'], evaluator_json['sequences'], json_return_error)
+        json_return_error = check_key_values_readout(evaluator_json['readout'], json_return_error)
+        json_return_error = check_key_values_strand(evaluator_json['strand'], json_return_error)
+        json_return_error = check_key_values_scale(evaluator_json['scale'], json_return_error)
+        json_return_error = check_key_values_flanks(evaluator_json['upstream_seq'], evaluator_json['downstream_seq'], json_return_error)
 
-        #group
-        check_mandatory_keys(evaluator_json.keys())
-        check_task(evaluator_json['task'])
-        check_prediction_types(evaluator_json['prediction_types'])
-        check_cell_types_length(evaluator_json['prediction_types'], evaluator_json['cell_types'])
-        check_scale_length(evaluator_json['prediction_types'], evaluator_json['scale'])
-        check_prediction_ranges(evaluator_json['prediction_ranges'])
-        check_seq_ids(evaluator_json['prediction_ranges'], evaluator_json['sequences'])
-        check_key_values_readout(evaluator_json['readout'])
-        check_key_values_strand(evaluator_json['strand'])
-        check_key_values_scale(evaluator_json['scale'])
-        check_key_values_flanks(evaluator_json['upstream_seq'], evaluator_json['downstream_seq'])
+        #if any errors were caught return to evaluator
+        if any(json_return_error.values()) == True:
+            json_string = json.dumps(json_return_error,ensure_ascii=False, indent=4)
+            try:
+                client_socket.send(json_string.encode("utf-8")[:1024])
+            except socket.error as e:
+                print ("server_error: Error sending error_file: %s" % e)
+                sys.exit(1)
+
+
         #run the predictor container
-        #check each sequence based on the model's specifications for
-        #what characters and length is allowed for the sequence
-        ##run error checking functions for prediction_request_failed
-
-        print(request)
+            #check each sequence based on the model's specifications for
+            #what characters and length is allowed for the sequence
+            ##run error checking functions for prediction_request_failed
 
         #Send the sequences to the model
         #Return crap for each sequence regardless of what task is requested
@@ -74,6 +82,7 @@ def run_server():
         #information to return to evaluator
         json_return = {'task': evaluator_json['task'], 'prediction_types': evaluator_json['prediction_types']}
         json_return
+        json_return_error_model = {'prediction_request_failed': {}}
 
         if evaluator_json['task'] == "help":
             help_file = "/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/examples/helpExample/predictor_message_onlyINFO_final.json"
@@ -81,7 +90,7 @@ def run_server():
             try:
                 client_socket.send(help_file.encode("utf-8")[:1024])
             except socket.error as e:
-                print ("Error sending help_file: %s" % e)
+                print("server_error: Error sending help_file: %s" % e)
                 sys.exit(1)
         sequences = evaluator_json['sequences']
         if evaluator_json['readout'] == "point":
@@ -92,7 +101,16 @@ def run_server():
             json_return['cell_types'] = ['HepG2']
             json_return['aggregation'] = "mean of replicates"
 
-            check_seqs_specifications(sequences)
+            json_return_error_model = check_seqs_specifications(sequences, json_return_error_model)
+            if any(json_return_error_model.values()) == True:
+                json_string = json.dumps(json_return_error_model,ensure_ascii=False, indent=4)
+                try:
+                    client_socket.send(json_string.encode("utf-8")[:1024])
+                except socket.error as e:
+                    print ("server_error: Error sending error_file: %s" % e)
+                    sys.exit(1)
+
+
             json_return = fake_model_point(sequences, json_return)
 
             json_string = json.dumps(json_return,
@@ -105,7 +123,6 @@ def run_server():
                 sys.exit(1)
 
         if evaluator_json['readout'] == "track":
-            output_size = 100
             #model bin size specifications
             json_return['bin_size'] = 1
 
@@ -113,14 +130,24 @@ def run_server():
             json_return['cell_types'] = ['HepG2']
             json_return['aggregation'] = "mean of replicates"
 
-            check_seqs_specifications(sequences)
+
+            json_return_error_model = check_seqs_specifications(sequences, json_return_error_model)
+            if any(json_return_error_model.values()) == True:
+                json_string = json.dumps(json_return_error_model,ensure_ascii=False, indent=4)
+                try:
+                    client_socket.send(json_string.encode("utf-8")[:1024])
+                except socket.error as e:
+                    print ("server_error: Error sending error_file: %s" % e)
+                    sys.exit(1)
+
+
             json_return = fake_model_track(sequences, json_return)
             json_string = json.dumps(json_return,
                                      ensure_ascii=False, indent=4)
             try:
                 client_socket.send(json_string.encode("utf-8")[:1024])
             except socket.error as e:
-                print ("Error sending predictor_file: %s" % e)
+                print ("server_error: Error sending predictor_file: %s" % e)
                 sys.exit(1)
 
         if evaluator_json['readout'] == "interaction_matrix":
@@ -132,14 +159,23 @@ def run_server():
             json_return['cell_types'] = ['HepG2']
             json_return['aggregation'] = "mean of replicates"
 
-            check_seqs_specifications(sequences)
+            json_return_error_model = check_seqs_specifications(sequences, json_return_error_model)
+
+            if any(json_return_error_model.values()) == True:
+                json_string = json.dumps(json_return_error_model,ensure_ascii=False, indent=4)
+                try:
+                    client_socket.send(json_string.encode("utf-8")[:1024])
+                except socket.error as e:
+                    print ("server_error: Error sending error_file: %s" % e)
+                    sys.exit(1)
+
             json_return = fake_model_interaction_matrix(sequences, json_return)
             json_string = json.dumps(json_return,
                                      ensure_ascii=False, indent=4)
             try:
                 client_socket.send(json_string.encode("utf-8")[:1024])
             except socket.error as e:
-                print ("Error sending predictor_file: %s" % e)
+                print ("server_error: Error sending predictor_file: %s" % e)
                 sys.exit(1)
 
         #Format the json output file and send back to evaluator
@@ -167,8 +203,3 @@ def run_server():
 
 
 run_server()
-
-
-###prediction request functions
-
-###bad prediction request

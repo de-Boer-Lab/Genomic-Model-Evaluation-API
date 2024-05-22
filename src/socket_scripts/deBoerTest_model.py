@@ -4,18 +4,17 @@ import numpy as np
 import random
 import base64
 ## model specific checks that cause a "prediction_request_failed" error
-def check_seqs_specifications(sequences):
+def check_seqs_specifications(sequences, json_return_error_model):
     max_length = 2000
     for sequence in sequences[0]:
         value = sequences[0][sequence]
         key = sequence
 
         if len(value) > 2000:
-            print("length of a sequence in " + key + " is greater than 2000")
-
+            json_return_error_model['prediction_request_failed'].append("length of a sequence in " + key + " is greater than 2000")
         if "N" in value:
-            print("sequence in " + key + " has an invalid character present")
-
+            json_return_error_model['prediction_request_failed'].append("sequence in " + key + " has an invalid character present")
+    return(json_return_error_model)
 
 def fake_model_point(sequences, json_dict):
     predictions = {}
