@@ -1,11 +1,11 @@
 {
     "task": "predict",
-    "readout": "track",
+    "readout": "point",
     "prediction_types": ["expression"],
     "cell_types": ["HEPG2"],
     "scale": ["log"],
     "strand": "positive",
-    "upstream_seq": "ATGCTT",
+    "upstream_seq": "GATCA",
     "downstream_seq": "GATCA",
     "sequences":[
       {

@@ -1,0 +1,20 @@
+{
+    "task": "predict",
+    "prediction_types": [
+        "expression"
+    ],
+    "bin_size": 1,
+    "cell_types": [
+        "HepG2"
+    ],
+    "aggregation": "mean of replicates",
+    "predictions": [
+        {
+            "seq1": 0,
+            "seq2": 0,
+            "random_seq": 0,
+            "enhancer": 0,
+            "control": 1
+        }
+    ]
+}

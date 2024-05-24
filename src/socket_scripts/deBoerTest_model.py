@@ -22,7 +22,6 @@ def fake_model_point(sequences, json_dict):
     for sequence in sequences[0]:
         value = sequences[0][sequence]
         key = sequence
-        print(len(value))
         predictions[key] = random.randint(0, 1)
     json_dict['predictions'] = [predictions]
     return(json_dict)
