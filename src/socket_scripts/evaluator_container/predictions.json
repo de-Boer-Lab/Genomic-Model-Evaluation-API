@@ -10,11 +10,11 @@
     "aggregation": "mean of replicates",
     "predictions": [
         {
-            "seq1": 1,
+            "seq1": 0,
             "seq2": 1,
-            "random_seq": 1,
-            "enhancer": 0,
-            "control": 0
+            "random_seq": 0,
+            "enhancer": 1,
+            "control": 1
         }
     ]
 }

@@ -16,8 +16,10 @@ def run_server():
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    server_ip = '127.0.0.1'
-    port = 8000
+    #server_ip = '127.0.0.1'
+    server_ip = socket.gethostbyname('mynetwork')
+    print(server_ip)
+    port = 8100
 
     # bind the socket to a specific address and port
     server.bind((server_ip, port))

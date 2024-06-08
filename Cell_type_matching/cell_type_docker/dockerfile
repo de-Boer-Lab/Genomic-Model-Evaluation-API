@@ -1,0 +1,22 @@
+FROM r-base:4.2.2
+
+#RUN R -e 'install.packages("BiocManager", dependencies=TRUE)'
+#RUN R -e 'BiocManager::install(version = "3.16")'
+#RUN R -e 'BiocManager::install(c("GenomicFeatures", "AnnotationDbi"))'
+#RUN R -e 'BiocManager::install("BiocStyle", dependencies=TRUE)'
+#RUN R -e 'BiocManager::install("GenomicRanges", dependencies=TRUE)'
+#RUN R -e 'BiocManager::install("GenomeInfoDb", dependencies=TRUE)'
+#RUN R -e 'install.packages("ontologyIndex", dependencies=TRUE)'
+#RUN R -e 'BiocManager::install("ontoProc", dependencies=TRUE)'
+
+FROM bioconductor/bioconductor_docker:3.16  
+
+RUN apt-get update
+    RUN R -e 'BiocManager::install(ask = F)' && R -e 'BiocManager::install(c("rtracklayer", \
+    "GenomicAlignments", "Biostrings", "SummarizedExperiment", "Rsamtools", ask = F))'
+RUN R -e 'BiocManager::install("ontoProc", dependencies=TRUE)'
+RUN R -e 'install.packages("igraph", dependencies=TRUE)'
+
+ADD cell_type_matching_V2.R /test/
+WORKDIR /test/
+CMD R -e "source('/test/cell_type_matching_V2.R')"
