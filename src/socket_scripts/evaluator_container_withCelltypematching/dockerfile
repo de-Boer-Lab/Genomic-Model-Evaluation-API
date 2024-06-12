@@ -1,0 +1,7 @@
+FROM python:3
+COPY requirements.txt .
+#COPY evaluator_message.json /evaluator_container/
+RUN pip3 install -r requirements.txt
+ADD evaluator_API_test_V3.py /evaluator_container/
+WORKDIR /evaluator_container/
+ENTRYPOINT [ "python3", "/evaluator_container/evaluator_API_test_V3.py" ]

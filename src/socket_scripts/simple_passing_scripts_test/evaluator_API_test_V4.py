@@ -10,18 +10,16 @@ import os
 #read in JSON file here
 
 def run_client():
-    parser = argparse.ArgumentParser(description='Socket Error Examples')
-    # parser.add_argument('--host', action="store", dest="host",
-    #                                                     required=True, help='local computer server ip')
-    # parser.add_argument('--port', action="store", dest="port", type=int,
-    #                                                     required=True, help='port you want to connect to')
-    parser.add_argument('--evaluator_file', action="store", dest="evaluator_file",required=True, help='path to evaluator .json file')
+    #parser = argparse.ArgumentParser(description='Socket Error Examples')
+    #parser.add_argument('--host', action="store", dest="host",required=True, help='local computer server ip')
+    #parser.add_argument('--port', action="store", dest="port", type=int,required=True, help='port you want to connect to')
+    #parser.add_argument('--evaluator_file', action="store", dest="evaluator_file",required=True, help='path to evaluator .json file')
     #
     #
-    given_args = parser.parse_args()
-    # host = given_args.host
-    # port = given_args.port
-    evaluator_file = given_args.evaluator_file
+    #given_args = parser.parse_args()
+    #host = given_args.host
+    #port = given_args.port
+    #evaluator_file = given_args.evaluator_file
 
     #try creating a socket
     try:
@@ -32,9 +30,10 @@ def run_client():
         sys.exit(1)
 
     #try connecting to given host and port
-    host = socket.gethostbyname('mynetwork') # replace with the server's IP address
-    port = 8100  # replace with the server's port number
-
+    #host = socket.gethostbyname('mynetwork') # replace with the server's IP address
+    #port = 8100  # replace with the server's port number
+    host = '0.0.0.0'
+    port = 8080
 
     try:
         #establish connection with server
@@ -49,7 +48,8 @@ def run_client():
 
     cwd = os.getcwd()
     print(cwd)
-    evaluator_file = open('/evaluator_container/' + evaluator_file)
+    #evaluator_file = open('/evaluator_container/' + evaluator_file)
+    evaluator_file = open('/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/examples/sampleRequest1/evaluator_message.json')
 
     try:
         jsonResult = json.load(evaluator_file)
