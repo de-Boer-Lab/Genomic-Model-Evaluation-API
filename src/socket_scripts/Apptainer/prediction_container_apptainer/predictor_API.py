@@ -15,28 +15,25 @@ def run_server():
     parser = argparse.ArgumentParser(description='Socket Error Examples')
     parser.add_argument('--host', action="store", dest="host",required=True, help='local computer server ip')
     parser.add_argument('--port', action="store", dest="port", type=int,required=True, help='port you want to connect to')
-    parser.add_argument('--port_cell_type_matcher', action="store", dest="port_cell_type_matcher", type=int,required=True, help='port you want to connect to for the cell type matching container')
 
     given_args = parser.parse_args()
     server_ip = given_args.host
     port = given_args.port
-    #cell_type_matcher_ip = given_args.host_cell_type_matcher
-    cell_type_matcher_port = given_args.port_cell_type_matcher
+
     print(server_ip)
     print(port)
     # create a socket object
     json_return_error = {}
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
     server_ip = socket.gethostbyname(server_ip)
-    #print(server_ip)
-    #server_ip = '0.0.0.0'
-    #port = 8080
+
     # bind the socket to a specific address and port
     server.bind((server_ip, port))
     # listen for incoming connections
-    server.listen(0)
     print(f"Listening on {server_ip}:{port}")
+    server.listen(0)
 
     # accept incoming connections
     client_socket, client_address = server.accept()
@@ -101,29 +98,6 @@ def run_server():
         except socket.error as e:
             print ("server_error: Error sending error_file: %s" % e)
             sys.exit(1)
-
-
-    #cell type predictor container is running, send the model's cell type and evalutor cell type to it
-    #make dictionary to send to cell type matching container
-    #since each predictor should have a cell
-    cell_type_predictor = {}
-    cell_type_predictor['evalutor_cell_types'] = evaluator_json['cell_types']
-    cell_type_predictor['predictor_cell_types'] = ["iPSC cell line", "liver cell line", "liver", "kidney cell line", "hepatoma cell line", "hepatoma cell"]
-    print(cell_type_predictor)
-    cell_type_predictor = json.dumps(cell_type_predictor)
-
-    cell_type_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #cell_type_matcher_ip = socket.gethostbyname(cell_type_matcher_ip)
-    cell_type_socket.connect((server_ip,cell_type_matcher_port))
-    #cell_type_socket.connect(('API_network', 6051))
-
-    cell_type_socket.send(cell_type_predictor.encode("utf-8"))
-    #cell_type_socket.send(b'The evaluator cell type is: ' + evalutor_cell_type.encode("utf-8"))
-    #cell_type_socket.send(b'The predictor cell type is: ')
-
-    cell_type_predicted = cell_type_socket.recv(5000)
-    print(cell_type_predicted)
-    print("The cell type the predictor will use is: " + cell_type_predicted.decode("utf-8"))
 
     #run the predictor container
     #check each sequence based on the model's specifications for

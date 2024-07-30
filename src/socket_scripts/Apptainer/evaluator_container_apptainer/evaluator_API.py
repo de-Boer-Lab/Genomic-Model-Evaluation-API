@@ -4,22 +4,22 @@ import numpy as np
 import argparse
 import sys
 #import sklearn
-#import pandas as pd
+import pandas as pd
 import os
 #import scipy
 #read in JSON file here
 
 def run_client():
-    #parser = argparse.ArgumentParser(description='Socket Error Examples')
-    #parser.add_argument('--host', action="store", dest="host",required=True, help='local computer server ip')
-    #parser.add_argument('--port', action="store", dest="port", type=int,required=True, help='port you want to connect to')
-    #parser.add_argument('--evaluator_file', action="store", dest="evaluator_file",required=True, help='path to evaluator .json file')
+    parser = argparse.ArgumentParser(description='Socket Error Examples')
+    parser.add_argument('--host', action="store", dest="host",required=True, help='local computer server ip')
+    parser.add_argument('--port', action="store", dest="port", type=int,required=True, help='port you want to connect to')
+    parser.add_argument('--evaluator_file', action="store", dest="evaluator_file",required=True, help='path to evaluator .json file')
     #
     #
-    #given_args = parser.parse_args()
-    #host = given_args.host
-    #port = given_args.port
-    #evaluator_file = given_args.evaluator_file
+    given_args = parser.parse_args()
+    host = given_args.host
+    port = given_args.port
+    evaluator_file = given_args.evaluator_file
 
     #try creating a socket
     try:
@@ -30,10 +30,7 @@ def run_client():
         sys.exit(1)
 
     #try connecting to given host and port
-    #host = socket.gethostbyname('mynetwork') # replace with the server's IP address
-    #port = 8100  # replace with the server's port number
-    host = '127.0.0.1'
-    port = 8005
+    host = socket.gethostbyname(host) # replace with the server's IP address
 
     try:
         #establish connection with server
@@ -48,8 +45,8 @@ def run_client():
 
     cwd = os.getcwd()
     print(cwd)
-    #evaluator_file = open('/evaluator_container/' + evaluator_file)
-    evaluator_file = open('/home/iluthra/simple_passing_scripts_test/evaluator_message.json')
+    evaluator_file = open('/evaluator_container/' + evaluator_file)
+    #evaluator_file = open('/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/examples/sampleRequest1/evaluator_message.json')
 
     try:
         jsonResult = json.load(evaluator_file)
@@ -72,7 +69,7 @@ def run_client():
         response = json.loads(response) # convert bytes to string
         print(response)
         #save predictions
-        with open('/home/iluthra/simple_passing_scripts_test/predictions.json', 'w', encoding='utf-8') as f:
+        with open('/evaluator_container/predictions.json', 'w', encoding='utf-8') as f:
             json.dump(response, f, ensure_ascii=False, indent=4)
 
     except socket.error as e:

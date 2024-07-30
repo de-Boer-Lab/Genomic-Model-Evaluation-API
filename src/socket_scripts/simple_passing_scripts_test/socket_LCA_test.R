@@ -7,18 +7,18 @@ library(optparse)
 
 while(TRUE){
   
-  option_list = list(
-    make_option(c("-f", "--ip"), type="character", default=NULL, 
-                help="ip address cell type container", metavar="character"),
-    make_option(c("-o", "--port"), type="integer", default=NULL, 
-                help="port number for container", metavar="integer")
-  )
-  
-  opt_parser = OptionParser(option_list=option_list)
-  opt = parse_args(opt_parser)
-  print("HELLO")
-  print(opt$ip)
-  print(opt$port)
+  # option_list = list(
+  #   make_option(c("-f", "--ip"), type="character", default=NULL, 
+  #               help="ip address cell type container", metavar="character"),
+  #   make_option(c("-o", "--port"), type="integer", default=NULL, 
+  #               help="port number for container", metavar="integer")
+  # )
+  # 
+  # opt_parser = OptionParser(option_list=option_list)
+  # opt = parse_args(opt_parser)
+  # print("HELLO")
+  # print(opt$ip)
+  # print(opt$port)
 
   #args = commandArgs(trailingOnly=TRUE, asValues=TRUE)
   #print(args)

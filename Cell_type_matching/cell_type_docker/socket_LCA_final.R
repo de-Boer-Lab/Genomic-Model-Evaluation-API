@@ -6,22 +6,25 @@ library(optparse)
 
 while(TRUE){
   
-  option_list = list(
-    make_option(c("-f", "--ip"), type="character", default=NULL,
-                help="ip address cell type container", metavar="character"),
-    make_option(c("-o", "--port"), type="integer", default=NULL,
-                help="port number for container", metavar="integer")
-  )
-
-  opt_parser = OptionParser(option_list=option_list)
-  opt = parse_args(opt_parser)
-  print("HELLO")
-  print(opt$ip)
-  print(opt$port)
+  # option_list = list(
+  #   make_option(c("-f", "--ip"), type="character", default=NULL,
+  #               help="ip address cell type container", metavar="character"),
+  #   make_option(c("-o", "--port"), type="integer", default=NULL,
+  #               help="port number for container", metavar="integer")
+  # )
+  # 
+  # opt_parser = OptionParser(option_list=option_list)
+  # opt = parse_args(opt_parser)
+  # print("HELLO")
+  # print(opt$ip)
+  # print(opt$port)
 
   writeLines("Listening...")
-  con <- socketConnection(host=opt$ip, port = opt$port, blocking=TRUE,
+  con <- socketConnection(host="API_network", port = 8000, blocking=TRUE,
                           server=TRUE, open="r+")
+  print(con)
+  #con <- socketConnection(host=opt$ip, port = opt$port, blocking=TRUE,
+  #                        server=TRUE, open="r+")
   data <- readLines(con, 1)
   #data = "{\"evalutor_cell_types\": [\"HepG2\"], \"predictor_cell_types\": [\"iPSC cell line\", \"liver cell line\", \"liver\", \"kidney cell line\", \"hepatoma cell line\", \"hepatoma cell\"]}"
   #print(data)

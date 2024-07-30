@@ -8,7 +8,7 @@ while(TRUE){
   args = commandArgs(trailingOnly=TRUE)
   print(args)
   writeLines("Listening...")
-  con <- socketConnection(host="mynetwork_cellType", port = 6051, blocking=TRUE,
+  con <- socketConnection(host='0.0.0.0', port = 6051, blocking=TRUE,
                           server=TRUE, open="r+")
   data <- readLines(con, 1)
   #data = "{\"evalutor_cell_types\": [\"HepG2\"], \"predictor_cell_types\": [\"iPSC cell line\", \"liver cell line\", \"liver\", \"kidney cell line\", \"hepatoma cell line\", \"hepatoma cell\"]}"

@@ -33,6 +33,8 @@ def run_client():
     host = socket.gethostbyname(host) # replace with the server's IP address
     #port = 8100  # replace with the server's port number
     #host = '0.0.0.0'
+    #server_ip = 'API_network'
+
     #port = 8080
 
     try:
@@ -48,7 +50,7 @@ def run_client():
 
     cwd = os.getcwd()
     print(cwd)
-    evaluator_file = open('/evaluator_container/' + evaluator_file)
+    evaluator_file = open('/evaluator_container_withCelltypematching/' + evaluator_file)
     #evaluator_file = open('/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/examples/sampleRequest1/evaluator_message.json')
 
     try:
