@@ -107,7 +107,7 @@ Message returned by predictor:
 | `output_size`           | `Integer`- Optional | Length of region that the model predicts across. Can also be one for single prediction models.                  | "output_size" : 100000|
 | `bin_size`            | `Integer`- Optional | For models that predict across genomic tracks what is the base pair resolution                                     | "bin_size" : 10|
 | `max_prediction_length` | `Integer`- Optional | What is the maximum sequence length you can provide before the model will no longer be able to handle the sequence | "max_prediction_length" : 2000000|
-| `expression_strand_specific` | `true or false`- Optional | For models that predict expression is the expression prediction strand specific or not | "expression_strand_specific" : true|
+| `expression_strand_specific` | `Boolean`- Optional | For models that predict expression is the expression prediction strand specific or not | "expression_strand_specific" : true|
 ### Error messages
 
 Error messages that should be returned by the predictors in .json format. Error messages should be returned via one of the 3 possible keys so that the evaluators can "catch" the exception. Values can follow the format described below (any type) or other/additional ones can be added by the predictor builders.
