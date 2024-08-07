@@ -33,7 +33,7 @@ def run_client():
     #host = socket.gethostbyname('mynetwork') # replace with the server's IP address
     #port = 8100  # replace with the server's port number
     host = '127.0.0.1'
-    port = 8005
+    port = 8012
 
     try:
         #establish connection with server
