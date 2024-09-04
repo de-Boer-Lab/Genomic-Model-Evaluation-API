@@ -1,12 +1,12 @@
 {
-  "task": "predict",
-  "prediction_types": ["expression"],
-  "scale_prediction": ["log"],
-  "bin_size" : 1,
-  "cell_types": ["HEPG2"],
-  "aggregation": "mean of replicates",
+  "request": "predict",
   "predictions": [
       {
+        "task_for_model": "expression_HEPG2_linear",
+        "task": "expression",
+        "scale_prediction": "linear",
+        "cell_type": "HEPG2",
+        "species": "Mus_musculus",
         "seq1": 4,
         "seq2": 5,
         "random_seq": 3,

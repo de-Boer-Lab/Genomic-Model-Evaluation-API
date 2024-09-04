@@ -469,14 +469,14 @@ random predictions for any task you request).</p>
 <td><code>task</code></td>
 <td><code>string</code> - Required</td>
 <td>What task you are asking the predictor to complete : [“predict”,
-“interpret”, “help”]</td>
+“help”].</td>
 <td>“task”: “predict”</td>
 </tr>
 <tr class="even">
 <td><code>readout</code></td>
 <td><code>string</code> - Required</td>
 <td>Type of readout that is requested from the predictor :
-[“point”,“track”, “interaction_matrix”]</td>
+[“point”,“track”, “interaction_matrix”].</td>
 <td>“readout”: “track”</td>
 </tr>
 <tr class="odd">
@@ -484,10 +484,10 @@ random predictions for any task you request).</p>
 <td><code>array of strings</code> - Required</td>
 <td>What you want predicted for each cell type. Array needs to be the
 same length as <code>cell_types</code> or 1 value that is applied to all
-values in <code>cell_types</code>. “binding_fillHere” can be for any
+values in <code>cell_types</code>. “binding_<molecule>” can be for any
 type of binding assay (ex. CHIP-Seq, H3k27ac) and the text trailing the
-“_” is not case sensitive : [“accessibility”, “binding_fillHere” ,
-expression”, “chromatin_confirmation”]</td>
+“_” is not case sensitive : [“accessibility”, “binding_<molecule>” ,
+expression”, “chromatin_confirmation”].</td>
 <td>“prediction_types”: [“expression”, “binding_H3K4me3”,
 “accessibility”, “binding_CTCF”]</td>
 </tr>
@@ -497,24 +497,25 @@ expression”, “chromatin_confirmation”]</td>
 <td>What cell type do you want for each <code>prediction_types</code>.
 Array needs to be the same length as <code>prediction_types</code> or
 only 1 value which will default for all
-<code>prediction_types</code></td>
+<code>prediction_types</code>.</td>
 <td>“cell_types” : [“HEPG2”, “K562”, “K562”, “iPSC”]</td>
 </tr>
 <tr class="odd">
+<td><code>species</code></td>
+<td><code>array of strings</code> - Required</td>
+<td>What species do you want for each <code>prediction_types</code>.
+Array needs to be the same length as <code>prediction_types</code> or
+only 1 value which will default for all
+<code>prediction_types</code>.</td>
+<td>“species” : [“homo_sapiens”]</td>
+</tr>
+<tr class="even">
 <td><code>scale</code></td>
 <td><code>array of strings</code> - Optional</td>
 <td>How would you like the predictions scaled upon return (if at all).
 Array needs to be the same length as <code>prediction_types</code> :
-[“linear”, “log”]</td>
+[“linear”, “log”].</td>
 <td>“scale” : [“log”, “log”, “linear”, “linear”]</td>
-</tr>
-<tr class="even">
-<td><code>strand</code></td>
-<td><code>string</code>- Optional</td>
-<td>Which strand would you like to be predicted : [“positive”,
-“negative”] ** we don’t think this field is needed but have left it here
-for discussion</td>
-<td>“strand”: “positive”</td>
 </tr>
 <tr class="odd">
 <td><code>upstream_seq</code></td>
@@ -534,23 +535,20 @@ for discussion</td>
 <td><code>sequences</code></td>
 <td><code>array of strings</code> - Required</td>
 <td>A collection of key-value pairs. Array of sequences with unique
-sequence id keys - any characters [A-Z][a-z][0-9][-._~#@%^&amp;*()]. The
-sequence id keys are matched to the predictor sequence id keys
-automatically by predictor. **allowing all of these characters is not
-necessary but we have left it here for discussion</td>
+sequence ID keys - any characters [A-Z][a-z][0-9][-._~#@%^&amp;*()].*
+The sequence ID keys are matched to the predictor sequence ID keys
+automatically by predictor.**</td>
 <td>“sequences” : [<br> {<br>   “seq1” : “ATGC…”,<br>   “seq2” :
 “ATGC…”,<br>  “random_seq” : “ATGC…”,<br>  “enhancer” :
 “ATGC…”,<br>  “control” : “ATGC…” <br> }<br>]</td>
 </tr>
 <tr class="even">
 <td><code>prediction_ranges</code></td>
-<td><code>multi-dimensional array</code>- Optional</td>
+<td><code>2 element Array of integers</code>- Optional</td>
 <td>A collection of key-value pairs, where the keys should be identical
-to sequence id keys and values are multi/single-dimensional array based
-on what regions you want included in the predictions for each sequence.
-Sub-arrays of 2 integers mark the start and end location of the range of
-prediction you are interested in and you can have multiple starts and
-stops per sequence.</td>
+to sequence ID keys and values are arrays with the start and end region
+you want predicted for each sequence. Start and end are 0 indexed and
+inclusive (e.g. [0,1] is the first two bases)***.</td>
 <td>“prediction_ranges” : [<br>  {<br>   “seq1” : [0,1000] ,<br>
   “seq2” : [100,110],<br>  “random_seq” : [ <br>    [0,10],<br>
    [15,100] <br>   ],<br>  “enhancer” :    [210,500],<br>  “control” :
@@ -558,8 +556,14 @@ stops per sequence.</td>
 </tr>
 </tbody>
 </table>
-<p>Note: keys in <code>sequences</code> must be unique or will be
-overwritten during the reading in. ### Predictor return message</p>
+<p><em>keys in <code>sequences</code> must be unique or will be
+overwritten during the reading in. <strong>all indexing is 0 based
+</strong></em>to minimize any bias from the predictors we suggested
+randomizing your sequences so that there is no dependency on the
+order</p>
+</div>
+<div id="predictor-return-message" class="section level3">
+<h3>Predictor return message</h3>
 <table>
 <colgroup>
 <col width="20%" />
@@ -579,8 +583,7 @@ overwritten during the reading in. ### Predictor return message</p>
 <tr class="odd">
 <td><code>task</code></td>
 <td><code>string</code>- Required</td>
-<td>What task was completed by the model: [“predict”, “interpret”,
-“help”]</td>
+<td>What task was completed by the model: [“predict”, “help”]</td>
 <td>“task” : “predict”</td>
 </tr>
 <tr class="even">
@@ -592,8 +595,8 @@ values in <code>cell_types</code>. “binding_fillIN” can be for any type
 of binding assay (ex. CHIP-Seq, H3k27ac) and the text trailing the “_”
 is not case sensitive : [“accessibility”, “binding_fillHere” ,
 expression”, “chromatin_confirmation”]</td>
-<td>“prediction_types”: [“expression”, “binding”, “accessibility”,
-“binding_CTCF”]</td>
+<td>“prediction_types”: [“expression”, “binding_H3k4me3”,
+“accessibility”, “binding_CTCF”]</td>
 </tr>
 <tr class="odd">
 <td><code>scale_prediction</code></td>
@@ -605,7 +608,7 @@ expression”, “chromatin_confirmation”]</td>
 </tr>
 <tr class="even">
 <td><code>bin_size</code></td>
-<td><code>integer</code> - Required</td>
+<td><code>integer</code> - Required for track based models</td>
 <td>Resolution of the model’s predictions.</td>
 <td>“bin_size” : 1</td>
 </tr>
@@ -619,7 +622,7 @@ the closest matched cell type that the predictor has.</td>
 <td>“cell_types” : [“HEPG2”]</td>
 </tr>
 <tr class="even">
-<td><code>aggregation</code></td>
+<td><code>aggregation_replicates</code></td>
 <td><code>string</code>- Optional</td>
 <td>How replicate tracks were aggregated for each of the
 <code>prediction_types</code>. Array needs to be the same length as
@@ -627,14 +630,21 @@ the closest matched cell type that the predictor has.</td>
 <td>“aggregation” : [“mean”, “mean”, “mean”]</td>
 </tr>
 <tr class="odd">
+<td><code>aggregation_bins</code></td>
+<td><code>string</code>- Optional</td>
+<td>How bins were aggregated to produce a point prediction from a model
+that predicts across tracks</td>
+<td>“aggregation” : [“mean”, “median”, “mean”]</td>
+</tr>
+<tr class="even">
 <td><code>predictions</code></td>
 <td><code>Array of floats/integers/base64</code>- Required</td>
 <td>Objects of key-value pairs. The number of objects should be the same
 as the length of <code>prediction_types</code>. Each array of
 predictions can be a single value, a list of values for track
 predictions or a base64 string that encodes interaction matrices. The
-sequence ids are matched to the evaluator sequence ids automatically by
-predictor</td>
+sequence ID keys are matched to the evaluator sequence ID keys
+automatically by predictor</td>
 <td>“predictions” : [<br> {<br>   “seq1” : [12.2, 5, 6, ..],<br>
   “seq2” : [1.1, 12, 0.00, ..],<br>  “random_seq” : [100.1, 50, 0.5,
 ..],<br>  “enhancer” : [4, 3.0, 0.001, ..],<br>  “control” : [0, 0, 0,
@@ -693,23 +703,29 @@ developers)</td>
 <tr class="odd">
 <td><code>model</code></td>
 <td><code>string</code>- Optional</td>
-<td>Model name</td>
+<td>Model name.</td>
 <td>“model” : “deBoer Lab test”</td>
 </tr>
 <tr class="even">
 <td><code>version</code></td>
 <td><code>string</code>- Optional</td>
-<td>Information about version of model</td>
+<td>Information about version of Predictor.</td>
 <td>“version” : “2.2”</td>
 </tr>
 <tr class="odd">
+<td><code>publication</code></td>
+<td><code>string</code>- Optional</td>
+<td>Citation for original paper.</td>
+<td>“publication” : “Luthra et. al, 2024”</td>
+</tr>
+<tr class="even">
 <td><code>build_date</code></td>
 <td><code>string</code>- Optional</td>
 <td>Date the predictor container was built - to track potential
-rebuilds</td>
+rebuilds.</td>
 <td>“build_date” : “Aug 20, 2024”</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>features</code></td>
 <td><code>array of strings</code>- Optional</td>
 <td>List of features that the model predicts for each of the cells in
@@ -718,53 +734,54 @@ rebuilds</td>
 “binding_H3K4me3”,“binding_CTCF”,“expression”, “expression”,
 “expression”]</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>cell_types</code></td>
 <td><code>array of strings</code>- Optional</td>
 <td>Cell types that correspond to predicted features in
-<code>features</code>.</td>
+<code>features</code>. Length of “cell_types” should be the same as
+“features” or length 1.</td>
 <td>“cell_types” : [“iPSC”, “Hepg2”, “iPSC”, “iPSC”, “iPSC”, “HepG2”,
 “K562”]</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>species</code></td>
 <td><code>array of strings</code>- Optional</td>
-<td>Name of species that the model predicts for.</td>
-<td>“species” : [“yeast”, “human”]</td>
+<td>Species that correspond to predicted features in
+<code>features</code>. Length of “species” should be the same as
+“features” or length 1.</td>
+<td>“species” : [“homo_sapiens”]</td>
+</tr>
+<tr class="even">
+<td><code>container_authors</code></td>
+<td><code>string</code>- Optional</td>
+<td>Author/authors of container builders.</td>
+<td>“container_authors” : “Ishika Luthra”</td>
 </tr>
 <tr class="odd">
-<td><code>author</code></td>
+<td><code>model_authors</code></td>
 <td><code>string</code>- Optional</td>
-<td>Paper author/authors or name of container builder</td>
-<td>“author” : “Ishika Luthra”</td>
+<td>Paper author/authors.</td>
+<td>“model_authors” : “Ishika Luthra”</td>
 </tr>
 <tr class="even">
 <td><code>input_size</code></td>
 <td><code>Integer</code>- Optional</td>
-<td>Number of base pairs of sequence that the model requires as
-input</td>
+<td>Number of base pairs of sequence that the model takes as input.</td>
 <td>“input_size” : 500500</td>
 </tr>
 <tr class="odd">
-<td><code>output_size</code></td>
-<td><code>Integer</code>- Optional</td>
-<td>Length of region that the model predicts across. Can also be one for
-single prediction models.</td>
-<td>“output_size” : 100000</td>
-</tr>
-<tr class="even">
 <td><code>bin_size</code></td>
 <td><code>Integer</code>- Optional</td>
 <td>For models that predict across genomic tracks what is the base pair
-resolution</td>
+resolution.</td>
 <td>“bin_size” : 10</td>
 </tr>
-<tr class="odd">
-<td><code>max_prediction_length</code></td>
-<td><code>Integer</code>- Optional</td>
-<td>What is the maximum sequence length you can provide before the model
-will no longer be able to handle the sequence</td>
-<td>“max_prediction_length” : 2000000</td>
+<tr class="even">
+<td><code>expression_strand_specific</code></td>
+<td><code>Boolean</code>- Optional</td>
+<td>For models that predict expression, is the expression prediction
+strand specific or not.</td>
+<td>“expression_strand_specific” : true</td>
 </tr>
 </tbody>
 </table>
@@ -798,37 +815,35 @@ to build off can be found in the <code>src</code> folder.</p>
 <tr class="odd">
 <td><code>bad_prediction_request</code></td>
 <td><code>array of strings</code></td>
-<td>Request was unacceptable - model did not run</td>
-<td>•.json file is formatted incorrectly <br> •mandatory key
-<code>x</code> is missing in .json <br> •<code>task</code> requested is
-not recognized. Please choose from the following list
-<code>[&quot;predict&quot;, &quot;interpret&quot;, &quot;help&quot;]</code> <br>• Value in
-<code>prediction_types</code> is not recognized. Please choose from the
-following list
-<code>[&quot;accessibility&quot;, &quot;binding_fillHere&quot; , expression&quot;, &quot;chromatin_confirmation&quot;]</code>
-<br> •duplicate sequence id key in <code>sequences</code>: sequence id
-key <code>y</code> is duplicated <br> •<code>prediction_ranges</code>
-are required to be integers <br> •length of
-<code>prediction_types</code> should be the same as length of
-<code>cell_types</code> or only 1 value <br> •sequence ids in
-<code>prediction_ranges</code> do not match those in
-<code>sequences</code> <br> •length of each sub-array in
-<code>prediction_ranges</code> should not be greater than 2 <br> •
-sequence id <code>z</code> has an invalid character present <br></td>
+<td>Request was unacceptable - model did not run.</td>
+<td>•.json file is formatted incorrectly. <br> •Mandatory key
+<code>x</code> is missing in .json. <br> •<code>task</code> requested is
+not recognized. Model developers can choose what to return here.
+<br>•Value in <code>prediction_types</code> is not recognized. Model
+developers can choose what to return here. <br> •Duplicate sequence ID
+key in <code>sequences</code>: sequence ID key <code>y</code> is
+duplicated. <br> •<code>prediction_ranges</code> are required to be
+integers. <br> •Length of <code>prediction_types</code> should be the
+same as length of <code>cell_types</code> or only 1 value. <br>
+•Sequence ids in <code>prediction_ranges</code> do not match those in
+<code>sequences</code>. <br> •Length of each sub-array in
+<code>prediction_ranges</code> should not be greater than 2. <br>
+•Sequence ID key <code>z</code> has an invalid character present.
+<br></td>
 </tr>
 <tr class="even">
 <td><code>prediction_request_failed</code></td>
 <td><code>array of strings</code></td>
-<td>Evaluator message was valid - model prediction was incomplete</td>
-<td>• “seq_z” in <code>sequences</code> has an invalid character present
-<br> • model cannot handle sequence lengths this large <br></td>
+<td>Evaluator message was valid - model prediction was incomplete.</td>
+<td>•“seq_z” in <code>sequences</code> has an invalid character present.
+<br> •Model cannot handle sequence lengths this large. <br></td>
 </tr>
 <tr class="odd">
 <td><code>server_error</code></td>
 <td><code>array of strings</code></td>
-<td>Backend issue</td>
-<td>•socket communication failed <br> •wifi error <br> •memory error
-(eg. due to large batch size, due to large .json file)</td>
+<td>Backend issue.</td>
+<td>•Socket communication failed. <br> •Wifi error. <br> •Memory error
+(eg. due to large batch size, due to large .json file).</td>
 </tr>
 </tbody>
 </table>
@@ -837,6 +852,72 @@ sequence id <code>z</code> has an invalid character present <br></td>
 <h3>Containerizing evaluators and predictors</h3>
 <p>TO DO: add information here about how to create singularity
 containers</p>
+</div>
+<div id="collaborators" class="section level3">
+<h3>Collaborators</h3>
+<ul>
+<li>Sara Mostafavi
+<ul>
+<li>Xinming Tu</li>
+<li>Yilun Sheng</li>
+</ul></li>
+<li>Anshul Kundaje
+<ul>
+<li>Surag Nair</li>
+<li>Soumya Kundu</li>
+<li>Ivy Raine</li>
+<li>Vivian Hecht</li>
+</ul></li>
+<li>Brenden Frey
+<ul>
+<li>Alice Gao</li>
+<li>Phil Fradkin</li>
+</ul></li>
+<li>Graham McVicker
+<ul>
+<li>Jeff Jaureguy</li>
+<li>David Laub</li>
+<li>Brad Balderson</li>
+<li>Kohan Lee</li>
+<li>Ethan Armand</li>
+</ul></li>
+<li>Hannah Carter
+<ul>
+<li>Adam Klie</li>
+</ul></li>
+<li>Maxwell Libbrecht</li>
+<li>Ivan Kulakovskiy
+<ul>
+<li>Dima Penzar</li>
+<li>Ilya Vorontsov</li>
+</ul></li>
+<li>Vikram Agarwal</li>
+<li>Peter Koo</li>
+<li>Ziga Avsec</li>
+<li>Jay Shendure
+<ul>
+<li>CX Qiu</li>
+<li>Diego Calderon</li>
+</ul></li>
+<li>Julien Gagneur
+<ul>
+<li>Thomas Mauermeier</li>
+</ul></li>
+<li>Sager Gosai</li>
+<li>Andreas Gschwind</li>
+<li>Ryan Tewhey</li>
+<li>David Kelley</li>
+<li>Georg Seelig</li>
+<li>Gokcen Eraslan</li>
+<li>Jesse Engreitz</li>
+<li>Jian Zhou</li>
+<li>Julia Zeitlinger</li>
+<li>Kaur Alosoo</li>
+<li>Luca Pinello</li>
+<li>Michael White</li>
+<li>Rhiju Das</li>
+<li>Stein Aerts</li>
+</ul>
 </div>
 </div>
 

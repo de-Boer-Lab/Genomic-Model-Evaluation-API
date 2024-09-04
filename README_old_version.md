@@ -58,7 +58,7 @@ TO ADD
 |--------------|--------------|-------------------------------|--------------|
 | `task`              | `string` - Required                 | What task you are asking the predictor to complete : ["predict", "help"].                                                                                                                                                                                                                                                                         | "task": "predict"                                                                                                                                                                                       |
 | `readout`           | `string` - Required                | Type of readout that is requested from the predictor : ["point","track", "interaction_matrix"].                                                                                                                                                                                                                                                                              | "readout": "track"                                                                                                                                                                                      |
-| `prediction_types`  | `array of strings` - Required        | What you want predicted for each cell type. Array needs to be the same length as `cell_types` or 1 value that is applied to all values in `cell_types`. "binding_<molecule>" can be for any type of binding assay (ex. CHIP-Seq, H3k27ac) and the text trailing the "_" is not case sensitive  : ["accessibility", "binding_molecule" , expression", "chromatin_confirmation"].                                                                                                                                                                                          | "prediction_types": ["expression", "binding_H3K4me3", "accessibility", "binding_CTCF"]                                                                                                                                          |
+| `prediction_types`  | `array of strings` - Required        | What you want predicted for each cell type. Array needs to be the same length as `cell_types` or 1 value that is applied to all values in `cell_types`. "binding_<molecule>" can be for any type of binding assay (ex. CHIP-Seq, H3k27ac) and the text trailing the "_" is not case sensitive  : ["accessibility", "binding_<molecule>" , expression", "chromatin_confirmation"].                                                                                                                                                                                          | "prediction_types": ["expression", "binding_H3K4me3", "accessibility", "binding_CTCF"]                                                                                                                                          |
 | `cell_types`        | `array of strings` - Required       | What cell type do you want for each `prediction_types`. Array needs to be the same length as `prediction_types` or only 1 value which will default for all `prediction_types`.                                                                                                                                                                                | "cell_types" : ["HEPG2", "K562", "K562", "iPSC"]                                                                                                                                                                 |
 | `species`        | `array of strings` - Required       | What species do you want for each `prediction_types`. Array needs to be the same length as `prediction_types` or only 1 value which will default for all `prediction_types`.                                                                                                                                                                                | "species" : ["homo_sapiens"]                                                                                                                                                                 |
 | `scale`             | `array of strings` - Optional                 | How would you like the predictions scaled upon return (if at all). Array needs to be the same length as `prediction_types` : ["linear", "log"].                                                                                                                                                                                                                                                                         | "scale" : ["log", "log", "linear", "linear"]                                                                                                                                                                                           |
@@ -78,7 +78,7 @@ TO ADD
 | `task`             | `string`- Required           | What task was completed by the model: ["predict", "help"]                                                                                                                                                                         | "task" : "predict"      |
 | `prediction_types`  | `array of strings` - Required        | What was predicted for each cell type. Array needs to be the same length as `cell_types` or 1 value that is applied to all values in `cell_types`. "binding_fillIN" can be for any type of binding assay (ex. CHIP-Seq, H3k27ac) and the text trailing the "_" is not case sensitive  : ["accessibility", "binding_fillHere" , expression", "chromatin_confirmation"]                                                                                                                                                                                          | "prediction_types": ["expression", "binding_H3k4me3", "accessibility", "binding_CTCF"]                                                                                                                                          |
 | `scale_prediction` | `array of strings` - Optional            | How did the predictor scale the predictions (if at all): : ["linear", "log"] . Array needs to be the same length as `prediction_types`.                                                                                                                                                    | "scale" : ["log", "log", "linear", "linear"]          |
-| `bin_size` | `integer` - Required for track based models           | Resolution of the model's predictions.                                                                                                                                                    | "bin_size" : 1          |
+| `bin_size` | `integer` - Required            | Resolution of the model's predictions.                                                                                                                                                    | "bin_size" : 1          |
 | `cell_types`       | `array of strings`- Required | Cell types used by the predictor for each of the `prediction_types` or one 1 cell type for all. Predictor can choose to use cell type/cell line ontology container which will returned the closest matched cell type that the predictor has.                                   | "cell_types" : ["HEPG2"] |
 | `aggregation_replicates`      | `string`- Optional           | How replicate tracks were aggregated for each of the `prediction_types`. Array needs to be the same length as `prediction_types`.                                                                                                                                     | "aggregation" : ["mean", "mean", "mean"]   |
 | `aggregation_bins`      | `string`- Optional           | How bins were aggregated to produce a point prediction from a model that predicts across tracks                                                                                                                                     | "aggregation" : ["mean", "median", "mean"]   |
@@ -108,7 +108,9 @@ Message returned by predictor:
 | `container_authors`                | `string`- Optional  | Author/authors of container builders.                                                                 |  "container_authors" : "Ishika Luthra" |
 | `model_authors`                | `string`- Optional  | Paper author/authors.                                                                  |  "model_authors" : "Ishika Luthra" |
 | `input_size`            | `Integer`- Optional | Number of base pairs of sequence that the model takes as input.                                                  | "input_size" : 500500 |
+| `output_size`           | `Integer`- Optional | Length of region in base pairs that the model predicts across. Can also be one for single prediction models.                  | "output_size" : 100000|
 | `bin_size`            | `Integer`- Optional | For models that predict across genomic tracks what is the base pair resolution.                                     | "bin_size" : 10|
+| `max_prediction_length` | `Integer`- Optional | What is the maximum sequence length you can provide before the model will no longer be able to handle the sequence. | "max_prediction_length" : 2000000|
 | `expression_strand_specific` | `Boolean`- Optional | For models that predict expression, is the expression prediction strand specific or not. | "expression_strand_specific" : true|
 ### Error messages
 
@@ -118,59 +120,10 @@ We encourage predictor builders to return error messages in the format show belo
 
 | Error Message Keys    | Value type |Description                                               | Example Values                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 |-------------|-------------|----------------------------------------------|---------------------|
-| `bad_prediction_request`    | `array of strings` |Request was unacceptable - model did not run.          | •.json file is formatted incorrectly. <br> •Mandatory key `x` is missing in .json. <br> •`task` requested is not recognized. Model developers can choose what to return here. <br>•Value in `prediction_types` is not recognized. Model developers can choose what to return here. <br> •Duplicate sequence ID key in `sequences`: sequence ID key `y` is duplicated. <br> •`prediction_ranges` are required to be integers. <br> •Length of `prediction_types` should be the same as length of `cell_types` or only 1 value. <br> •Sequence ids in `prediction_ranges` do not match those in `sequences`. <br> •Length of each sub-array in `prediction_ranges` should not be greater than 2. <br> •Sequence ID key `z` has an invalid character present. <br> |
+| `bad_prediction_request`    | `array of strings` |Request was unacceptable - model did not run.          | •.json file is formatted incorrectly. <br> •Mandatory key `x` is missing in .json. <br> •`task` requested is not recognized. Please choose from the following list `["predict", "help"]`. <br>•Value in `prediction_types` is not recognized. Please choose from the following list `["accessibility", "binding_fillHere" , expression", "chromatin_confirmation"]`. <br> •Duplicate sequence ID key in `sequences`: sequence ID key `y` is duplicated. <br> •`prediction_ranges` are required to be integers. <br> •Length of `prediction_types` should be the same as length of `cell_types` or only 1 value. <br> •Sequence ids in `prediction_ranges` do not match those in `sequences`. <br> •Length of each sub-array in `prediction_ranges` should not be greater than 2. <br> •Sequence ID key `z` has an invalid character present. <br> |
 | `prediction_request_failed` | `array of strings` |Evaluator message was valid -  model prediction was incomplete. | •"seq_z" in `sequences` has an invalid character present. <br> •Model cannot handle sequence lengths this large. <br>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `server_error`              | `array of strings` | Backend issue.     | •Socket communication failed. <br> •Wifi error. <br> •Memory error (eg. due to large batch size, due to large .json file).                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+| `server_error`              | `array of strings` | Backend issue.                                             | •Socket communication failed. <br> •Wifi error. <br> •Memory error (eg. due to large batch size, due to large .json file).                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 ### Containerizing evaluators and predictors
 
 TO DO: add information here about how to create singularity containers
-
-
-### Collaborators
-
-* Sara Mostafavi
-  + Xinming Tu
-  + Yilun Sheng
-* Anshul Kundaje
-  + Surag Nair
-  + Soumya Kundu
-  + Ivy Raine
-  + Vivian Hecht
-* Brenden Frey
-  + Alice Gao
-  + Phil Fradkin
-* Graham McVicker
-  + Jeff Jaureguy
-  + David Laub
-  + Brad Balderson
-  + Kohan Lee
-  + Ethan Armand
-* Hannah Carter
-  + Adam Klie
-* Maxwell Libbrecht
-* Ivan Kulakovskiy
-  + Dima Penzar
-  + Ilya Vorontsov
-* Vikram Agarwal
-* Peter Koo
-* Ziga Avsec
-* Jay Shendure
-  + CX Qiu
-  + Diego Calderon
-* Julien Gagneur
-  + Thomas Mauermeier
-* Sager Gosai
-* Andreas Gschwind
-* Ryan Tewhey
-* David Kelley
-* Georg Seelig
-* Gokcen Eraslan
-* Jesse Engreitz
-* Jian Zhou
-* Julia Zeitlinger
-* Kaur Alosoo
-* Luca Pinello
-* Michael White
-* Rhiju Das
-* Stein Aerts
 
