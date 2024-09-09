@@ -1,33 +1,22 @@
 {
     "request": "predict",
-    "bin_size": 1,
     "prediction_task": [
         {
             "name": "task_for_model",
             "type_requested": "expression ",
             "type_actual": "expression",
-            "scale_prediction_requested": "linear",
-            "scale_prediction_actual": "linear",
             "cell_type_requested": "HEPG2",
             "cell_type_actual": "HEPG2",
-            "species_requested": "mus_musculus",
-            "species_actual": "mus_musculus",
+            "scale_prediction_requested": "linear",
+            "scale_prediction_actual": "linear",
+            "species_requested": "homo_sapiens",
+            "species_actual": "homo_sapiens",
             "predictions": {
-                "seq1": [
-                    5
-                ],
-                "seq2": [
-                    10
-                ],
-                "random_seq": [
-                    0.02
-                ],
-                "enhancer": [
-                    100
-                ],
-                "control": [
-                    0
-                ]
+                "seq1": [5],
+                "seq2": [10],
+                "random_seq": [0.02],
+                "enhancer": [100],
+                "control": [0]
             }
         }
     ]

@@ -4,53 +4,32 @@
     "prediction_task": [
         {
             "name": "task1",
-            "type_requested": "accessibility",
-            "type_actual": "accessibility",
-            "scale_prediction_requested": "log",
-            "scale_prediction_actual": "log",
-            "cell_type_requested": "K562",
-            "cell_type_actual": "bone_marrow_cell_line",
-            "aggregation_replicates": "mean",
+            "type_requested": "expression",
+            "type_actual": "expression",
+            "cell_type_requested": "HEPG2",
+            "cell_type_actual": "HEPG2",
             "species_requested": "homo_sapiens",
             "species_actual": "homo_sapiens",
+            "scale_prediction_requested": "log",
+            "scale_prediction_actual": "log",
+            "aggregation_replicates": "mean",
             "predictions": {
-                "seq1": [
-                    12.2,
-                    5,
-                    6
-                ],
-                "seq2": [
-                    1.1,
-                    12,
-                    0
-                ],
-                "random_seq": [
-                    100.1,
-                    50,
-                    0.5
-                ],
-                "enhancer": [
-                    4,
-                    3,
-                    0.001
-                ],
-                "control": [
-                    0,
-                    0,
-                    0
-                ]
+                "seq1": [12.2,5,6,..],
+                "seq2": [1.1,12,0,..],
+                "random_seq": [100.1,50,0.5,..],
+                "enhancer": [4,3,0.01,..],
+                "control": [0,0,0,..],
             }
         },
         {
             "name": "ishika_trick",
             "type_actual": "accessibility",
-            "scale_prediction_requested": "log",
-            "scale_prediction_actual": "log",
             "cell_type_requested": "K562",
             "cell_type_actual": "bone_marrow_cell_line",
-            "aggregation_replicates": "mean",
             "species_requested": "homo_sapiens",
             "species_actual": "homo_sapiens",
+            "scale_prediction_requested": "log",
+            "scale_prediction_actual": "log",
             "predictions": {
                 "seq1": [
                     12.2,

@@ -15,13 +15,6 @@
             "cell_type": "K562",
             "scale": "log",
             "species": "homo_sapiens"
-        },
-        {
-            "name": "task3",
-            "type": "binding_CTCF",
-            "cell_type": "HEPG2",
-            "scale": "log",
-            "species": "homo_sapiens"
         }
     ],
     "upstream_seq": "ATGCTT",
@@ -34,22 +27,10 @@
         "control": "ATGC..."
     },
     "prediction_ranges": {
-        "seq1": [
-            0,
-            100
-        ],
+        "seq1": [0,100],
         "seq2": [],
-        "random_seq": [
-            10,
-            10
-        ],
-        "enhancer": [
-            100,
-            110
-        ],
-        "control": [
-            2,
-            5
-        ]
+        "random_seq": [10,10],
+        "enhancer": [100,110],
+        "control": [2,5],
     }
 }
