@@ -373,7 +373,7 @@ protocol enables any model to communicate with any dataset (although not
 all combinations may make sense).</p>
 <p>The evaluators (dataset APIs) will make prediction requests in the
 standard format (seen below) to the predictors (model APIs), which then
-return the predictions to the evaluator in a standard format, enabling
+return the predictions to the Evaluator in a standard format, enabling
 the evaluators to calculate the model’s performance. Each of the
 evaluators and predictors will be containerized using Singularity (more
 details below).</p>
@@ -401,8 +401,8 @@ like feedback on.</p>
 </div>
 <div id="communication-protocol" class="section level3">
 <h3>Communication protocol</h3>
-<p>Using the standardized communication format each predictor will
-receive information in the same format from any evalutor. Each predictor
+<p>Using the standardized communication format each Predictor will
+receive information in the same format from any evalutor. Each Predictor
 also returns the predictions in the same format which enables the
 community to easily compare different model’s predictions for the same
 dataset or evaluate a model on multiple different types of datasets very
@@ -413,13 +413,13 @@ receiving information in a standard format. Data in the .json files is
 stored in the following format: <code>&quot;keys&quot;: &quot;value&quot;</code>, where the
 value can be strings, numbers, objects, arrays, booleans or null. We
 have outlined below the mandatory “keys” required for communication
-between the evaluator and predictor to occur. Certain “keys” have a
+between the Evaluator and Predictor to occur. Certain “keys” have a
 fixed set of “values” that can be used while others are up to the
 evaluators.</p>
 <p>The files and communication between APIs is done using python
 sockets. Scripts for these can be found in
 <code>\src\socket_scripts\</code>.</p>
-<p>Examples of evaluator and predictor messages can be found in
+<p>Examples of Evaluator and Predictor messages can be found in
 <code>\examples\json\</code> folder. Formats for json files can be
 checked using the following link: <a href="https://jsonformatter.curiousconcept.com" class="uri">https://jsonformatter.curiousconcept.com</a></p>
 <p>Examples of containerized evaluators and predictors can be found in
@@ -440,9 +440,9 @@ all the predictions for cellY.</p>
 </div>
 </div>
 <div id="an-example-for-how-issue-a-request-from-the-predictor" class="section level3">
-<h3>An example for how issue a request from the predictor</h3>
+<h3>An example for how issue a request from the Predictor</h3>
 <p>The example below outlines an easy test communication between an
-evaluator (with random sequences) and a predictor (that will generate
+Evaluator (with random sequences) and a Predictor (that will generate
 random predictions for any task you request).</p>
 <p>TO ADD</p>
 <p><code>python</code></p>
@@ -466,93 +466,97 @@ random predictions for any task you request).</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>task</code></td>
+<td><code>request</code></td>
 <td><code>string</code> - Required</td>
-<td>What task you are asking the predictor to complete : [“predict”,
-“help”].</td>
-<td>“task”: “predict”</td>
+<td>Requested task for Predictor : [“predict”, “help”].</td>
+<td>“request”: “predict”</td>
 </tr>
 <tr class="even">
 <td><code>readout</code></td>
 <td><code>string</code> - Required</td>
-<td>Type of readout that is requested from the predictor :
+<td>Type of readout that is requested from the Predictor:
 [“point”,“track”, “interaction_matrix”].</td>
 <td>“readout”: “track”</td>
 </tr>
 <tr class="odd">
-<td><code>prediction_types</code></td>
-<td><code>array of strings</code> - Required</td>
-<td>What you want predicted for each cell type. Array needs to be the
-same length as <code>cell_types</code> or 1 value that is applied to all
-values in <code>cell_types</code>. “binding_<molecule>” can be for any
-type of binding assay (ex. CHIP-Seq, H3k27ac) and the text trailing the
-“_” is not case sensitive : [“accessibility”, “binding_<molecule>” ,
-expression”, “chromatin_confirmation”].</td>
-<td>“prediction_types”: [“expression”, “binding_H3K4me3”,
-“accessibility”, “binding_CTCF”]</td>
+<td><code>prediction_task</code></td>
+<td><code>array of objects</code> - Required</td>
+<td>Each object must contain the following keys: <code>name</code>,
+<code>type</code>, <code>cell_type</code>, <code>species</code>,
+<code>scale</code>(optional).</td>
+<td>“prediction_task”: [<br> {<br>   “name”: “task1”,<br>   “type”:
+“expression”,<br>  “cell_type”: “iPSC”,<br>  “scale”:
+“linear”,<br>  “species”: “homo_sapiens” <br> }<br>]</td>
 </tr>
 <tr class="even">
-<td><code>cell_types</code></td>
-<td><code>array of strings</code> - Required</td>
-<td>What cell type do you want for each <code>prediction_types</code>.
-Array needs to be the same length as <code>prediction_types</code> or
-only 1 value which will default for all
-<code>prediction_types</code>.</td>
-<td>“cell_types” : [“HEPG2”, “K562”, “K562”, “iPSC”]</td>
+<td><code>name</code></td>
+<td><code>string</code> - Required</td>
+<td>Unique identifier for each prediction task array.</td>
+<td>“name”: “model_prediction”</td>
+</tr>
+<tr class="odd">
+<td><code>type</code></td>
+<td><code>string</code> - Required</td>
+<td>Prediction type you want predicted. “binding_<molecule>” can be for
+any type of binding assay (ex. CHIP-Seq, H3k27ac) and the text trailing
+the “_” is not case sensitive : [“accessibility”, “binding_molecule” ,
+expression”, “chromatin_confirmation”].</td>
+<td>“type”: “expression”</td>
+</tr>
+<tr class="even">
+<td><code>cell_type</code></td>
+<td><code>string</code> - Required</td>
+<td>What cell type you want predicted for <code>type</code>.</td>
+<td>“cell_type”: “K562”</td>
 </tr>
 <tr class="odd">
 <td><code>species</code></td>
-<td><code>array of strings</code> - Required</td>
-<td>What species do you want for each <code>prediction_types</code>.
-Array needs to be the same length as <code>prediction_types</code> or
-only 1 value which will default for all
-<code>prediction_types</code>.</td>
-<td>“species” : [“homo_sapiens”]</td>
+<td><code>string</code> - Required</td>
+<td>What species you want predicted for <code>type</code>.</td>
+<td>“species”: “homo_sapiens”</td>
 </tr>
 <tr class="even">
 <td><code>scale</code></td>
-<td><code>array of strings</code> - Optional</td>
-<td>How would you like the predictions scaled upon return (if at all).
-Array needs to be the same length as <code>prediction_types</code> :
+<td><code>string</code> - Optional</td>
+<td>How would you like the predictions scaled upon return (if at all):
 [“linear”, “log”].</td>
-<td>“scale” : [“log”, “log”, “linear”, “linear”]</td>
+<td>“scale” : “linear”</td>
 </tr>
 <tr class="odd">
 <td><code>upstream_seq</code></td>
 <td><code>string</code>- Optional</td>
 <td>Upstream flanking sequences to add to each sequence in
 <code>sequences</code>.</td>
-<td>“upstream_seq” : “AATTA”</td>
+<td>“upstream_seq”: “AATTA”</td>
 </tr>
 <tr class="even">
 <td><code>downstream_seq</code></td>
 <td><code>string</code>- Optional</td>
 <td>Downstream flanking sequences to add to each sequence in
 <code>sequences</code>.</td>
-<td>“downstream_seq” : “CCCAAAA”</td>
+<td>“downstream_seq”: “CCCAAAA”</td>
 </tr>
 <tr class="odd">
 <td><code>sequences</code></td>
-<td><code>array of strings</code> - Required</td>
-<td>A collection of key-value pairs. Array of sequences with unique
-sequence ID keys - any characters [A-Z][a-z][0-9][-._~#@%^&amp;*()].*
-The sequence ID keys are matched to the predictor sequence ID keys
-automatically by predictor.**</td>
-<td>“sequences” : [<br> {<br>   “seq1” : “ATGC…”,<br>   “seq2” :
-“ATGC…”,<br>  “random_seq” : “ATGC…”,<br>  “enhancer” :
-“ATGC…”,<br>  “control” : “ATGC…” <br> }<br>]</td>
+<td><code>object</code> - Required</td>
+<td>A collection of key-value pairs (strings). Keys are unique sequence
+ID keys - any characters [A-Z][a-z][0-9][-._~#@%^&amp;*()].* The
+sequence ID keys are matched to the Predictor sequence ID keys
+automatically by Predictor.**</td>
+<td>“sequences”: {<br>   “seq1”: “ATGC…”,<br>   “seq2”:
+“ATGC…”,<br>  “random_seq”: “ATGC…”,<br>  “enhancer”:
+“ATGC…”,<br>  “control”: “ATGC…” <br> }</td>
 </tr>
 <tr class="even">
 <td><code>prediction_ranges</code></td>
-<td><code>2 element Array of integers</code>- Optional</td>
+<td><code>object</code> - Optional</td>
 <td>A collection of key-value pairs, where the keys should be identical
 to sequence ID keys and values are arrays with the start and end region
 you want predicted for each sequence. Start and end are 0 indexed and
 inclusive (e.g. [0,1] is the first two bases)***.</td>
-<td>“prediction_ranges” : [<br>  {<br>   “seq1” : [0,1000] ,<br>
-  “seq2” : [100,110],<br>  “random_seq” : [ <br>    [0,10],<br>
-   [15,100] <br>   ],<br>  “enhancer” :    [210,500],<br>  “control” :
-[] <br> }<br>]</td>
+<td>“prediction_ranges”: {<br>   “seq1”: [0,1000] ,<br>   “seq2”:
+[100,110],<br>  “random_seq”: [],<br>  “enhancer”:
+[210,500],<br>  “control”: [] <br> }</td>
 </tr>
 </tbody>
 </table>
@@ -566,10 +570,10 @@ order</p>
 <h3>Predictor return message</h3>
 <table>
 <colgroup>
-<col width="20%" />
-<col width="20%" />
-<col width="39%" />
-<col width="20%" />
+<col width="6%" />
+<col width="19%" />
+<col width="37%" />
+<col width="37%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -581,30 +585,10 @@ order</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>task</code></td>
+<td><code>request</code></td>
 <td><code>string</code>- Required</td>
-<td>What task was completed by the model: [“predict”, “help”]</td>
-<td>“task” : “predict”</td>
-</tr>
-<tr class="even">
-<td><code>prediction_types</code></td>
-<td><code>array of strings</code> - Required</td>
-<td>What was predicted for each cell type. Array needs to be the same
-length as <code>cell_types</code> or 1 value that is applied to all
-values in <code>cell_types</code>. “binding_fillIN” can be for any type
-of binding assay (ex. CHIP-Seq, H3k27ac) and the text trailing the “_”
-is not case sensitive : [“accessibility”, “binding_fillHere” ,
-expression”, “chromatin_confirmation”]</td>
-<td>“prediction_types”: [“expression”, “binding_H3k4me3”,
-“accessibility”, “binding_CTCF”]</td>
-</tr>
-<tr class="odd">
-<td><code>scale_prediction</code></td>
-<td><code>array of strings</code> - Optional</td>
-<td>How did the predictor scale the predictions (if at all): :
-[“linear”, “log”] . Array needs to be the same length as
-<code>prediction_types</code>.</td>
-<td>“scale” : [“log”, “log”, “linear”, “linear”]</td>
+<td>What request was completed by the model: [“predict”, “help”]</td>
+<td>“task”: “predict”</td>
 </tr>
 <tr class="even">
 <td><code>bin_size</code></td>
@@ -613,53 +597,93 @@ expression”, “chromatin_confirmation”]</td>
 <td>“bin_size” : 1</td>
 </tr>
 <tr class="odd">
-<td><code>cell_types</code></td>
-<td><code>array of strings</code>- Required</td>
-<td>Cell types used by the predictor for each of the
-<code>prediction_types</code> or one 1 cell type for all. Predictor can
-choose to use cell type/cell line ontology container which will returned
-the closest matched cell type that the predictor has.</td>
-<td>“cell_types” : [“HEPG2”]</td>
+<td><code>prediction_task</code></td>
+<td><code>array of objects</code> - Required</td>
+<td>Each object must contain the following keys: <code>name</code>,
+<code>type_requested</code>,<code>type_actual</code>,
+<code>cell_type_requested</code>, <code>cell_type_actual</code>,
+<code>species_requested</code>, <code>species_actual</code>,
+<code>scale_prediction_requested</code> (optional),
+<code>scale_prediction_actual</code> (optional),
+<code>aggregation_replicates</code> (optional).</td>
+<td>“prediction_task”: [<br> {<br>   “name”: “task1”,<br>
+  “type_requested”: “expression”,<br>  “type_actual”:
+“expression”,<br>  “cell_type_requested”:
+“K562”,<br>  “cell_type_actual”:
+“bone_marrow_cell_line”,<br>  “species_requested”:
+“homo_sapiens”,<br>  “species_actual”:
+“homo_sapeins”,<br>  “scale_prediction_requested”: “linear”,
+<br>  “scale_prediction_actual”:
+“linear”,<br>  “aggregation_replicates”: “mean”,<br>   “predictions”:
+{ <br>     “seq1”: [12.2, 5, 6, ..],<br>     “seq2”: [1.1, 12, 0.00,
+..],<br>    “random_seq”: [100.1, 50, 0.5, ..],<br>    “enhancer”: [4,
+3.0, 0.001, ..],<br>    “control”: [0, 0, 0, ..]
+<br>   }<br> }<br>]</td>
 </tr>
 <tr class="even">
-<td><code>aggregation_replicates</code></td>
-<td><code>string</code>- Optional</td>
-<td>How replicate tracks were aggregated for each of the
-<code>prediction_types</code>. Array needs to be the same length as
-<code>prediction_types</code>.</td>
-<td>“aggregation” : [“mean”, “mean”, “mean”]</td>
+<td><code>type_requested</code></td>
+<td><code>string</code> - Required</td>
+<td>Prediction type requested. “binding_<molecule>” can be for any type
+of binding assay (ex. CHIP-Seq, H3k27ac) and the text trailing the “_”
+is not case sensitive: [“accessibility”, “binding_molecule” ,
+expression”, “chromatin_confirmation”].</td>
+<td>“type_requested”: “expression”</td>
 </tr>
 <tr class="odd">
-<td><code>aggregation_bins</code></td>
-<td><code>string</code>- Optional</td>
-<td>How bins were aggregated to produce a point prediction from a model
-that predicts across tracks</td>
-<td>“aggregation” : [“mean”, “median”, “mean”]</td>
+<td><code>type_actual</code></td>
+<td><code>string</code> - Required</td>
+<td>Prediction type compleated by Predictor.</td>
+<td>“type_actual”: “expression”</td>
+</tr>
+<tr class="even">
+<td><code>cell_type_actual</code></td>
+<td><code>string</code>- Required</td>
+<td>Cell type returned by Predictor. Predictor can choose to use cell
+type/cell line ontology container which will returned the closest
+matched cell type that the Predictor has.</td>
+<td>“cell_type_actual”: [“HEPG2”]</td>
+</tr>
+<tr class="odd">
+<td><code>species_requested</code></td>
+<td><code>string</code> - Required</td>
+<td>What species was requested by the Predictor.</td>
+<td>“species_requested”: “homo_sapiens”</td>
+</tr>
+<tr class="even">
+<td><code>scale_prediction_requested</code></td>
+<td><code>string</code> - Optional</td>
+<td>Evaluator requested scaling for predictions: [“linear”, “log”].</td>
+<td>“scale_prediction_requested”: “log”</td>
+</tr>
+<tr class="odd">
+<td><code>scale_prediction_actual</code></td>
+<td><code>string</code> - Optional</td>
+<td>How did the Predictor scale the predictions (if at all): [“linear”,
+“log”] .</td>
+<td>“scale_prediction_actual”: “log”</td>
 </tr>
 <tr class="even">
 <td><code>predictions</code></td>
-<td><code>Array of floats/integers/base64</code>- Required</td>
-<td>Objects of key-value pairs. The number of objects should be the same
-as the length of <code>prediction_types</code>. Each array of
-predictions can be a single value, a list of values for track
-predictions or a base64 string that encodes interaction matrices. The
-sequence ID keys are matched to the evaluator sequence ID keys
-automatically by predictor</td>
-<td>“predictions” : [<br> {<br>   “seq1” : [12.2, 5, 6, ..],<br>
-  “seq2” : [1.1, 12, 0.00, ..],<br>  “random_seq” : [100.1, 50, 0.5,
-..],<br>  “enhancer” : [4, 3.0, 0.001, ..],<br>  “control” : [0, 0, 0,
-..] <br> }<br>]<br></td>
+<td><code>object</code>- Required</td>
+<td>Objects of key-value pairs where keys are strings and values are
+arrays of floats/integers/base64. Each array of predictions can be a
+single value, a list of values for track predictions or a base64 string
+that encodes interaction matrices. The sequence ID keys are matched to
+the Evaluator sequence ID keys automatically by Predictor</td>
+<td>“predictions”: {<br>   “seq1”: [12.2, 5, 6, ..],<br>   “seq2”: [1.1,
+12, 0.00, ..],<br>  “random_seq”: [100.1, 50, 0.5, ..],<br>  “enhancer”:
+[4, 3.0, 0.001, ..],<br>  “control”: [0, 0, 0, ..] <br> }</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="retrive-information-about-predictor-classes" class="section level3">
-<h3>Retrive information about predictor classes</h3>
-<p>Any evaluator can retrieve information from a predictor by asking for
+<h3>Retrive information about Predictor classes</h3>
+<p>Any Evaluator can retrieve information from a Predictor by asking for
 <code>help</code> in the <code>task</code> key. This will return a
-<code>.json</code> file that is written by the predictor, while these
+<code>.json</code> file that is written by the Predictor, while these
 are not mandatory we highly encourage detailed <code>help</code>
-responses to organize and document predictor containers.</p>
+responses to organize and document Predictor containers.</p>
 <p>Message sent by evalutor:</p>
 <table>
 <colgroup>
@@ -676,20 +700,20 @@ responses to organize and document predictor containers.</p>
 </thead>
 <tbody>
 <tr class="odd">
-<td>“task” : “help”</td>
+<td>“task”: “help”</td>
 <td><code>string</code>- Required</td>
-<td>Retrieve basis information about the predictor (written by model
+<td>Retrieve basis information about the Predictor (written by model
 developers)</td>
 </tr>
 </tbody>
 </table>
-<p>Message returned by predictor:</p>
+<p>Message returned by Predictor:</p>
 <table>
 <colgroup>
-<col width="18%" />
+<col width="7%" />
 <col width="18%" />
 <col width="51%" />
-<col width="12%" />
+<col width="22%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -704,33 +728,33 @@ developers)</td>
 <td><code>model</code></td>
 <td><code>string</code>- Optional</td>
 <td>Model name.</td>
-<td>“model” : “deBoer Lab test”</td>
+<td>“model”: “deBoer Lab test”</td>
 </tr>
 <tr class="even">
 <td><code>version</code></td>
 <td><code>string</code>- Optional</td>
 <td>Information about version of Predictor.</td>
-<td>“version” : “2.2”</td>
+<td>“version”: “2.2”</td>
 </tr>
 <tr class="odd">
 <td><code>publication</code></td>
 <td><code>string</code>- Optional</td>
 <td>Citation for original paper.</td>
-<td>“publication” : “Luthra et. al, 2024”</td>
+<td>“publication”: “Luthra et. al, 2024”</td>
 </tr>
 <tr class="even">
 <td><code>build_date</code></td>
 <td><code>string</code>- Optional</td>
-<td>Date the predictor container was built - to track potential
+<td>Date the Predictor container was built - to track potential
 rebuilds.</td>
-<td>“build_date” : “Aug 20, 2024”</td>
+<td>“build_date”: “Aug 20, 2024”</td>
 </tr>
 <tr class="odd">
 <td><code>features</code></td>
 <td><code>array of strings</code>- Optional</td>
 <td>List of features that the model predicts for each of the cells in
 <code>cell_types</code>.</td>
-<td>“features” : [“accessibility”, “accessibility”,
+<td>“features”: [“accessibility”, “accessibility”,
 “binding_H3K4me3”,“binding_CTCF”,“expression”, “expression”,
 “expression”]</td>
 </tr>
@@ -740,7 +764,7 @@ rebuilds.</td>
 <td>Cell types that correspond to predicted features in
 <code>features</code>. Length of “cell_types” should be the same as
 “features” or length 1.</td>
-<td>“cell_types” : [“iPSC”, “Hepg2”, “iPSC”, “iPSC”, “iPSC”, “HepG2”,
+<td>“cell_types”: [“iPSC”, “Hepg2”, “iPSC”, “iPSC”, “iPSC”, “HepG2”,
 “K562”]</td>
 </tr>
 <tr class="odd">
@@ -749,19 +773,19 @@ rebuilds.</td>
 <td>Species that correspond to predicted features in
 <code>features</code>. Length of “species” should be the same as
 “features” or length 1.</td>
-<td>“species” : [“homo_sapiens”]</td>
+<td>“species”: [“homo_sapiens”]</td>
 </tr>
 <tr class="even">
 <td><code>container_authors</code></td>
 <td><code>string</code>- Optional</td>
 <td>Author/authors of container builders.</td>
-<td>“container_authors” : “Ishika Luthra”</td>
+<td>“container_authors”: “Ishika Luthra”</td>
 </tr>
 <tr class="odd">
 <td><code>model_authors</code></td>
 <td><code>string</code>- Optional</td>
 <td>Paper author/authors.</td>
-<td>“model_authors” : “Ishika Luthra”</td>
+<td>“model_authors”: “Ishika Luthra”</td>
 </tr>
 <tr class="even">
 <td><code>input_size</code></td>
@@ -774,14 +798,14 @@ rebuilds.</td>
 <td><code>Integer</code>- Optional</td>
 <td>For models that predict across genomic tracks what is the base pair
 resolution.</td>
-<td>“bin_size” : 10</td>
+<td>“bin_size”: 10</td>
 </tr>
 <tr class="even">
 <td><code>expression_strand_specific</code></td>
 <td><code>Boolean</code>- Optional</td>
 <td>For models that predict expression, is the expression prediction
 strand specific or not.</td>
-<td>“expression_strand_specific” : true</td>
+<td>“expression_strand_specific”: true</td>
 </tr>
 </tbody>
 </table>
@@ -792,8 +816,8 @@ strand specific or not.</td>
 format. Error messages should be returned via one of the 3 possible keys
 so that the evaluators can “catch” the exception. Values can follow the
 format described below (any type) or other/additional ones can be added
-by the predictor builders.</p>
-<p>We encourage predictor builders to return error messages in the
+by the Predictor builders.</p>
+<p>We encourage Predictor builders to return error messages in the
 format show below. Helper functions that have some basic error catching
 to build off can be found in the <code>src</code> folder.</p>
 <table>
@@ -817,14 +841,12 @@ to build off can be found in the <code>src</code> folder.</p>
 <td><code>array of strings</code></td>
 <td>Request was unacceptable - model did not run.</td>
 <td>•.json file is formatted incorrectly. <br> •Mandatory key
-<code>x</code> is missing in .json. <br> •<code>task</code> requested is
+<code>x</code> is missing in .json. <br> •<code>request</code> value is
 not recognized. Model developers can choose what to return here.
-<br>•Value in <code>prediction_types</code> is not recognized. Model
-developers can choose what to return here. <br> •Duplicate sequence ID
-key in <code>sequences</code>: sequence ID key <code>y</code> is
-duplicated. <br> •<code>prediction_ranges</code> are required to be
-integers. <br> •Length of <code>prediction_types</code> should be the
-same as length of <code>cell_types</code> or only 1 value. <br>
+<br>•Value in <code>type</code> is not recognized. Model developers can
+choose what to return here. <br> •Duplicate sequence ID key in
+<code>sequences</code>: sequence ID key <code>y</code> is duplicated.
+<br> •<code>prediction_ranges</code> are required to be integers. <br>
 •Sequence ids in <code>prediction_ranges</code> do not match those in
 <code>sequences</code>. <br> •Length of each sub-array in
 <code>prediction_ranges</code> should not be greater than 2. <br>
