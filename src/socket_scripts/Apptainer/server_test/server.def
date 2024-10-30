@@ -29,8 +29,6 @@ Stage: build
     export PATH="/opt/conda/bin:$PATH"
     export LD_LIBRARY_PATH="/opt/conda/lib:$LD_LIBRARY_PATH"
     conda install -y -c conda-forge pip python=3.12
-    conda install numpy
-    conda install pandas
     conda clean --all --force-pkgs-dirs --yes
     chmod o+rx -R /opt
 

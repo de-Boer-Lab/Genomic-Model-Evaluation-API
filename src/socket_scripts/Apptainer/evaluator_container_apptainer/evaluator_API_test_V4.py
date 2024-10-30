@@ -32,8 +32,8 @@ def run_client():
     #try connecting to given host and port
     #host = socket.gethostbyname('mynetwork') # replace with the server's IP address
     #port = 8100  # replace with the server's port number
-    host = '127.0.0.1'
-    port = 8005
+    host = '172.16.47.244'
+    port = 8006
 
     try:
         #establish connection with server
@@ -49,7 +49,7 @@ def run_client():
     cwd = os.getcwd()
     print(cwd)
     #evaluator_file = open('/evaluator_container/' + evaluator_file)
-    evaluator_file = open('/home/iluthra/simple_passing_scripts_test/evaluator_message.json')
+    evaluator_file = open('/scratch/st-cdeboer-1/iluthra/evaluator_container_apptainer/evaluator_message.json')
 
     try:
         jsonResult = json.load(evaluator_file)
@@ -72,7 +72,7 @@ def run_client():
         response = json.loads(response) # convert bytes to string
         print(response)
         #save predictions
-        with open('/home/iluthra/simple_passing_scripts_test/predictions.json', 'w', encoding='utf-8') as f:
+        with open('/scratch/st-cdeboer-1/iluthra/evaluator_container_apptainer//predictions.json', 'w', encoding='utf-8') as f:
             json.dump(response, f, ensure_ascii=False, indent=4)
 
     except socket.error as e:

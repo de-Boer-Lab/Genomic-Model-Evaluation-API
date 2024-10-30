@@ -30,10 +30,10 @@ def run_server():
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    server_ip = '127.0.0.1'
+    server_ip = '172.16.47.244'
     #server_ip = socket.gethostbyname('mynetwork_new')
     #print(server_ip)
-    port = 8005
+    port = 8006
 
     # bind the socket to a specific address and port
     #server.bind((server_ip, port))
@@ -116,8 +116,11 @@ def run_server():
     # print(cell_type_predictor)
     # cell_type_predictor = json.dumps(cell_type_predictor)
     #
-    # cell_type_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # cell_type_socket.connect(("127.0.0.0", 6032))
+    cell_type_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    cell_type_socket.connect(('172.16.47.244', 8021))
+    cell_type_socket.sendall(b'Hello, cell type matcher dude!')
+    data_cell = cell_type_socket.recv(1024)
+    print(data_cell)
     # #cell_type_matcher_ip = socket.gethostbyname(mynetwork_cellType_new)
     # #cell_type_socket.connect(cell_type_matcher_ip, 6033)
     #
