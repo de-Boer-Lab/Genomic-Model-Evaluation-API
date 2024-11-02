@@ -1,0 +1,7 @@
+{
+    "bad_prediction_request": [
+        "readout requested is not recognized. Please choose from ['point', 'track', 'interaction_matrix']",
+        "'name' value should be a string",
+        "'type' should only have 1 value"
+    ]
+}

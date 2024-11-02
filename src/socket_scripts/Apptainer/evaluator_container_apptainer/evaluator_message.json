@@ -1,19 +1,23 @@
 {
-    "task": "predict",
-    "readout": "point",
-    "prediction_types": ["expression"],
-    "cell_types": ["HEPG2"],
-    "scale": ["log"],
-    "strand": "positive",
+    "request": "predict",
+    "readout": "point1",
+    "prediction_tasks": [
+      {
+        "name": 1,
+        "type": ["expression", "expression"],
+        "cell_type": "HEPG2",
+        "species": "homo_sapiens",
+        "scale": "linear"
+      }
+    ],
     "upstream_seq": "GATCA",
     "downstream_seq": "GATCA",
-    "sequences":[
-      {
+    "sequences":{
         "seq1": "ATAGCATGATGCTACGTACGATCGTAGCTGCATGCTAGCGATCGTAGCTAGCTGACTGATCGTAGGGTACGACTGTAGCTCAGTCGATCTGAAAAAAAAA",
         "seq2": "AGAATGTATGCTACGTACGATCGTAGCTGCATGCTAGCGATCGTAGCTAGCTGACTGATCGTAGGGTACGACTGTAGCTCAGTCGATCTGAAAAAAAAAA",
         "random_seq": "ATGCATGATGCTACGTACGATCGTAGCTGCATGCTAGCGATCGTAGCTAGCTGACTGATCGTAGGGTACGACTGTAGCTCAGTCGATCTGAAAAAAAAAA",
         "enhancer": "ATGCATGATGCTACGTACGATCGTAGCTGCATGCTAGCGATCGTAGCTAGCTGACTGATCGTAGGGTACGACTGTAGCTCAGTCGATCTGAAAAAAAAAA",
         "control": "ATGCATGATGCTACGTACGATCGTAGCTGCATGCTAGCGATCGTAGCTAGCTGACTGATCGTAGGGTACGACTGTAGCTCAGTCGATCTGAAAAAAAAAA"
       }
-    ]
+
   }
