@@ -38,13 +38,27 @@ def run_server():
 
     # accept incoming connections
     client_socket, client_address = server.accept()
+    #client_socket.settimeout(20)
     print(f"Accepted connection from {client_address[0]}:{client_address[1]}")
 
     #receive JSON from evaluator
-    evaluator_request = client_socket.recv(1024)
+    packets = []
+    data = b''
 
-    #convert bytes to string
-    evaluator_json = evaluator_request.decode("utf-8") # convert bytes to string
+    while True:
+
+        try:
+            evaluator_request = client_socket.recv(1024)
+            print(evaluator_request)
+            if evaluator_request == b"":
+                print("HI")
+                break
+            packets.append(evaluator_request)
+        except socket.timeout:
+            break
+
+    evaluator_request_full = b"".join(packets)
+    evaluator_json = evaluator_request_full.decode("utf-8")
     evaluator_json = json.loads(evaluator_json)
 
     #group these functions
@@ -52,6 +66,7 @@ def run_server():
 
     #if only a "help" was requested return the predictor information file
     if evaluator_json['request'] == "help":
+        print("HERE")
         #model builder should specify the path to their help files
         help_file = "/Users/ishika/Desktop/API/Genomic-Model-Evaluation-API/examples/helpExample/predictor_message_onlyINFO_final.json"
         jsonResult_help = json.load(open(help_file))
@@ -65,9 +80,7 @@ def run_server():
     #re-usable error checking functions
     json_return_error = check_mandatory_keys(evaluator_json.keys(), json_return_error)
     json_return_error = check_request(evaluator_json['request'], json_return_error)
-    print(json_return_error)
     json_return_error = check_prediction_task_mandatory_keys(evaluator_json['prediction_tasks'], json_return_error)
-    print(json_return_error)
     #if any of the mandatory keys are missing immediately return an error to the evaluator
     if any(json_return_error.values()) == True:
         json_string = json.dumps(json_return_error)
@@ -79,7 +92,6 @@ def run_server():
             sys.exit(1)
     else:
         json_return_error = check_key_values_readout(evaluator_json['readout'], json_return_error)
-        print(json_return_error)
         json_return_error = check_prediction_task_name(evaluator_json['prediction_tasks'], json_return_error)
         json_return_error = check_prediction_task_type(evaluator_json['prediction_tasks'], json_return_error)
         json_return_error = check_prediction_task_cell_type(evaluator_json['prediction_tasks'], json_return_error)

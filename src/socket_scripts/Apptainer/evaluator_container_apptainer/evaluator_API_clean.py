@@ -39,21 +39,24 @@ def run_evaluator():
         #load in JSON file
         jsonResult = json.load(open(evaluator_file))
         jsonResult = json.dumps(jsonResult)
+        print(jsonResult)
     except json.JSONDecodeError as e:
         print("Invalid JSON syntax:", e)
 
     #send the evaluator json to the predictor server
+
     try:
-        connection.send(jsonResult.encode("utf-8")[:1024])
+        print(len(jsonResult.encode("utf-8")))
+        connection.sendall(jsonResult.encode("utf-8"))
+
+        #sending this ends the stream to send
     except socket.error as e:
         print ("server_error: Error sending evaluator_file: %s" % e)
         sys.exit(1)
     # receive message from the server
     try:
         response = connection.recv(1024)
-        print(response)
         response = response.decode("utf-8")
-        print(response)
         response = json.loads(response) # convert bytes to string
 
         #save predictions to current working directory

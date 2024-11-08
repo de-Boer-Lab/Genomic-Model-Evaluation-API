@@ -128,16 +128,16 @@ def check_prediction_task_cell_type(prediction_tasks, json_return_error):
 
     #loop through object to check each array
     for prediction_task in prediction_tasks:
-        if isinstance(prediction_task['cell_type'], str) == True:
-            pass
-        else:
-            json_return_error['bad_prediction_request'].append("'cell_type' value should be a string")
-
         if type(prediction_task['cell_type']) == list:
             json_return_error['bad_prediction_request'].append("'cell_type' should only have 1 value")
 
         else:
-            pass
+            if isinstance(prediction_task['cell_type'], str) == True:
+                pass
+            else:
+                json_return_error['bad_prediction_request'].append("'cell_type' value should be a string")
+
+
 
     return(json_return_error)
 
@@ -146,16 +146,16 @@ def check_prediction_task_species(prediction_tasks, json_return_error):
 
     #loop through object to check each array
     for prediction_task in prediction_tasks:
-        if isinstance(prediction_task['species'], str) == True:
-            pass
-        else:
-            json_return_error['bad_prediction_request'].append("'species' value should be a string")
-
         if type(prediction_task['species']) == list:
             json_return_error['bad_prediction_request'].append("'species' should only have 1 value")
 
         else:
-            pass
+
+            if isinstance(prediction_task['species'], str) == True:
+                pass
+            else:
+                json_return_error['bad_prediction_request'].append("'species' value should be a string")
+
 
     return(json_return_error)
 
@@ -165,23 +165,24 @@ def check_prediction_task_scale(prediction_tasks, json_return_error):
     #loop through object to check each array
     for prediction_task in prediction_tasks:
         if 'scale' in prediction_task:
-            prediction_scale_options = ["linear", "log"]
-
-            if prediction_task['scale'] not in prediction_scale_options:
-
-                json_return_error['bad_prediction_request'].append("scale requested is not recognized. Please choose from ['log', 'linear']")
-            else:
-                pass
-            if isinstance(prediction_task['scale'], str) == True:
-                pass
-            else:
-                json_return_error['bad_prediction_request'].append("'scale' value should be a string")
-
             if type(prediction_task['scale']) == list:
                 json_return_error['bad_prediction_request'].append("'scale' should only have 1 value")
 
             else:
-                pass
+
+                prediction_scale_options = ["linear", "log"]
+
+                if prediction_task['scale'] not in prediction_scale_options:
+
+                    json_return_error['bad_prediction_request'].append("scale requested is not recognized. Please choose from ['log', 'linear']")
+                else:
+                    pass
+                if isinstance(prediction_task['scale'], str) == True:
+                    pass
+                else:
+                    json_return_error['bad_prediction_request'].append("'scale' value should be a string")
+
+
         else:
             pass
     return(json_return_error)
@@ -241,26 +242,27 @@ def check_seq_ids(prediction_ranges, sequences, json_return_error):
 
 def check_key_values_upstream_flank(upstream_seq, json_return_error):
 
-    if isinstance(upstream_seq, str) == True:
-        pass
-    else:
-        json_return_error['bad_prediction_request'].append("'upstream_seq' value should be a string")
     if type(upstream_seq) == list:
         json_return_error['bad_prediction_request'].append("'upstream_seq' should only have 1 value")
     else:
-        pass
+
+        if isinstance(upstream_seq, str) == True:
+            pass
+        else:
+            json_return_error['bad_prediction_request'].append("'upstream_seq' value should be a string")
+
     return(json_return_error)
 
 
 
 def check_key_values_downstream_flank(downstream_seq, json_return_error):
-
-    if isinstance(downstream_seq, str) == True:
-        pass
-    else:
-        json_return_error['bad_prediction_request'].append("'downstream_seq' value should be a string")
     if type(downstream_seq) == list:
         json_return_error['bad_prediction_request'].append("'downstream_seq' should only have 1 value")
     else:
-        pass
+
+        if isinstance(downstream_seq, str) == True:
+            pass
+        else:
+            json_return_error['bad_prediction_request'].append("'downstream_seq' value should be a string")
+
     return(json_return_error)
