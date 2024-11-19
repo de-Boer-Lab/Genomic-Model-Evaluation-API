@@ -1,16 +1,18 @@
-#!/usr/bin/env python3
-# ipc_client.py
-
+#Basic client-server TCP test scripts
 import socket
-
-#HOST = socket.gethostbyname(''127.0.0.1'')
-PORT = 8021        # The port used by the server
+import argparse
+#pass in host/port
+#need to use unrestricted ports
+parser = argparse.ArgumentParser(description='Socket Test')
+parser.add_argument('--host', action="store", dest="host",required=True, help='ip address')
+parser.add_argument('--port', action="store", dest="port", type=int,required=True, help='port')
+given_args = parser.parse_args()
+host = given_args.host
+port = given_args.port
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect(('172.16.47.244', PORT))
-    evaluator_file = open('/arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/sample_jsons/evaluator_message.json')
-    print(evaluator_file)
-    s.sendall(b'Hello, world. IPC success!')
-    data = s.recv(1024)
-
-print('Received', repr(data))
+    #Connect to the same host/post as the server
+    s.connect((host, port))
+    #send test message
+    s.sendall(b'Hello, connection successful!')
+    s.close()
