@@ -1,8 +1,0 @@
-FROM python:3
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-ADD predictor_API.py /prediction_container/
-ADD deBoerTest_model.py /prediction_container/
-ADD error_messages.py /prediction_container/
-WORKDIR /prediction_container/
-ENTRYPOINT [ "python3", "/prediction_container/predictor_API.py" ]
