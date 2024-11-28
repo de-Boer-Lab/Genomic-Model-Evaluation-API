@@ -168,7 +168,7 @@ def run_predictor():
             jsonResult_bytes = json_string.encode("utf-8")
             jsonResults_total_bytes = len(jsonResult_bytes)
 
-            connection.sendall(struct.pack('>I', jsonResults_total_bytes))
+            client_socket.sendall(struct.pack('>I', jsonResults_total_bytes))
 
             client_socket.sendall(jsonResult_bytes)
         except socket.error as e:
