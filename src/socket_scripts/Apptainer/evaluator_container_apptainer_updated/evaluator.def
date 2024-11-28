@@ -2,6 +2,9 @@ Bootstrap: docker
 From: ubuntu
 Stage: build
 
+%files
+    /scratch/st-cdeboer-1/iluthra/evaluator_container_apptainer_updated/evaluator_API_clean.py /scratch/st-cdeboer-1/iluthra/evaluator_container_apptainer_updated/
+
 %environment
     export LC_ALL=C
     export PATH="/opt/conda/bin:$PATH"
@@ -36,14 +39,15 @@ Stage: build
     chmod o+rx -R /opt
 
 %runscript
+    exec python3 /scratch/st-cdeboer-1/iluthra/evaluator_container_apptainer_updated/evaluator_API_clean.py "$@"
 
 %startscript
 
 %test
 
 %labels
-    Apptainer_with_Conda
-    Date YYYY-MM-DD
+    Test_Evaluator
+    Date 2024-11-19
 
 %help
-    This is a container for Conda environment
+    This is a container for a sample evaluator
