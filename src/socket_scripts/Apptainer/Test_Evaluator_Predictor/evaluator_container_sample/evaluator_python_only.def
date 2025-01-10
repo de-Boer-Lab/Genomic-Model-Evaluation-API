@@ -11,7 +11,7 @@ Stage: build
     export LD_LIBRARY_PATH="/opt/conda/lib:$LD_LIBRARY_PATH"
 
 %post
-chmod 755 /evaluator_API_clean_apptainer.py
+chmod 755 /evaluator_container_sample/evaluator_API_clean_apptainer.py
 
 %runscript
     exec python3 /evaluator_container_sample/evaluator_API_clean_apptainer.py "$@"

@@ -16,7 +16,7 @@ To create a sample Evaluator using the scripts and data we provide for this exam
 
 Change the `/path_to/`  in the .def file to the local file path for the script. 
 
-3. Next run: `apptainer build evaluator.sif evaluator_python_only.def`. This will build the Evaluator container that automatically runs `evaluator_API_clean_apptainer.py`. In this example the Evaluator container only requires 3 arguments in this order: HOST, PORT, OUTPUT_DIR.
+3. Next run: `apptainer build evaluator.sif evaluator_python_only.def` in the `evaluator_container_sample/` folder. This will build the Evaluator container that automatically runs `evaluator_API_clean_apptainer.py`. In this example the Evaluator container only requires 3 arguments in this order: HOST, PORT, OUTPUT_DIR.
 
 4. `evaluator.sif` will be created in the `evaluator_container_sample` folder
 
@@ -30,7 +30,7 @@ Change the `/path_to/`  in the .def file to the local file path for the script.
 
 Change the `/path_to/` in the .def file to the local file path for the scripts. 
 
-3. Next run: `apptainer build predictor.sif predictor_python_only.def`. This will build the Evaluator container that automatically runs `evaluator_API_clean_apptainer.py`. In this example the Evaluator container only requires 2 arguments in this order: HOST, PORT.
+3. `cd /predictor_container_sample` and next run: `apptainer build predictor.sif predictor_python_only.def`. This will build the Predictor container that automatically runs `predictor_API_clean_apptainer.py`. In this example the Predictor container only requires 2 arguments in this order: HOST, PORT.
 
 4. `predictor.sif` will be created in the `predictor_container_sample` folder
 
