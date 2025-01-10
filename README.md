@@ -43,14 +43,17 @@ P: Psst! Hey CellMatcher! I was asked for cellX, but I have no clue that that is
 CM: Sure thing! cellX is similar to your cellY, so you should use that for your predictions instead. 
 
 P: Here you go, Evaluator - i'm sending you a .json file back with all the predictions for cellY.
-                      
+
+### To test a basic TCP socket connection
+
+https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/socket_scripts/TCP_example
+
 ### An example for how issue a request from the Predictor
 
-The example below outlines an easy test communication between an Evaluator (with random sequences) and a Predictor (that will generate random predictions for any task you request). 
+The example in the folder outlines an easy test communication between an Evaluator (with random sequences) and a Predictor (that will generate random predictions for any task you request). 
 
-TO ADD
+https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/socket_scripts/Apptainer/Test_Evaluator_Predictor
 
-`python`
 
 ### Evaluator request message
 
