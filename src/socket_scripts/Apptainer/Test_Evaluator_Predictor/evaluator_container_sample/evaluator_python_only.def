@@ -3,18 +3,18 @@ From: python:3.9-slim
 Stage: build
 
 %files
-    /scratch/st-cdeboer-1/iluthra/evaluator_container_apptainer_updated/evaluator_API_clean_apptainer.py /evaluator_container_apptainer_updated/evaluator_API_clean_apptainer.py
+    /path_to/evaluator_container_sample/evaluator_API_clean_apptainer.py /evaluator_container_sample/evaluator_API_clean_apptainer.py
 
 %environment
     export LC_ALL=C
     export PATH="/opt/conda/bin:$PATH"
     export LD_LIBRARY_PATH="/opt/conda/lib:$LD_LIBRARY_PATH"
 
+%post
+chmod 755 /evaluator_API_clean_apptainer.py
 
 %runscript
-    exec python3 /evaluator_container_apptainer_updated/evaluator_API_clean_apptainer.py "$@"
-
-%startscript
+    exec python3 /evaluator_container_sample/evaluator_API_clean_apptainer.py "$@"
 
 %test
 

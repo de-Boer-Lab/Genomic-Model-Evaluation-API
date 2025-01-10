@@ -1,0 +1,31 @@
+Bootstrap: docker
+From: python:3.9-slim
+Stage: build
+
+%files
+    /path_to/predictor_container_sample/predictor_API_clean_apptainer.py /predictor_container_sample/predictor_API_clean_apptainer.py
+    /path_to/predictor_container_sample/error_message_functions_updated.py /predictor_container_sample/error_message_functions_updated.py
+    /path_to/predictor_container_sample/deBoerTest_model.py /predictor_container_sample/deBoerTest_model.py
+    /path_to/predictor_container_sample/predictor_help_message.json /predictor_container_sample/predictor_help_message.json
+%environment
+    export LC_ALL=C
+    export PATH="/opt/conda/bin:$PATH"
+    export LD_LIBRARY_PATH="/opt/conda/lib:$LD_LIBRARY_PATH"
+
+%post
+    # Set permissions for copied files
+    chmod 755 /predictor_container_sample/*.py
+    chmod 644 /predictor_container_sample/*.json
+%runscript
+    exec python3 /predictor_container_sample/predictor_API_clean_apptainer.py "$@"
+
+%startscript
+
+%test
+
+%labels
+    Test_Predictor
+    Date 2024-11-19
+
+%help
+    This is a container for a sample predictor
