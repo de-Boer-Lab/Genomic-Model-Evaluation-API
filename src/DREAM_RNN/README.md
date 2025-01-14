@@ -13,20 +13,37 @@ This section outlines the structure of the API codebase for Dream-RNN and how it
 The Dream-RNN-API is organized as follows:
 
 ```
-dreamRNN_API_script/
-		├── dreamRNN_predict.py                               # Core model script
-		├── prixfixe/                                         # Prix Fixe package
-		├── dream_rnn_k562_model_weight                       # Pre-trained weights
-		    └── model_best.pth
-predictor_container_apptainer/
-    ├── predictor_API_clean_apptainer.py                  # Predictor API script
-    ├── api_preprocessing_utils.py                        # Supporting script
-    ├── error_message_functions_updated.py                # Error handling
-    └── predictor_help_message.json                       # API help message
-evaluator_container_apptainer/
- 		├── evaluator_API_clean_apptainer.py                  # Evaluator API script
-		├── evaluator_data/                                   # Input JSON
-		└── predictions/                                      # Output JSON
+DREAM_RNN/
+├── dreamRNN_environment.yml          # Conda environment file
+└── src
+    ├── evaluator_container_apptainer
+    │   ├── evaluator.def                                # Evaluator container definition file
+    │   ├── evaluator.sif                                # Evaluator container image
+    │   ├── evaluator_API_clean_apptainer.py             # Evaluator API script
+    │   ├── evaluator_data
+    │   │   ├── evaluator_input_sample_test.json         # Sample input JSON for evaluator
+    │   │   ├── evaluator_message_more_complex.json      # Complex evaluator input example
+    │   │   └── evaluator_message_simple_test.json       # Simple evaluator input example
+    │   └── predictions/
+    └── predictor_container_apptainer
+        ├── dreamRNN_API_script
+        │   ├── data/
+        │   ├── dreamRNN_predict.py                      # DREAM_RNN prediction script
+        │   ├── dream_rnn_k562_model_weight              # Pre-trained model weights
+        │   │   ├── all_losses.json
+        │   │   ├── model_best.pth
+        │   │   ├── optimizer_best.pth
+        │   │   ├── scheduler_best.pth
+        │   │   ├── test_metric.json
+        │   │   └── val_metrics.json
+        │   └── prixfixe/                                 # Model framework scripts
+        ├── predictor.def                                 # Predictor container definition file
+        ├── predictor.sif                                 # Predictor container image
+        └── script_and_utils                              # Additional utility scripts
+            ├── api_preprocessing_utils.py
+            ├── error_message_functions_updated.py
+            ├── predictor_API_clean_apptainer.py
+            └── predictor_help_message.json
 ```
 
 ---
