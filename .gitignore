@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+# Ignoring the containers since they are huge
+*.sif
