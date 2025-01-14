@@ -2,7 +2,7 @@
 
 ## **Overview**
 
-This section outlines the structure of the API codebase for Dream-RNN and how it integrates with the containerized setup. It includes the documentation for:
+This section outlines the structure of the API codebase for Dream-RNN and how it integrates with the containerized setup.
 
 ---
 
@@ -332,7 +332,7 @@ Once the definition files for the Evaluator and Predictor APIs are configured, t
     - `/predictions`: Path to save predictions (inside the container).
     - Example:
         
-        ```json
+        ```bash
         apptainer run \
           -B /local/path/to/evaluator_data:/evaluator_data \
           -B /local/path/to/predictions:/predictions \
