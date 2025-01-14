@@ -8,7 +8,7 @@
 
 This Application Programming Interface (API) was designed for the functional genomics community to create seamless communication across pre-trained models and genomics datasets. It is a product of the feedback from many model and dataset experts and our hope is that it allows for long-lasting benchmarking of models. Models and datasets communicate via a set of predefined protocols through APIs. The common protocol enables any model to communicate with any dataset (although not all combinations may make sense).
 
-The evaluators (dataset APIs) will make prediction requests in the standard format (seen below) to the predictors (model APIs), which then return the predictions to the Evaluator in a standard format, enabling the evaluators to calculate the model’s performance. Each of the evaluators and predictors will be containerized using Apptainer (more details below).
+The evaluators (dataset APIs) will make prediction requests in the standard format to the predictors (model APIs), which then return the predictions to the Evaluator in a standard format, enabling the evaluators to calculate the model’s performance. Each of the evaluators and predictors will be containerized using Apptainer.
 
 The communication protocol below covers some of the mandatory parameters required for the API. There are also some optional parameters for specific prediction requests. 
 
@@ -22,13 +22,13 @@ If you would like to be involved we encourage you to use this API with your own 
 
 Using the standardized communication format each Predictor will receive information in the same format from any evalutor. Each Predictor also returns the predictions in the same format which enables the community to easily compare different model's predictions for the same dataset or evaluate a model on multiple different types of datasets very quickly. 
 
-The only files that are exchanged between the evaluators and predictors are .json files, a commonly used file format for sending and receiving information in a standard format. Data in the .json files is stored in the following format: `"keys": "value"`, where the value can be strings, numbers, objects, arrays, booleans or null. We have outlined below the mandatory "keys" required for communication between the Evaluator and Predictor to occur. Certain "keys" have a fixed set of "values" that can be used while others are up to the evaluators.
+The only files that are exchanged between the evaluators and predictors are .json files, a commonly used file format for sending and receiving information in a standard format. Data in the .json files is stored in the following format: `"keys": "value"`, where the value can be strings, numbers, objects, arrays, booleans or null. We have outlined below the mandatory "keys" required for communication between the Evaluator and Predictor to occur. Certain "keys" have a fixed set of "values" that can be used while others are up to the evaluators. API specifications can be found here: 
 
-The files and communication between APIs is done using python sockets. Scripts for these can be found in `\src\socket_scripts\`.
+The files and communication between APIs is done using python sockets. Scripts for these can be found in `/src/training_examples/TCP_example`.
 
-Examples of Evaluator and Predictor messages can be found in `\examples\json\` folder. Formats for json files can be checked using the following link: https://jsonformatter.curiousconcept.com
+Examples of Evaluator and Predictor messages can be found in `/example_JSON_files` folder. Formats for json files can be checked using the following link: https://jsonformatter.curiousconcept.com
 
-Examples of containerized evaluators and predictors can be found in `\examples\containers\` folder. 
+Examples of containerized evaluators and predictors can be found in `/src` folder. 
 
 #### Communication protocol example
 
@@ -44,15 +44,15 @@ CM: Sure thing! cellX is similar to your cellY, so you should use that for your 
 
 P: Here you go, Evaluator - i'm sending you a .json file back with all the predictions for cellY.
 
-### To test a basic TCP socket connection
+### To test a basic TCP socket connection using Python scripts
 
-https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/socket_scripts/TCP_example
+https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/training_examples/TCP_example
 
-### Instructions for how to create a sample Evaluator and Predictor container
+### Instructions for how to create a sample Evaluator and Predictor containers
 
 The example in the folder outlines an easy test communication between an Evaluator (with random sequences) and a Predictor (that will generate random predictions for any task you request). 
 
-https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/socket_scripts/Apptainer/Test_Evaluator_Predictor
+https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/training_examples/Apptainer/Test_Evaluator_Predictor
 
 ### Containerizing evaluators and predictors
 

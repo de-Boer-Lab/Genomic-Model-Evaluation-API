@@ -1,11 +1,5 @@
----
----
----
-
 ### API Specifications
 
-
-### Communication protocol
 
 ### Evaluator request message
 
