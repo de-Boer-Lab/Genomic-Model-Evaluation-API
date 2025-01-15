@@ -188,18 +188,6 @@ def check_prediction_task_scale(prediction_tasks, json_return_error):
             pass
     return(json_return_error)
 
-#check duplicate sequence ids - this needs to be fixed since the duplicates just get overwritten
-#sequence_ids = list(evaluator_json["sequences"][0].keys())
-# check_seq_ids(sequence_ids)
-# def check_seq_ids(sequence_ids):
-#     if len(set(sequence_ids)) != len(sequence_ids):
-#
-#         return("duplicate sequence ids in 'sequences'.")
-#
-#     else:
-#         return("sequence_ids are all unique")
-
-
 
 ### check that prediction_ranges are integers and subarrays are 2 elemnts each
 

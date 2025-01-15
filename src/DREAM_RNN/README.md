@@ -18,7 +18,7 @@ DREAM_RNN/
 └── src
     ├── evaluator_container_apptainer
     │   ├── evaluator.def                                # Evaluator container definition file
-    │   ├── evaluator.sif                                # Evaluator container image
+    │   ├── evaluator.sif                                # Evaluator container image (not included on Github due to storage restrictions)
     │   ├── evaluator_API_clean_apptainer.py             # Evaluator API script
     │   ├── evaluator_data
     │   │   ├── evaluator_input_sample_test.json         # Sample input JSON for evaluator
@@ -38,7 +38,7 @@ DREAM_RNN/
         │   │   └── val_metrics.json
         │   └── prixfixe/                                 # Model framework scripts
         ├── predictor.def                                 # Predictor container definition file
-        ├── predictor.sif                                 # Predictor container image
+        ├── predictor.sif                                 # Predictor container image (not included on Github due to storage restrictions)
         └── script_and_utils                              # Additional utility scripts
             ├── api_preprocessing_utils.py
             ├── error_message_functions_updated.py
@@ -130,8 +130,8 @@ The API JSON format wraps predictions with metadata to describe tasks, cell type
             "type_requested": "expression",
             "type_actual": "expression",
             "cell_type_requested": "HEPG2",
-            "cell_type_actual": "ishika_cell",
-            "scale_prediction_requested": "log",
+            "cell_type_actual": "K562",
+            "scale_prediction_requested": "linear",
             "scale_prediction_actual": "linear",
             "species_requested": "homo_sapiens",
             "species_actual": "homo_sapiens",
@@ -238,7 +238,13 @@ Once the definition files for the Evaluator and Predictor APIs are configured, t
 
 1. **Set Up the Definition File**:
     - Ensure that the `.def` file includes all necessary files, directories, and dependencies.
-    - Key configurations like `chmod` for full directory and file access are defined in the `%post` section.
+    - Files that need to be copied into the container should be included in the  `%files`  section
+    - Specific environment specific variables are listed in the  `%enviroment`  section
+    - Key configurations like `chmod` for full directory and file access are defined in the `%post` section. Dependencies are installed in         this section. 
+    - Commands that the container will run should be included in  `%runscript` section
+    - Metadata for the container is included in the  `%labels` section and any help information that will be shown to the user should be           listed in the  `%help` section.
+    - Additional information can be found here: https://apptainer.org/docs/user/main/definition_files.html
+    
 2. **Run the Build Command**: Use the `apptainer build` command to create the SIF file in their respective directories:
     
     ```bash
@@ -344,7 +350,7 @@ Once the definition files for the Evaluator and Predictor APIs are configured, t
 
 - Runtime mounting (-B) ensures flexibility:
     - The **Evaluator container** mounts directories like /evaluator_data and /predictions to read input and write output without requiring files to be embedded inside the container.
-    - The **Predictor container**, by contrast, does not need mounting since all necessary files (e.g., model weights, helper scripts) are already copied into the container.
+    - The **Predictor container**, by contrast, does not need mounting for this container since all necessary files (e.g., model weights, helper scripts) are already copied into the container. In some cases you may want to use files that are not copied into the container at run time and these can be placed in the /predictor_data folder. 
 
 ---
 
@@ -366,14 +372,14 @@ Once the definition files for the Evaluator and Predictor APIs are configured, t
                 "name": "task1",
                 "type": "expression",
                 "cell_type": "HEPG2",
-                "scale": "log",
+                "scale": "linear",
                 "species": "homo_sapiens"
             },
             {
                 "name": "ishika_trick",
                 "type": "accessibility",
                 "cell_type": "K562",
-                "scale": "log",
+                "scale": "linear",
                 "species": "homo_sapiens"
             }
         ],
@@ -424,8 +430,8 @@ Once the definition files for the Evaluator and Predictor APIs are configured, t
                 "type_requested": "expression",
                 "type_actual": "expression",
                 "cell_type_requested": "HEPG2",
-                "cell_type_actual": "ishika_cell",
-                "scale_prediction_requested": "log",
+                "cell_type_actual": "K562",
+                "scale_prediction_requested": "linear",
                 "scale_prediction_actual": "linear",
                 "species_requested": "homo_sapiens",
                 "species_actual": "homo_sapiens",
@@ -452,8 +458,8 @@ Once the definition files for the Evaluator and Predictor APIs are configured, t
                 "type_requested": "accessibility",
                 "type_actual": "expression",
                 "cell_type_requested": "K562",
-                "cell_type_actual": "ishika_cell",
-                "scale_prediction_requested": "log",
+                "cell_type_actual": "K562",
+                "scale_prediction_requested": "linear",
                 "scale_prediction_actual": "linear",
                 "species_requested": "homo_sapiens",
                 "species_actual": "homo_sapiens",

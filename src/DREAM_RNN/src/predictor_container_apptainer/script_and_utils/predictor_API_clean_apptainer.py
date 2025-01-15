@@ -27,7 +27,7 @@ sys.path.insert(1, DREAM_DIR)
 from dreamRNN_predict import *
 
 def run_predictor():
-    
+
     evaluator_ip = sys.argv[1]
     evaluator_port = int(sys.argv[2])
     # cell_type_matcher_ip = sys.argv[3]
@@ -191,7 +191,7 @@ def run_predictor():
             sys.exit(1)
 
     #start big loop here for all the prediction_tasks
-    #connect to cell type matching container
+    #connect to cell type matching container in cases of multi-task models
     #cell_type_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     #cell_type_socket.connect((cell_type_matcher_ip, cell_type_matcher_port))
 
