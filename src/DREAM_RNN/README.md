@@ -2,7 +2,7 @@
 
 ## **Overview**
 
-This section outlines the structure of the API codebase for Dream-RNN and how it integrates with the containerized setup.
+This document outlines the structure of the API codebase for Dream-RNN and how it integrates with the containerized setup.
 
 ---
 
