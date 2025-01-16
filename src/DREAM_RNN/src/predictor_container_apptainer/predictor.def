@@ -72,7 +72,7 @@ Stage: build
     - Support scripts like `api_preprocessing_utils.py`, `error_message_functions_updated.py`, and `predictor_help_message.json`.
 
     **Usage:**
-    Before running, ensure you have the following directory structure on the host:
+    If you are building the container using this definition file, ensure you have the following directory structure on the host:
     ```
     /path/to/DREAM_RNN/src/predictor_container_apptainer/
     ├── predictor.def
@@ -91,6 +91,11 @@ Stage: build
     │   ├── error_message_functions_updated.py
     │   ├── predictor_API_clean_apptainer.py
     │   └── predictor_help_message.json
+    ```
+    
+    Build the container (SIF)
+    ```
+    apptainer build predictor.sif predictor.def
     ```
 
     Run the container
