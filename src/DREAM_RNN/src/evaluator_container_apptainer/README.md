@@ -8,7 +8,7 @@ This container includes:
 
 ## **Usage:**
 
-We encourage using pre-built containers for this model that are hosted on Zenodo <<PASTE LINK HERE>>
+We encourage using pre-built containers for this model that are hosted on Zenodo: https://zenodo.org/records/14649126.
 
 However, if you are building the container using this definition file, ensure you have the following directory structure on the host:
 
