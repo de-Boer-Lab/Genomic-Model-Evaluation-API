@@ -58,6 +58,8 @@ https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/traini
 
 We have created a Predictor for one of the DREAMRNN models (Rafi et. al 2024). Detailed instructions can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/DREAM_RNN 
 
+A sample Evaluator for Gosai et. al (2024) and instructions for how to build it can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/Gosai_2024_Evaluator
+
 ### Collaborators
 
 * Sara Mostafavi
