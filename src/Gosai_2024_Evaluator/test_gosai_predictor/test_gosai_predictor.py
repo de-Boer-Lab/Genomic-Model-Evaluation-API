@@ -9,7 +9,7 @@ import struct
 from error_message_functions_updated import *
 from deBoerTest_model import *
 import argparse
-
+import tqdm
 
 def run_predictor():
 
@@ -60,13 +60,17 @@ def run_predictor():
 
             #Step 2
             # Now we want to receive the actual JSON in packets
-
+            #progress = tqdm.tqdm(range(msglen), unit="B", unit_scale=True, unit_divisor=1024)
+            #print(progress)
+            #with tqdm(total=msglen, unit='B', unit_scale=True, desc="Receiving Data") as progress:
+            progress = tqdm.tqdm(range(msglen), unit="B", unit_scale=True, unit_divisor=1024)
             while len(json_data_recv) < msglen:
-                packet = client_socket.recv(1024)
+                packet = client_socket.recv(65536)
                 if not packet:
                     print("Connection closed unexpectedly.")
                     break
                 json_data_recv += packet
+                progress.update(len(packet))
                 #print(f"Received packet of {len(packet)} bytes, total received: {len(data)} bytes")
 
             # Decode and display the received data if all of it is received
@@ -84,6 +88,7 @@ def run_predictor():
 
 # ---------------------- %%%%%%%---------------
     evaluator_request_full = json_data_recv
+    #print(evaluator_request_full)
     evaluator_json = evaluator_request_full.decode("utf-8")
     evaluator_json = json.loads(evaluator_json)
 
