@@ -113,7 +113,7 @@ Once the definition files for the Evaluator and Predictor APIs are configured, t
     
 2. **Run the Build Command**: Use the `apptainer build` command to create the SIF file in their respective directories:
     
-    Download Supp. Table 12 from: https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-024-08070-z/MediaObjects/41586_2024_8070_MOESM14_ESM.txt and place the 41586_2024_8070_MOESM4_ESM.txt file in /evaluator_data/. (Too large to store in Github)
+    Download Supp. Table 12 from: https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-024-08070-z/MediaObjects/41586_2024_8070_MOESM14_ESM.txt and place the 41586_2024_8070_MOESM4_ESM.txt file in `/evaluator_data/`. (Too large to store in Github)
    
     ```bash
     cd Gosai_2024_Evaluator
