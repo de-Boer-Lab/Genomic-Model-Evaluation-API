@@ -233,6 +233,10 @@ To confirm your Evaluator and message passing code work build a test Predictor w
           gosai_evaluator.sif 172.16.47.243 5000     /arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/Gosai_2024_Evaluator/predictions
         ```
         
+3. **Confirm successful connection and returned predictions**
+
+Check the `/predictions` folder for a `predictions.json` file.
+
 **Why Runtime Mounting?**:
 
 - Runtime mounting (-B) ensures flexibility:
