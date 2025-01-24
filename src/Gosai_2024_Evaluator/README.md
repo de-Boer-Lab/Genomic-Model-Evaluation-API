@@ -107,7 +107,7 @@ Once the definition files for the Evaluator and Predictor APIs are configured, t
     - Files that need to be copied into the container should be included in the  `%files`  section
     - Specific environment specific variables are listed in the  `%enviroment`  section
     - Key configurations like `chmod` for full directory and file access are defined in the `%post` section. Dependencies are installed in         this section. 
-    - Commands that the container will run should be included in  `%runscript` section
+    - Commands that the container will run should be included in  `%runscript` section. This Evaluator also allows you to run your own python file (see more details below).
     - Metadata for the container is included in the  `%labels` section and any help information that will be shown to the user should be           listed in the  `%help` section.
     - Additional information can be found here: https://apptainer.org/docs/user/main/definition_files.html
     
@@ -312,5 +312,12 @@ Check the `/predictions` folder for a `predictions.json` file.
     
 
 ---
+### **Running your own python script with this container**
 
+This container allows you to also run your own python script (if it uses the same dependies ex. packages in python). 
+The `%runscript` section does a check for if a python file was passed in as an argument. See example below:
+
+`apptainer run -B /path_to/script_you_want_to_run/ -B /path_to//evaluator_data/ -B /path_to/predictions/ gosai_evaluator.sif test_container_flexibility.py 172.16.47.244 5004 /path_to/predictions/`
+
+The python script must alter its indexing for system arguments (HOST, PORT, OUTPUT_DIR) but can be used to read in any other MPRA dataset from the `/evaluator_data` folder, parsed into the correct API format and connect to a Predictor. 
 ---

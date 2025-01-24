@@ -7,6 +7,7 @@ import struct
 from collections import Counter
 #from create_json import *
 import pandas as pd
+import tqdm
 
 # Get the current working directory
 CWD = os.getcwd()
@@ -39,7 +40,7 @@ def create_json(input_data):
     return(json_evaluator)
 
 # File name for input sequences
-input_txt = "41586_2024_8070_MOESM4_ESM.txt"
+input_txt = "random_mpra_test.txt"
 
 #Determine if running inside a container or not
 if os.path.exists("/evaluator_data"):
@@ -62,6 +63,8 @@ print(f"Using input data: {EVALUATOR_INPUT_PATH}")
 #print(f"Will save predictions to: {RETURN_FILE_PATH}")
 
 def run_evaluator():
+    #need to change the order or arguments passed
+    print(sys.argv)
     host = sys.argv[1]
     port = int(sys.argv[2])
     output_dir = sys.argv[3]
@@ -176,7 +179,7 @@ def run_evaluator():
         predictor_json = predictor_response_full.decode("utf-8")
         predictor_json = json.loads(predictor_json)
 
-        output_file = os.path.join(output_dir + '/predictions.json')
+        output_file = os.path.join(output_dir + '/predictions_testmpra.json')
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(predictor_json, f, ensure_ascii=False, indent=4)
         print(f"Predictions saved to {output_file}")

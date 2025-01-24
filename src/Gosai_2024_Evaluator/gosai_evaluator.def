@@ -26,17 +26,24 @@ Stage: build
 
 
     echo "Installing Python dependencies..."
-    pip3 install --no-cache-dir numpy torch pandas
+    pip3 install --no-cache-dir numpy pandas
 
 
     #echo "Setting permissions for directories and script..."
     chmod -R 755 /Gosai_2024_Evaluator
 
 %runscript
-    exec python3 /Gosai_2024_Evaluator/gosai_evaluator.py "$@"
 
-%startscript
-    exec python3 /Gosai_2024_Evaluator/gosai_evaluator.py "$@"
+    if [ "$extension" = "py" ]; then
+        echo "Here"
+        # If the first argument is a Python script, run it with the remaining arguments
+        # This allows for re-usability of the container
+        exec python3 "$@"
+    else
+        # Otherwise, pass all arguments to the default script
+        exec python3 /Gosai_2024_Evaluator/gosai_evaluator.py "$@"
+    fi
+
 
 %labels
     Author "Ishika Luthra"
