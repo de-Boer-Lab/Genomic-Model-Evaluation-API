@@ -7,23 +7,18 @@ Stage: build
 
 %environment
     export LC_ALL=C
-    export PATH="/opt/conda/envs/dream/bin:$PATH"
-    export LD_LIBRARY_PATH="/opt/conda/envs/dream/lib:$LD_LIBRARY_PATH"
+    export PATH="/usr/local/bin:$PATH"
 
 %post
     echo "Installing system dependencies..."
-    apt-get update && apt-get install -y --no-install-recommends \
-        python3-pip \
-        wget \
-        bzip2 \
-        ca-certificates && \
-        apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get update && \
+    apt-get install -y --no-install-recommends python3-pip wget bzip2 ca-certificates && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
     echo "Installing Python dependencies..."
-    pip3 install --no-cache-dir numpy tqdm
+    python -m pip install --no-cache-dir numpy tqdm
 
     echo "Setting permissions for directories and script..."
-    # chmod -R 755 /evaluator_data /predictions
     chmod -R 755 /evaluator_container_apptainer
 
 %runscript
@@ -49,11 +44,8 @@ Stage: build
     ├── evaluator.def
     ├── evaluator.sif
     ├── evaluator_API_clean_apptainer.py
-    ├── evaluator_data
-    │   ├── evaluator_input_sample_test.json
-    │   ├── evaluator_message_more_complex.json
-    │   └── evaluator_message_simple_test.json
-    └── predictions
+    ├── evaluator_data/
+    └── predictions/
     ```
 
     Build the container (SIF)
