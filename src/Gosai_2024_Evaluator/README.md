@@ -311,7 +311,6 @@ Check the `/predictions` folder for a `predictions.json` file.
     ```
     
 
----
 ### **Running your own python script with this container**
 
 This container allows you to also run your own python script (if it uses the same dependies ex. packages in python). 
@@ -320,4 +319,3 @@ The `%runscript` section does a check for if a python file was passed in as an a
 `apptainer run -B /path_to/script_you_want_to_run/ -B /path_to//evaluator_data/ -B /path_to/predictions/ gosai_evaluator.sif test_container_flexibility.py 172.16.47.244 5004 /path_to/predictions/`
 
 The python script must alter its indexing for system arguments (HOST, PORT, OUTPUT_DIR) but can be used to read in any other MPRA dataset from the `/evaluator_data` folder, parsed into the correct API format and connect to a Predictor. 
----
