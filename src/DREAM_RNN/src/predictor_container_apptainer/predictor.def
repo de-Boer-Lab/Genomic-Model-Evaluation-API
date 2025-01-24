@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: ubuntu
+From: python:3.13-slim
 Stage: build
 
 %files
@@ -20,14 +20,10 @@ Stage: build
 %post
     echo "Installing system dependencies..."
     apt-get update && apt-get install -y --no-install-recommends \
+        python3-pip \
         wget \
         bzip2 \
-        ca-certificates \
-        libglib2.0-0 \
-        libxext6 \
-        libsm6 \
-        libxrender1 \
-        build-essential && \
+        ca-certificates && \
         apt-get clean && rm -rf /var/lib/apt/lists/*
 
     echo "Setting up Miniconda..."
@@ -51,6 +47,9 @@ Stage: build
     chmod -R 755 /dreamRNN_API_script /predictor_container_apptainer /opt/conda
     chmod +x /opt/conda/envs/dream/bin/python3
 
+    echo "Cleaning up temporary files..."
+    rm -rf /dreamRNN_environment.yml
+
 %runscript
     export PATH="/opt/conda/envs/dream/bin:$PATH"
     exec python3 /predictor_container_apptainer/predictor_API_clean_apptainer.py "$@"
@@ -61,7 +60,7 @@ Stage: build
 
 %labels
     Author "Satyam Priyadarshi"
-    Version "2.1"
+    Version "2.2"
     Description "This container is the Predictor set up for Genomic Model Evaluation API using the DREAM-RNN model."
 
 %help

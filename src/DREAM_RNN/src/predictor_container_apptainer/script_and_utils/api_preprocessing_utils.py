@@ -34,7 +34,7 @@ def one_hot_encode(seq):
 # Pad or truncate sequences to match a fixed sequence size
 def process_sequence(seq, seq_size=230):
     """
-    Pad or truncate a sequence to a fixed size and one-hot encode it.
+    One-hot encode a sequence and centre-pad or truncate it to a fixed size.
 
     Args:
         seq (str): Sequence consisting of 'A', 'T', 'G', 'C', and 'N'.
@@ -44,9 +44,23 @@ def process_sequence(seq, seq_size=230):
         list: A one-hot encoded list with padding or truncation applied.
     """
     encoded_seq = one_hot_encode(seq)
-    if len(encoded_seq) > seq_size:
-        return encoded_seq[:seq_size]  # Truncate if the sequence is too long
+    seq_len = len(encoded_seq)
+    
+    if seq_len > seq_size:
+        # Truncate if the sequence is too long
+        return encoded_seq[:seq_size]  
+    
+    # if seq_len > seq_size:
+    #     # Truncate equally from both ends -- uncomment this, if needed.
+    #     start_idx = (seq_len - seq_size) // 2
+    #     return encoded_seq[start_idx:start_idx + seq_size]
+    
     else:
-        # Pad with zeros if the sequence is too short
-        padding = [[0, 0, 0, 0]] * (seq_size - len(encoded_seq))
-        return encoded_seq + padding
+        # Centre-pad with zeros if the sequence is too short
+        # left_padding and right_padding are calculated to distribute padding equally on both sides.
+        # If there’s an odd number of extra padding, the right side gets the additional padding.
+        total_padding = seq_size - seq_len
+        left_padding = [[0, 0, 0, 0]] * (total_padding // 2)
+        right_padding = [[0, 0, 0, 0]] * (total_padding - len(left_padding))
+        return left_padding + encoded_seq + right_padding
+    # Swtich left right padding

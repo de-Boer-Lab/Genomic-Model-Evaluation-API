@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: python:3.9-slim
+From: python:3.13-slim
 Stage: build
 
 %files
@@ -16,35 +16,14 @@ Stage: build
         python3-pip \
         wget \
         bzip2 \
-        ca-certificates \
-        libglib2.0-0 \
-        libxext6 \
-        libsm6 \
-        libxrender1 \
-        build-essential && \
+        ca-certificates && \
         apt-get clean && rm -rf /var/lib/apt/lists/*
 
-
     echo "Installing Python dependencies..."
-    pip3 install --no-cache-dir numpy torch
-
-    echo "Creating directories..."
-    mkdir -p /evaluator_data
-    mkdir -p /predictions
-
-    # Verify directory creation
-    echo "Verifying directory creation..."
-    if [ ! -d /evaluator_data ]; then
-        echo "Error: /evaluator_data directory was not created."
-        exit 1
-    fi
-    if [ ! -d /predictions ]; then
-        echo "Error: /predictions directory was not created."
-        exit 1
-    fi
+    pip3 install --no-cache-dir numpy tqdm
 
     echo "Setting permissions for directories and script..."
-    chmod -R 755 /evaluator_data /predictions
+    # chmod -R 755 /evaluator_data /predictions
     chmod -R 755 /evaluator_container_apptainer
 
 %runscript
@@ -55,7 +34,7 @@ Stage: build
 
 %labels
     Author "Satyam Priyadarshi"
-    Version "2.1"
+    Version "2.2"
     Description "This container is the Evaluator set up for Genomic Model Evaluation API using the DREAM-RNN model."
 
 %help

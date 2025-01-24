@@ -4,23 +4,25 @@ import json
 import sys
 import os
 import struct
+import tqdm
 from collections import Counter
 
 # Get the current working directory
 CWD = os.getcwd()
 
 # Define the input JSON file name
-input_json = "evaluator_message_more_complex.json"
+input_json = "evaluator_input_sample_test.json"
 
 # Determine if running inside a container or not
 if os.path.exists("/evaluator_data"):
     # Running inside the container
     EVALUATOR_INPUT_PATH = os.path.join("/evaluator_data", input_json)
-    RETURN_FILE_PATH = os.path.join("/predictions", f"dreamRNN_predictor_return_container_{input_json}")
+    # RETURN_FILE_PATH = os.path.join("/predictions", f"dreamRNN_predictor_return_container_{input_json}")
 else:
     # Running outside the container
     EVALUATOR_INPUT_PATH = os.path.join(CWD, "evaluator_data", input_json)
-    RETURN_FILE_PATH = os.path.join(CWD, "predictions", f"dreamRNN_predictor_return_{input_json}")
+
+RETURN_FILE_PATH = os.path.join(CWD, "predictions", f"dreamRNN_predictor_return_{input_json}")
 
 # Validate input file path
 if not os.path.exists(EVALUATOR_INPUT_PATH):
@@ -32,6 +34,9 @@ output_dir = os.path.dirname(RETURN_FILE_PATH)
 if not os.path.exists(output_dir):
     print(f"Error: Output directory '{output_dir}' does not exist.")
     sys.exit(1)
+    
+# Set buffer size for TCP
+BUFFER_SIZE = 65536
 
 # Debug logs for validation
 print(f"Using input JSON: {EVALUATOR_INPUT_PATH}")
@@ -193,21 +198,31 @@ def run_evaluator():
                 connection.close()
                 break # Exit the loop if no message length is received
 
-            # Unpack meesage length from 4 bytes
+            # Unpack message length from 4 bytes
             msglen = struct.unpack('>I', msg_length)[0]
             print(f"Expecting {msglen} bytes of data from the Predictor.")
             # Can comment out print commands other than for errors
+            
+            # Initialize the progress bar
+            progress = tqdm.tqdm(range(msglen), unit="B", 
+                                 desc="Receiving Predictor Response",
+                                 unit_scale=True, unit_divisor=1024)
 
             #Step 2
             # Now we want to receive the actual JSON in packets
+            
             while len(json_data_recv) < msglen:
-                packet = connection.recv(1024)
+                packet = connection.recv(BUFFER_SIZE)
                 if not packet:
                     print("Connection closed unexpectedly.")
                     break
                 json_data_recv += packet
+                progress.update(len(packet))
                 #print(f"Received packet of {len(packet)} bytes, total received: {len(data)} bytes")
-
+           
+            # Close the progress bar when done
+            progress.close()
+            
             # Decode and display the received data if all of it is received
             if len(json_data_recv) == msglen:
                 print("Predictor return received completely!")
