@@ -11,13 +11,12 @@ from collections import Counter
 CWD = os.getcwd()
 
 # Define the input JSON file name
-input_json = "evaluator_input_sample_test.json"
+input_json = "evaluator_message_gosai_5seqs.json"
 
 # Determine if running inside a container or not
 if os.path.exists("/evaluator_data"):
     # Running inside the container
     EVALUATOR_INPUT_PATH = os.path.join("/evaluator_data", input_json)
-    # RETURN_FILE_PATH = os.path.join("/predictions", f"dreamRNN_predictor_return_container_{input_json}")
 else:
     # Running outside the container
     EVALUATOR_INPUT_PATH = os.path.join(CWD, "evaluator_data", input_json)

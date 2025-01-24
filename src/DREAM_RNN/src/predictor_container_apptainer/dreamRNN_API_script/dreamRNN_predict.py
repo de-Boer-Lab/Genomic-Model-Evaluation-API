@@ -87,6 +87,11 @@ def load_dream_rnn():
     model.eval()
     return model
 
+# Hardcoded Upstream and Downstream Adapter Sequences for K562 and HepG2:
+TARGET_LENGTH = 200
+upstream_adapter_seq = "AGGACCGGATCAACT"
+downstream_adapter_seq = "CATTGCGTGAACCGA"
+
 # Prediction Function
 def predict_dream_rnn(sequences, include_rev):
     
@@ -108,7 +113,8 @@ def predict_dream_rnn(sequences, include_rev):
     for seq_id, seq in tqdm.tqdm(sequences.items(),
                                  desc="Predictions in progress", unit="sequence"):
         # Process sequence for padding or truncation
-        encoded_seq = process_sequence(seq)
+        encoded_seq = process_sequence(seq, TARGET_LENGTH, SEQ_SIZE,
+                     upstream_adapter_seq, downstream_adapter_seq)
         
         # Include reverse complement information on sequence ID
         if include_rev:
