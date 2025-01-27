@@ -60,6 +60,14 @@ We have created a Predictor for one of the DREAMRNN models (Rafi et. al 2024). D
 
 A sample Evaluator for MPRA sequences from Gosai et. al (2024) and instructions for how to build it can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/Gosai_2024_Evaluator
 
+| Evaluator     | Zenodo Download link|Description |
+| ----------- | ----------- | ----------- |
+| Gosai MPRA      |        |  Gosai et al. (2024), https://doi.org/10.1038/s41586-024-08070-z    |
+
+
+| Predictor     | Zenodo Download link | Description|
+| ----------- | ----------- | ----------- |
+| DREAMRNN      |       |  Rafi et al. (2024), https://doi.org/10.1038/s41587-024-02414-w    |
 ### Collaborators
 
 * Sara Mostafavi
