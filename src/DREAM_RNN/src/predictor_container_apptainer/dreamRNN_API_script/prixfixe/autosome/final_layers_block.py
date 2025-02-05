@@ -19,8 +19,7 @@ class AutosomeFinalLayersBlock(FinalLayersBlock):
         )
         self.flatten = nn.Flatten()
         self.linear = nn.Sequential(
-            nn.Linear(256, 1), 
-            nn.Sigmoid()
+            nn.Linear(256, 1)
             # nn.ReLU(),
             # nn.Linear(hidden_dim, hidden_dim),
             # nn.ReLU(),
@@ -28,8 +27,8 @@ class AutosomeFinalLayersBlock(FinalLayersBlock):
         )
         # self.activation = nn.SiLU()
         # self.predictions = nn.Linear(256, 1)
-        # self.regression_criterion = nn.MSELoss()
-        self.classification_criterion = nn.BCELoss()
+        self.regression_criterion = nn.MSELoss()
+        # self.classification_criterion = nn.BCELoss()
 
     def forward(self, x):
         x = self.mapper(x)
@@ -51,12 +50,7 @@ class AutosomeFinalLayersBlock(FinalLayersBlock):
         x = x.squeeze(-1)
         y = batch["y"].to(self.device).squeeze(-1)
 
-        # loss = self.regression_criterion(x, y)
-        loss = self.classification_criterion(x, y)
-        # print(x.shape, 'x')
-
-        # print(y.shape, 'y')
-        # print(loss, 'loss')
+        loss = self.regression_criterion(x, y)
         return x, loss
     
     def weights_init(self, generator: Generator) -> None:

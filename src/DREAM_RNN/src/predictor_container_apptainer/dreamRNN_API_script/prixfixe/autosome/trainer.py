@@ -32,9 +32,11 @@ class AutosomeTrainer(Trainer):
                          num_epochs=num_epochs,
                          device=device)
         
-        optimizer = torch.optim.AdamW(model.parameters(), 
-                                      lr = min_lr, 
-                                      weight_decay=weight_decay)
+        # optimizer = torch.optim.AdamW(model.parameters(), 
+        #                               lr = min_lr, 
+        #                               weight_decay=weight_decay)
+        optimizer = torch.optim.Adam(model.parameters(), 
+                                      lr = min_lr)
         scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, #type: ignore
                                                 max_lr=max_lr,
                                                 div_factor=div_factor,
