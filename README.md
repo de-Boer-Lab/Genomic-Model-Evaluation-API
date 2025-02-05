@@ -58,6 +58,16 @@ https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/traini
 
 We have created a Predictor for one of the DREAMRNN models (Rafi et. al 2024). Detailed instructions can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/DREAM_RNN 
 
+A sample Evaluator for MPRA sequences from Gosai et. al (2024) and instructions for how to build it can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/Gosai_2024_Evaluator
+
+| Evaluator     | Zenodo Download link|Description |
+| ----------- | ----------- | ----------- |
+| Gosai MPRA      |https://zenodo.org/records/14757152       |  Gosai et al. (2024), https://doi.org/10.1038/s41586-024-08070-z : 776,474 sequences (200bp), measured in K562 (erythroid precursors), HepG2 (hepatocytes) and SK-N-SH (neuroblastoma) |
+
+
+| Predictor     | Zenodo Download link | Description|
+| ----------- | ----------- | ----------- |
+| DREAMRNN      |https://zenodo.org/records/14649126       |  Rafi et al. (2024), https://doi.org/10.1038/s41587-024-02414-w : DREAMRNN Architecture trained on human K562 cells     |
 ### Collaborators
 
 * Sara Mostafavi
