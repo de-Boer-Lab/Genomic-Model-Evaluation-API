@@ -46,23 +46,23 @@ P: Here you go, Evaluator - i'm sending you a .json file back with all the predi
 
 ### How should I get started?
 
-#### I'm new to TCP sockets and want to test them out on my own:
+#### 1. I'm new to TCP sockets and want to test them out on my own:
 
 https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/training_examples/TCP_example
 
-### I feel like I understand (at a high level) how TCP sockets work and I'm excited to test out building 2 "test" Apptainer containers that will talk to each other:
+#### 2. I feel like I understand (at a high level) how TCP sockets work and I'm excited to test out building 2 "test" Apptainer containers that will talk to each other:
 
 The example in the folder outlines an easy test communication between an Evaluator (with random sequences) and a Predictor (that will generate random predictions for any task you request). 
 
 https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/training_examples/Apptainer/Test_Evaluator_Predictor
 
-#### I'm ready to dive into building more complicated Evaluators/Predictors and want to work through real world examples:
+#### 3. I'm ready to dive into building more complicated Evaluators/Predictors and want to work through real world examples:
 
 We have created a Predictor for one of the DREAMRNN models (Rafi et. al 2024). Detailed instructions can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/DREAM_RNN 
 
 An Evaluator for MPRA sequences from Gosai et. al (2024) and instructions for how to build it can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/Gosai_2024_Evaluator
 
-#### I want to use one of the predictor/evaluator containers that are already build:
+#### 4. I want to use one of the predictor/evaluator containers that are already build:
 
 Coming soon :)
 
