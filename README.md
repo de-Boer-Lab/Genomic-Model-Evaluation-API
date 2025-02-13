@@ -44,21 +44,27 @@ CM: Sure thing! cellX is similar to your cellY, so you should use that for your 
 
 P: Here you go, Evaluator - i'm sending you a .json file back with all the predictions for cellY.
 
-### To test a basic TCP socket connection using Python scripts
+### How should I get started?
+
+#### I'm new to TCP sockets and want to test them out on my own:
 
 https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/training_examples/TCP_example
 
-### Instructions for how to create a sample Evaluator and Predictor containers
+### I feel like I understand (at a high level) how TCP sockets work and I'm excited to test out building 2 "test" Apptainer containers that will talk to each other:
 
 The example in the folder outlines an easy test communication between an Evaluator (with random sequences) and a Predictor (that will generate random predictions for any task you request). 
 
 https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/training_examples/Apptainer/Test_Evaluator_Predictor
 
-### Containerizing evaluators and predictors
+#### I'm ready to dive into building more complicated Evaluators/Predictors and want to work through real world examples:
 
 We have created a Predictor for one of the DREAMRNN models (Rafi et. al 2024). Detailed instructions can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/DREAM_RNN 
 
-A sample Evaluator for MPRA sequences from Gosai et. al (2024) and instructions for how to build it can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/Gosai_2024_Evaluator
+An Evaluator for MPRA sequences from Gosai et. al (2024) and instructions for how to build it can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/Gosai_2024_Evaluator
+
+#### I want to use one of the predictor/evaluator containers that are already build:
+
+Coming soon :)
 
 | Evaluator     | Zenodo Download link|Description |
 | ----------- | ----------- | ----------- |
@@ -68,6 +74,12 @@ A sample Evaluator for MPRA sequences from Gosai et. al (2024) and instructions 
 | Predictor     | Zenodo Download link | Description|
 | ----------- | ----------- | ----------- |
 | DREAMRNN      |https://zenodo.org/records/14649126       |  Rafi et al. (2024), https://doi.org/10.1038/s41587-024-02414-w : DREAMRNN Architecture trained on human K562 cells     |
+
+
+#### I still have more questions/I'm stuck ... help:
+
+Feel free to reach out to: ishika.luthra@ubc.ca
+
 ### Collaborators
 
 * Sara Mostafavi
