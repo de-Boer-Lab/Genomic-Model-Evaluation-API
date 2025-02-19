@@ -2,7 +2,7 @@
 ---
 ---
 
-# Genomic Model Evaluation API
+# GAME: Genomic API for Model Evaluation
 
 ### API Reference
 
