@@ -49,6 +49,11 @@ class SeqDatasetProb(Dataset):
         self.use_multisubstate_channel = use_multisubstate_channel
         
     def transform(self, x: str) -> torch.Tensor:
+        if (len(x) != self.seqsize):
+            print("This is where shit fails!")
+            print(len(x))
+            print(x)
+            print(self.seqsize)
         assert len(x) == self.seqsize
         return self.totensor(x)
     
@@ -69,18 +74,18 @@ class SeqDatasetProb(Dataset):
         to_concat = [seq]
         # add reverse augmentation channel
         if self.use_reverse_channel:
-            rev = torch.full( (1, self.seqsize), self.ds.rev.values[i], dtype=torch.float32) # type: ignore
+            rev = torch.full((1, self.seqsize), self.ds.rev.values[i], dtype=torch.float32) # type: ignore
             to_concat.append(rev)
         # create final tensor
         if len(to_concat) > 1:
             X = torch.concat(to_concat, dim=0)
         else:
             X = seq
-            
-        bin = self.ds.mean_value.values[i]
+        
+        bin_val = self.ds.mean_value.values[i]
         
         return {"x": X.float(), 
-                "y": torch.tensor(bin, dtype=torch.float32) # type: ignore
+                "y": torch.tensor(bin_val, dtype=torch.float32) # type: ignore
                 }
     
     def __len__(self) -> int:

@@ -8,35 +8,16 @@ from scipy.stats import pearsonr, spearmanr
 
 from .prix_fixe_net import PrixFixeNet
 from .dataprocessor import DataProcessor
-from sklearn.metrics import precision_recall_curve, average_precision_score, accuracy_score, precision_score, recall_score, f1_score, auc
-import matplotlib.pyplot as plt
+
 
 from typing import Any
 from abc import ABCMeta, abstractmethod
 
 # default metrics to compute
-# DEFAULT_METRICS = {
-#     "MSE": lambda y, y_pred:  (np.square(y_pred - y)).mean(),
-#     "pearsonr": lambda y, y_pred: pearsonr(y, y_pred)[0],
-#     "spearmanr": lambda y, y_pred: spearmanr(y, y_pred)[0]
-# }
-
-#  auc = average_precision_score(df["label"], test_df["mean_value"])
-#     precision_arr, recall_arr, thresholds_arr = precision_recall_curve(df["label"], test_df["mean_value"])
-#     accuracy = accuracy_score(df["label"], test_df["mean_value"])
-#     precision = precision_score(df["label"], test_df["mean_value"])
-#     recall = recall_score(df["label"], test_df["mean_value"])
-#     f1 = f1_score(df["label"], test_df["mean_value"])
-
-# DEFAULT_PRED_METRICS = {
-#     "average-precision-auc": lambda y, y_pred: average_precision_score(y, y_pred)
-# }
-
 DEFAULT_METRICS = {
-    "accuracy": lambda y, y_pred: accuracy_score(y, y_pred),
-    "precision": lambda y, y_pred: precision_score(y, y_pred), 
-    "recall": lambda y,y_pred: recall_score(y, y_pred), 
-    "f1" : lambda y,y_pred: f1_score(y, y_pred)
+    "MSE": lambda y, y_pred:  (np.square(y_pred - y)).mean(),
+    "pearsonr": lambda y, y_pred: pearsonr(y, y_pred)[0],
+    "spearmanr": lambda y, y_pred: spearmanr(y, y_pred)[0]
 }
 
 class Trainer(metaclass=ABCMeta):
@@ -82,10 +63,7 @@ class Trainer(metaclass=ABCMeta):
         self.valid_dataloader = self.dataprocessor.prepare_valid_dataloader()
         self.optimizer = None # should be overwritten by subclass
         self.scheduler = None # may be overwritten by subclass
-        self.best_accuracy = - np.inf
-        self.best_auc = - np.inf
-        self.best_f1 = - np.inf
-
+        self.best_pearson = - np.inf
         
              
     @abstractmethod
@@ -159,33 +137,15 @@ class Trainer(metaclass=ABCMeta):
                 y_pred, y = y_pred.cpu().numpy().reshape(-1), y.cpu().numpy()
                 y_pred_vector.append(y_pred)
                 y_vector.append(y)
-        
-        y_pred_vector = np.array([val for sublist in y_pred_vector for val in sublist])
-    
-        
-        threshold = 0.5
-        
-        y_label = (y_pred_vector >= threshold).astype(int)
-        metrics = self._calc_metrics(y_vector, y_pred_vector, y_label)
-        print(len(y_label))
-        print(len(y_vector))
-        print(len(y_pred_vector))
+
+        metrics = self._calc_metrics(y_pred_vector, y_vector)
         return metrics
 
-    def _calc_metrics(self, y, y_pred, y_label) -> dict[str, float]:
-        print(len(y_pred))
-        print(len(y))
+    def _calc_metrics(self, y_pred, y) -> dict[str, float]:
         y = np.concatenate(y)
-        # y_pred = np.concatenate(y_pred)
-        print(len(y_pred))
-        print(len(y))
-        precision_arr, recall_arr, thresholds_arr = precision_recall_curve(y, y_pred)
-        pr_auc = auc(recall_arr, precision_arr)
-        ap = average_precision_score(y, y_pred)
-       
-        metrics = {name: float(fn(y, y_label)) for name, fn in DEFAULT_METRICS.items()}
-        metrics["pr_auc"] = pr_auc
-        metrics["average_precision"] = ap
+        y_pred = np.concatenate(y_pred)
+        metrics = {name: float(fn(y, y_pred)) for name, fn in DEFAULT_METRICS.items()}
+        print(metrics)
         return metrics
       
     def _dump_metrics(self, metrics, epoch, tag):
@@ -212,24 +172,10 @@ class Trainer(metaclass=ABCMeta):
         return y_pred.cpu(), y.cpu()
 
     def _dump_best(self, metrics):
-        
-        ## Based on accuracy
-        curr_accuracy = metrics["accuracy"]
-        if curr_accuracy > self.best_accuracy:
-            self.best_accuracy = curr_accuracy
-            self._dump_model('best_accuracy')
-            
-        ## Based on auc
-        curr_auc = metrics["pr_auc"]
-        if curr_auc > self.best_auc:
-            self.best_auc = curr_auc
-            self._dump_model('best_auc')
-            
-        ## Based on f1
-        curr_f1 = metrics["f1"]
-        if curr_f1 > self.best_f1:
-            self.best_f1 = curr_f1
-            self._dump_model('best_f1')
+        curr_pearson = metrics["pearsonr"]
+        if curr_pearson > self.best_pearson:
+            self.best_pearson = curr_pearson
+            self._dump_model('best')
 
     def _dump_model(self, epoch):
         model_path = self.model_dir / f"model_{epoch}.pth"

@@ -1,24 +1,26 @@
 # dreamRNN_predict.py
 #!/usr/bin/env python
 # coding: utf-8
-import pandas as pd
-import torch
-import numpy as np
 import os
 import sys
+import tqdm
+import torch
+import numpy as np
+import pandas as pd
 
-# Get the current working directory
-CWD = os.getcwd()
+# Get the absolute path of the script directory
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Determine if running inside a container or not
-if os.path.exists('/predictor_container_apptainer'):
+if os.path.exists('/.singularity.d'):
     # Running inside the container
-    BASE_DIR = os.path.join(CWD, 'dreamRNN_API_script')
-    UTILS_DIR = os.path.join(CWD, 'predictor_container_apptainer')
+    BASE_DIR = '/dreamRNN_API_script'
+    UTILS_DIR = '/predictor_container_apptainer'
 else:
     # Running outside the container
-    BASE_DIR = os.path.join(CWD, '..', 'dreamRNN_API_script')
-    UTILS_DIR = os.path.join(CWD, 'scripts_and_utils')
+    # Get the current working directory
+    BASE_DIR = SCRIPT_DIR
+    UTILS_DIR = os.path.join(SCRIPT_DIR, "..", "script_and_utils")
 
 # Add the directory containing `api_preprocessing_utils.py` to the Python path
 sys.path.append(UTILS_DIR)
@@ -37,11 +39,6 @@ from prixfixe.prixfixe import PrixFixeNet
 
 # initialize path and variables
 CUDA_DEVICE_ID = 0
-
-# TRAIN_BATCH_SIZE = 32
-# N_PROCS = 4
-# VALID_BATCH_SIZE = 32
-# lr = 0.005 # 0.001 for DREAM-Attn, 0.005 for DREAM-CNN and DREAM-RNN
 SEQ_SIZE = 230
 generator = torch.Generator()
 generator.manual_seed(42)
@@ -91,6 +88,11 @@ def load_dream_rnn():
     model.eval()
     return model
 
+# Hardcoded Upstream and Downstream Adapter Sequences for K562 and HepG2:
+TARGET_LENGTH = 200
+upstream_adapter_seq = "AGGACCGGATCAACT"
+downstream_adapter_seq = "CATTGCGTGAACCGA"
+
 # Prediction Function
 def predict_dream_rnn(sequences, include_rev):
     
@@ -104,13 +106,16 @@ def predict_dream_rnn(sequences, include_rev):
     Returns:
         predictions (dict): Dictionary of sequence IDs and their predicted expression values.
     """
-    
+    print("Loading pre-trained model weights for DREAM-RNN")
     model_rnn = load_dream_rnn()
     
     predictions = {}
-    for seq_id, seq in sequences.items():
-        # Process sequence for padding or truncation
-        encoded_seq = process_sequence(seq)
+    # Wrap the iteration with tqdm for a progress bar
+    for seq_id, seq in tqdm.tqdm(sequences.items(),
+                                 desc="Predictions in progress", unit="sequence"):
+        # Process sequence for padding
+        encoded_seq = process_sequence(seq, TARGET_LENGTH, SEQ_SIZE,
+                     upstream_adapter_seq, downstream_adapter_seq)
         
         # Include reverse complement information on sequence ID
         if include_rev:
