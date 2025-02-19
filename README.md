@@ -30,6 +30,15 @@ Examples of Evaluator and Predictor messages can be found in `/example_JSON_file
 
 Examples of containerized evaluators and predictors can be found in `/src` folder. 
 
+| Evaluator     | Zenodo Download link|Description |
+| ----------- | ----------- | ----------- |
+| Gosai MPRA      |https://zenodo.org/records/14757152       |  Gosai et al. (2024), https://doi.org/10.1038/s41586-024-08070-z : 776,474 sequences (200bp), measured in K562 (erythroid precursors), HepG2 (hepatocytes) and SK-N-SH (neuroblastoma) |
+
+
+| Predictor     | Zenodo Download link | Description|
+| ----------- | ----------- | ----------- |
+| DREAMRNN      |https://zenodo.org/records/14649126       |  Rafi et al. (2024), https://doi.org/10.1038/s41587-024-02414-w : DREAMRNN Architecture trained on human K562 cells     |
+
 #### Communication protocol example
 
 P: Hi my name is "Predictor"! My job is to wait and listen for a "Evaluator" to ask me to do something.
@@ -46,37 +55,27 @@ P: Here you go, Evaluator - i'm sending you a .json file back with all the predi
 
 ### How should I get started?
 
-#### 1. I'm new to TCP sockets and want to test them out on my own:
+#### 1. I want to use one the pre-built Predictor containers, where should I start:
+
+Coming soon :)
+
+#### 2. I'm new to TCP sockets and want to test them out on my own <10 mins:
 
 https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/training_examples/TCP_example
 
-#### 2. I feel like I understand (at a high level) how TCP sockets work and I'm excited to test out building 2 "test" Apptainer containers that will talk to each other:
+#### 3. I feel like I understand (at a high level) how TCP sockets work and I'm excited to test out building 2 "test" Apptainer containers that will talk to each other <1 hour:
 
 The example in the folder outlines an easy test communication between an Evaluator (with random sequences) and a Predictor (that will generate random predictions for any task you request). 
 
 https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/training_examples/Apptainer/Test_Evaluator_Predictor
 
-#### 3. I'm ready to dive into building more complicated Evaluators/Predictors and want to work through real world examples:
+#### 4. I'm ready to dive into building more complicated Evaluators/Predictors and want to work through real world examples:
 
 We have created a Predictor for one of the DREAMRNN models (Rafi et. al 2024). Detailed instructions can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/DREAM_RNN 
 
 An Evaluator for MPRA sequences from Gosai et. al (2024) and instructions for how to build it can be found here: https://github.com/de-Boer-Lab/Genomic-Model-Evaluation-API/tree/main/src/Gosai_2024_Evaluator
 
-#### 4. I want to use one of the predictor/evaluator containers that are already build:
-
-Coming soon :)
-
-| Evaluator     | Zenodo Download link|Description |
-| ----------- | ----------- | ----------- |
-| Gosai MPRA      |https://zenodo.org/records/14757152       |  Gosai et al. (2024), https://doi.org/10.1038/s41586-024-08070-z : 776,474 sequences (200bp), measured in K562 (erythroid precursors), HepG2 (hepatocytes) and SK-N-SH (neuroblastoma) |
-
-
-| Predictor     | Zenodo Download link | Description|
-| ----------- | ----------- | ----------- |
-| DREAMRNN      |https://zenodo.org/records/14649126       |  Rafi et al. (2024), https://doi.org/10.1038/s41587-024-02414-w : DREAMRNN Architecture trained on human K562 cells     |
-
-
-#### I still have more questions/I'm stuck ... help:
+#### 5. I still have more questions/I'm stuck ... help:
 
 Feel free to reach out to: ishika.luthra@ubc.ca
 
