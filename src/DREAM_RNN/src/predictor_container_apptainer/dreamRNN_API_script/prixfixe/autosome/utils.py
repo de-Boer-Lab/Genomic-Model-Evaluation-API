@@ -92,7 +92,7 @@ def add_rev(df: pd.DataFrame) -> pd.DataFrame:
 
 def preprocess_df(path: str | Path,  
                   seqsize: int):
-    df = pd.read_csv(path, sep='\t', names=["seq_id", "seq", "mean_value"])
+    df = pd.read_csv(path, sep='\t')
     df = preprocess_data(df, 
                          seqsize=seqsize)
     df = add_rev(df)
