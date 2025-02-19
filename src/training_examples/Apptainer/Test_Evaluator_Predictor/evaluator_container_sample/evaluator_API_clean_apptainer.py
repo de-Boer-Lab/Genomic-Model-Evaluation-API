@@ -106,7 +106,7 @@ def run_evaluator():
         #jsonResult = json.dumps(jsonResult)
 
         #if you don't want to use the check duplicate function use the code below
-        jsonResult = json.load(open(cwd + '/evaluator_data/evaluator_message_more_complex.json'))
+        jsonResult = json.load(open('/evaluator_data/evaluator_message_more_complex.json'))
         jsonResult = json.dumps(jsonResult)
         #print(jsonResult)
     except json.JSONDecodeError as e:
@@ -181,8 +181,8 @@ def run_evaluator():
 
 #save predictions to current working directory
 
-    cwd = os.getcwd()
-    with open(cwd + '/predictions/predictor_return_file.json', 'w', encoding='utf-8') as f:
+    #cwd = os.getcwd()
+    with open('/predictions/predictor_return_file.json', 'w', encoding='utf-8') as f:
         json.dump(predictor_json, f, ensure_ascii=False, indent=4)
 
 # ---------------------- %%%%%%%---------------

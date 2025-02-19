@@ -24,7 +24,6 @@ Using the standardized communication format each Predictor will receive informat
 
 The only files that are exchanged between the evaluators and predictors are .json files, a commonly used file format for sending and receiving information in a standard format. Data in the .json files is stored in the following format: `"keys": "value"`, where the value can be strings, numbers, objects, arrays, booleans or null. We have outlined below the mandatory "keys" required for communication between the Evaluator and Predictor to occur. Certain "keys" have a fixed set of "values" that can be used while others are up to the evaluators. API specifications can be found here: 
 
-![](./src/communication_protocol.png)
 
 The files and communication between APIs is done using python sockets. Scripts for these can be found in `/src/training_examples/TCP_example`.
 
@@ -54,6 +53,8 @@ P: Psst! Hey CellMatcher! I was asked for cellX, but I have no clue that that is
 CM: Sure thing! cellX is similar to your cellY, so you should use that for your predictions instead. 
 
 P: Here you go, Evaluator - i'm sending you a .json file back with all the predictions for cellY.
+
+![](./src/communication_protocol.png)
 
 ### How should I get started?
 

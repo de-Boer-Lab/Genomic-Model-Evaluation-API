@@ -40,10 +40,10 @@ To get the local host IP you can use `hostname -I`. Ports above 1024 are usually
 
 The predictor needs to be started first. 
 
-1. apptainer run -B path_to/predictor_data/ predictor.sif HOST PORT
-2. apptainer run -B path_to/evaluator_data/ evaluator.sif HOST PORT OUTPUT_DIR
+1. apptainer run -B /path_to/predictor_data/ predictor.sif HOST PORT
+2. apptainer run -B /path_to/evaluator_data:/evaluator_data -B /path/to/predictions:/predictions evaluator.sif HOST PORT OUTPUT_DIR
 
-If the connection was sucssesful a file called `predictor_return_file.json` will be created in the `/evaluator_container_sample/OUTPUT_DIR/`
+If the connection was sucssesful a file called `predictor_return_file.json` will be created in the `/path/to/predictions/`
 
 ### Helpful hints and notes
 
