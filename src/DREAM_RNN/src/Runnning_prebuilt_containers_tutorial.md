@@ -45,14 +45,14 @@ Example:
 apptainer run \ 
     -B /path/to/evaluator_data:/evaluator_data  \
     -B /path/to/predictions:/predictions  \
-    evaluator.sif HOST PORT /path/to/predictions
+    evaluator.sif HOST PORT /predictions
 ```
 Example:
 ```bash 
 apptainer run \ 
     -B /path/to/evaluator_data:/evaluator_data  \
     -B /path/to/predictions:/predictions  \
-    evaluator.sif 172.16.47.243 5000 /path/to/predictions
+    evaluator.sif 172.16.47.243 5000 /predictions
 ```
 apptainer run -B //arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/Running_prebuilt_containers/test_evaluator/evaluator_data:/evaluator_data -B //arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/Running_prebuilt_containers/test_evaluator/predictions:/predictions evaluator.sif 172.16.47.243 5000 /predictions
 
@@ -60,4 +60,5 @@ The `-B` mounts local directories so that the Evaluator container can read in th
 
 5. If the Evaluator-Prediction communication was successful a JSON file will be found in the `predictions/` folder.
 
+Yay! You just completed a successful communication between the DREAMRNN model and a test sequence set with GAME :)
     
