@@ -1,4 +1,4 @@
-# Configuring Definition File and Running Evaluator Container for Dream-RNN
+# Configuring Definition File and Running Evaluator Container for DREAM-RNN
 
 ## Overview
 
@@ -8,11 +8,11 @@ This container includes:
 
 ## **Usage:**
 
-We encourage using pre-built containers for this model that are hosted on Zenodo: https://zenodo.org/records/14649126.
+We encourage using pre-built containers for this model that are hosted on Zenodo: <https://zenodo.org/records/14861069>.
 
-However, if you are building the container using this definition file, ensure you have the following directory structure on the host:
+However, if you are building the container using the provided definition file, ensure you have the following directory structure on the host:
 
-```
+```bash
 /path/to/DREAM_RNN/src/evaluator_container_apptainer/
 ├── evaluator.def
 ├── evaluator.sif
@@ -34,9 +34,9 @@ apptainer build evaluator.sif evaluator.def
 
 ```bash
 apptainer run \
-    -B /path/to/DREAM_RNN/src/evaluator_container_apptainer/evaluator_data:/evaluator_data \
-    -B /path/to/DREAM_RNN/src/evaluator_container_apptainer/predictions:/predictions \
-    evaluator.sif PREDICTOR_HOST PREDICTOR_PORT /predictions
+    -B absolute/path/to/evaluator_data:/evaluator_data \
+    -B absolute/path/to/predictions:/predictions \
+    evaluator.sif PREDICTOR_HOST PREDICTOR_PORT /path/to/predictions
 ```
 
 ## **Details:**
@@ -52,8 +52,8 @@ apptainer run \
 
 ```bash
 apptainer run \
-    -B /path/to/DREAM_RNN/src/evaluator_container_apptainer/evaluator_data:/evaluator_data \
-    -B /path/to/DREAM_RNN/src/evaluator_container_apptainer/predictions:/predictions \
+    -B absolute/path/to/evaluator_data:/evaluator_data \
+    -B absolute/path/to/predictions:/predictions \
     evaluator.sif 172.16.47.244 5000 /predictions
 ```
 
