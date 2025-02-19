@@ -60,7 +60,7 @@ P: Here you go, Evaluator - i'm sending you a .json file back with all the predi
 
 #### 1. I want to use one the pre-built Predictor containers, where should I start:
 
-Coming soon :)
+https://github.com/de-Boer-Lab/Genomic-API-for-Model-Evaluation/blob/main/src/DREAM_RNN/src/Runnning_prebuilt_containers_tutorial.md
 
 #### 2. I'm new to TCP sockets and want to test them out on my own <10 mins:
 
