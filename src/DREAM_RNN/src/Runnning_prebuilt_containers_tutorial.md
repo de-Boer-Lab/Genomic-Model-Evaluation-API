@@ -61,4 +61,39 @@ The `-B` mounts local directories so that the Evaluator container can read in th
 5. If the Evaluator-Prediction communication was successful a JSON file will be found in the `predictions/` folder.
 
 Yay! You just completed a successful communication between the DREAMRNN model and a test sequence set with GAME :)
+
+```bash
+{
+    "request": "predict",
+    "prediction_tasks": [
+        {
+            "name": "gosai_synthetic_sequences",
+            "type_requested": "expression",
+            "type_actual": "expression",
+            "cell_type_requested": "K562",
+            "cell_type_actual": "K562",
+            "scale_prediction_requested": "linear",
+            "scale_prediction_actual": "log",
+            "species_requested": "homo_sapiens",
+            "species_actual": "homo_sapiens",
+            "predictions": {
+                "7:70038969:G:T:A:wC": [
+                    -0.4900762140750885
+                ],
+                "1:192696196:C:T:A:wC": [
+                    -0.4205487370491028
+                ],
+                "1:211209457:C:T:A:wC": [
+                    -0.2514425814151764
+                ],
+                "15:89574440:GT:G:A:wC": [
+                    1.1541708707809448
+                ],
+                "15:89574440:GT:G:R:wC": [
+                    1.1637296676635742
+                ]
+            }
+        }
+    ]
+```
     
