@@ -1,20 +1,20 @@
-# Configuring Definition File and Running Predictor Container for Dream-RNN
+# Configuring Definition File and Running Predictor Container for DREAM-RNN
 
 ## Overview
 
 This container for Predictor includes:
     - Predictor script for sequence processing and error handling.
-    - Integrated Dream-RNN model with its dependencies and DREAM conda environment created using `dreamRNN_environment.yml`.
+    - Integrated DREAM-RNN model with its dependencies and DREAM conda environment created using `dreamRNN_environment.yml`.
     - Pre-trained model weights (`model_best.pth`) for predictions.
     - Support scripts like `api_preprocessing_utils.py`, `error_message_functions_updated.py`, and `predictor_help_message.json`.
 
 ## **Usage:**
 
-We encourage using pre-built containers for this model that are hosted on Zenodo: https://zenodo.org/records/14649126.
+We encourage using pre-built containers for this model that are hosted on Zenodo: <https://zenodo.org/records/14861069>.
 
-However, if you are building the container using this definition file, ensure you have the following directory structure on the host:
+However, if you are building the container using the provided definition file, ensure you have the following directory structure on the host:
 
-```
+```bash
 /path/to/DREAM_RNN/src/predictor_container_apptainer/
 ├── predictor.def
 ├── predictor.sif
