@@ -8,7 +8,7 @@
             "cell_type_requested": "K562",
             "cell_type_actual": "K562",
             "scale_prediction_requested": "linear",
-            "scale_prediction_actual": "linear",
+            "scale_prediction_actual": "log",
             "species_requested": "homo_sapiens",
             "species_actual": "homo_sapiens",
             "predictions": {

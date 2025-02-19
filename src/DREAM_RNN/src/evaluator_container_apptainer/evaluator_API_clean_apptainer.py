@@ -1,27 +1,32 @@
-# Jan 11, 2025
-import socket
-import json
-import sys
+# evaluator_API_clean_apptainer.py
 import os
-import struct
+import sys
+import json
 import tqdm
+import struct
+import socket
+
 from collections import Counter
 
-# Get the current working directory
-CWD = os.getcwd()
+# Get the absolute path of the script's directory
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Define the input JSON file name
 input_json = "evaluator_message_gosai_5seqs.json"
 
 # Determine if running inside a container or not
-if os.path.exists("/evaluator_data"):
+if os.path.exists("/.singularity.d"):
     # Running inside the container
-    EVALUATOR_INPUT_PATH = os.path.join("/evaluator_data", input_json)
+    EVALUATOR_DATA_DIR = "/evaluator_data"
+    PREDICTIONS_DIR = "/predictions"
 else:
     # Running outside the container
-    EVALUATOR_INPUT_PATH = os.path.join(CWD, "evaluator_data", input_json)
-
-RETURN_FILE_PATH = os.path.join(CWD, "predictions", f"dreamRNN_predictor_return_{input_json}")
+    EVALUATOR_CONTAINER_DIR = SCRIPT_DIR
+    EVALUATOR_DATA_DIR = os.path.join(EVALUATOR_CONTAINER_DIR, "evaluator_data")
+    PREDICTIONS_DIR = os.path.join(EVALUATOR_CONTAINER_DIR, "predictions")
+    
+EVALUATOR_INPUT_PATH = os.path.join(EVALUATOR_DATA_DIR, input_json)
+RETURN_FILE_PATH = os.path.join(PREDICTIONS_DIR, f"dreamRNN_predictor_return_{input_json}")
 
 # Validate input file path
 if not os.path.exists(EVALUATOR_INPUT_PATH):

@@ -1,28 +1,31 @@
-# Jan 11, 2025
-import socket
-import json
-import sys
+# predictor_API_clean_apptainer.py
 import os
-import struct
+import sys
+import json
 import tqdm
+import struct
+import socket
+
 from error_message_functions_updated import *
 from api_preprocessing_utils import *
 
-# Get the current working directory
-CWD = os.getcwd()
+# Get the absolute path of the script's directory
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Determine if running inside a container or not
-if os.path.exists('/predictor_container_apptainer'):
+if os.path.exists('/.singularity.d'):
     # Running inside the container
-    DREAM_DIR = os.path.join(CWD, 'dreamRNN_API_script')
-    HELP_FILE = os.path.join(CWD, 'predictor_container_apptainer', 'predictor_help_message.json')
+    DREAM_DIR = "/dreamRNN_API_script"
+    HELP_FILE = "/predictor_container_apptainer/predictor_help_message.json"
 else:
     # Running outside the container
-    DREAM_DIR = os.path.join(CWD, '..', 'dreamRNN_API_script')
-    HELP_FILE = os.path.join(CWD, 'predictor_help_message.json')
+    PREDICTOR_CONTAINER_DIR = os.path.dirname(SCRIPT_DIR)
+    DREAM_DIR = os.path.join(PREDICTOR_CONTAINER_DIR, "dreamRNN_API_script")
+    HELP_FILE = os.path.join(SCRIPT_DIR, 'predictor_help_message.json')
 
 # Add DREAM_DIR to the Python path
-sys.path.insert(1, DREAM_DIR)
+if DREAM_DIR not in sys.path:
+    sys.path.insert(0, DREAM_DIR)
 
 # Import from the dreamRNN_predict script
 from dreamRNN_predict import *
@@ -232,7 +235,7 @@ def run_predictor():
         current_prediction_task['cell_type_actual'] =  'K562'
 
         current_prediction_task['scale_prediction_requested'] =  prediction_task['scale']
-        current_prediction_task['scale_prediction_actual']  = 'linear'
+        current_prediction_task['scale_prediction_actual']  = 'log'
 
         current_prediction_task['species_requested']  = prediction_task['species']
         current_prediction_task['species_actual']  = 'homo_sapiens'
