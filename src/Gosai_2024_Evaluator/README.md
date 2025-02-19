@@ -19,7 +19,7 @@ Gosai_2024_Evaluator/
 └── evaluator_data
     ├── 41586_2024_8070_MOESM4_ESM.txt     #Raw dataset: Sequences and measured values 
 ├── test_container_flexibility.py   #Script that can be run with the container to use other datasets
-├── test_gosai_predictor    #Test predictor
+├── test_gosai_predictor    #Test Predictor
 ```
 
 ---
@@ -233,6 +233,8 @@ To confirm your Evaluator and message passing code work build a test Predictor w
           -B /arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/Gosai_2024_Evaluator/predictions:/predictions \
           gosai_evaluator.sif 172.16.47.243 5000 /predictions
         ```
+    apptainer run -B /arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/Test_Evaluator_Predictor/gosai_evaluator/evaluator_data:/evaluator_data -B /arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/Test_Evaluator_Predictor/gosai_evaluator/predictions:/predictions gosai_evaluator.sif 172.16.47.243 5000 /predictions    
+        
         
 3. **Confirm successful connection and returned predictions**
 
