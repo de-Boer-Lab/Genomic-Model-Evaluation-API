@@ -18,7 +18,8 @@ Gosai_2024_Evaluator/
 ├── gosai_evaluator.py          # Script that reads in raw MPRA data, parses into JSON and connects to Predictors
 └── evaluator_data
     ├── 41586_2024_8070_MOESM4_ESM.txt     #Raw dataset: Sequences and measured values 
-
+├── test_container_flexibility.py   #Script that can be run with the container to use other datasets
+├── test_gosai_predictor    #Test predictor
 ```
 
 ---
@@ -86,7 +87,7 @@ Definition files provide a declarative way to define:
     - `python:3.9-slim` is chosen for its lightweight nature and Python-specific optimizations.
     - This base image minimizes overhead while supporting Python dependencies.
 2. **File Inclusions**:
-    - **Core Script**: The primary script, `evaluator_API_clean_apptainer.py`, is copied into the container.
+    - **Core Script**: The primary script, `gosai_evaluator.py`, is copied into the container.
     - **Dynamic Mounting**: Input (`/evaluator_data`) and output (`/predictions`) directories are mounted at runtime to allow flexibility in handling data without modifying the container.
 3. **Environment Variables**:
     - Environment variables like `PATH` and `LD_LIBRARY_PATH` ensure the container uses the correct Conda environment (`dream`) for Python dependencies like NumPy and Torch.
@@ -176,7 +177,7 @@ To confirm your Evaluator and message passing code work build a test Predictor w
   Update paths to file that need to be copied into the container in .def file. `%files` section. 
 
   ```bash
-  apptainer build test_gosai_predictor.sif test_gosai_predictor.def
+  apptainer build test_gosai_predictor.sif predictor_python_only.def
   ```
     
     - The first argument specifies the output SIF file.
@@ -215,9 +216,9 @@ To confirm your Evaluator and message passing code work build a test Predictor w
     
     ```bash
     apptainer run \
-       -B /path/to/evaluator_data \
-       -B /path/to/predictions \
-       gosai_evaluator.sif PREDICTOR_HOST PREDICTOR_PORT path_to/predictions
+       -B /path/to/evaluator_data:/evaluator_data \
+       -B /path/to/predictions:/predictions \
+       gosai_evaluator.sif PREDICTOR_HOST PREDICTOR_PORT /predictions
     ```
     
 2. **Key arguments**
@@ -228,9 +229,9 @@ To confirm your Evaluator and message passing code work build a test Predictor w
         
         ```bash
         apptainer run \
-          -B /arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/Gosai_2024_Evaluator/evaluator_data \
-          -B /arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/Gosai_2024_Evaluator/predictions \
-          gosai_evaluator.sif 172.16.47.243 5000     /arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/Gosai_2024_Evaluator/predictions
+          -B /arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/Gosai_2024_Evaluator/evaluator_data:/evaluator_data \
+          -B /arc/project/st-cdeboer-1/iluthra/API_genomic_model_evaluation/Gosai_2024_Evaluator/predictions:/predictions \
+          gosai_evaluator.sif 172.16.47.243 5000 /predictions
         ```
         
 3. **Confirm successful connection and returned predictions**
@@ -313,9 +314,9 @@ Check the `/predictions` folder for a `predictions.json` file.
 
 ### **Running your own python script with this container**
 
-This container allows you to also run your own python script (if it uses the same dependies ex. packages in python). 
+This container allows you to also run your own python script (if it uses the same dependencies ex. packages in python). 
 The `%runscript` section does a check for if a python file was passed in as an argument. See example below:
 
-`apptainer run -B /path_to/script_you_want_to_run/ -B /path_to//evaluator_data/ -B /path_to/predictions/ gosai_evaluator.sif test_container_flexibility.py 172.16.47.244 5004 /path_to/predictions/`
+`apptainer run -B /path_to/script_you_want_to_run/ -B /path_to//evaluator_data/:/evaluator_data -B /path_to/predictions/:/predictions gosai_evaluator.sif test_container_flexibility.py 172.16.47.244 5004 /predictions/`
 
 The python script must alter its indexing for system arguments (HOST, PORT, OUTPUT_DIR) but can be used to read in any other MPRA dataset from the `/evaluator_data` folder, parsed into the correct API format and connect to a Predictor. 
